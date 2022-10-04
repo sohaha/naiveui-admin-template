@@ -1,0 +1,30 @@
+{
+  "extends": [
+    "@antfu"
+  ],
+  "rules": {
+    "prefer-promise-reject-errors": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "no-console": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "vue/component-name-in-template-casing": [
+      "error",
+      "PascalCase",
+      {
+        "registeredComponentsOnly": false
+      }
+    ],
+    "vue/component-tags-order": [
+      "error",
+      {
+        "order": [
+          "script",
+          "template",
+          "style",
+          "route",
+          "i18n"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "name": "zls-template",
+  "version": "0.0.1",
+  "description": "vite + vue3 + ts 开箱即用现代开发模板",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "dev:host": "vite --host",
+    "dev:open": "vite --open",
+    "preview": "vite preview",
+    "typecheck": "npx vue-tsc --noEmit",
+    "deps:fresh": "npx taze -I -w",
+    "deps:fresh:major": "npx taze major -I",
+    "deps:fresh:minor": "npx taze minor -I",
+    "deps:fresh:patch": "npx taze patch -I",
+    "preview:host": "vite preview --host",
+    "preview:open": "vite preview --open",
+    "auto:create": "plop --plopfile scripts/create.js",
+    "auto:remove": "plop --plopfile scripts/remove.js",
+    "lint": "eslint --ext .ts,.js,.jsx,.vue .",
+    "lint:fix": "eslint --fix --ext .ts,.js,.jsx,.vue .",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "ayyui": "^0.1.12",
+    "vue": "^3.2.40",
+    "naive-ui": "^2.33.3"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.27.0",
+    "@iconify-json/bx": "^1.1.4",
+    "@intlify/vite-plugin-vue-i18n": "^6.0.3",
+    "@sergeymakinen/vite-plugin-html-minimize": "^1.0.4",
+    "@types/node": "^18.7.23",
+    "@unocss/preset-icons": "^0.45.26",
+    "@unocss/preset-wind": "^0.45.26",
+    "@vitejs/plugin-legacy": "^2.2.0",
+    "@vitejs/plugin-vue": "^3.1.0",
+    "@vitejs/plugin-vue-jsx": "^2.0.1",
+    "@vueuse/core": "^9.3.0",
+    "axios": "^0.27.2",
+    "echarts": "^5.4.0",
+    "eslint": "^8.24.0",
+    "eslint-plugin-vue": "^9.5.1",
+    "fast-glob": "^3.2.12",
+    "fs-extra": "^10.1.0",
+    "happy-dom": "^6.0.4",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "local-pkg": "^0.4.2",
+    "mockjs": "^1.1.0",
+    "pinia": "^2.0.22",
+    "pinia-plugin-persistedstate": "^2.2.0",
+    "plop": "^3.1.1",
+    "postcss-pxtorem": "^6.0.0",
+    "prism-theme-vars": "^0.2.4",
+    "typescript": "^4.8.4",
+    "unocss": "^0.45.26",
+    "unplugin-auto-import": "^0.11.2",
+    "unplugin-vue-components": "^0.22.7",
+    "unplugin-vue-macros": "^0.11.2",
+    "vite": "^3.1.4",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-eslint": "^1.8.1",
+    "vite-plugin-inspect": "^0.7.4",
+    "vite-plugin-mock": "^2.9.6",
+    "vite-plugin-pages": "^0.26.0",
+    "vite-plugin-removelog": "^0.0.4",
+    "vite-plugin-restart": "^0.2.0",
+    "vite-plugin-use-modules": "^1.3.1",
+    "vite-plugin-vue-meta-layouts": "^0.1.1",
+    "vue-echarts": "^6.2.3",
+    "vue-eslint-parser": "^9.1.0",
+    "vue-i18n": "^9.2.2",
+    "vue-router": "^4.1.5",
+    "vue-use-api": "^0.0.6"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "rollup",
+        "markdown-it",
+        "@types/markdown-it"
+      ]
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,vue,ts,tsx}": "npm run lint:fix"
+  }
+}

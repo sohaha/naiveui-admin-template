@@ -1,0 +1,41 @@
+@import './base.css';
+
+.a-card-typography-wrapper,
+.card-body,
+.card-padding {
+  padding: 1rem;
+}
+
+html:root {
+  --a-bg: 0, 0%, 18%;
+  --a-bg-color: #eff2f5;
+}
+
+html:root.dark {
+  --a-bg: 0, 0%, 18%;
+  --a-bg-color: #2e2e2e;
+}
+
+html.dark .n-dialog,
+html.dark .n-notification,
+html.dark .n-message,
+html.dark .n-dropdown-menu,
+html.dark .n-popover {
+  --n-color: #262626 !important;
+}
+
+:root {
+  --a-text-emphasis-light-opacity: 0.8;
+  /* --a-primary:207,76%, 38%; */
+}
+
+.n-card {
+  --un-shadow: var(--un-shadow-inset) 0 10px 15px -3px var(--un-shadow-color, rgba(0, 0, 0, 0.1)),
+    var(--un-shadow-inset) 0 4px 6px -4px var(--un-shadow-color, rgba(0, 0, 0, 0.1));
+  box-shadow: var(--un-ring-offset-shadow), var(--un-ring-shadow),
+    var(--un-shadow);
+}
+
+.n-card:not(.border){
+  border: none !important;
+}

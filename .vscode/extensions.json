@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    "antfu.iconify",
+    "mikestead.dotenv",
+    "redhat.vscode-yaml",
+    "lokalise.i18n-ally",
+    "vue.volar",
+    "steoates.autoimport",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "editorconfig.editorconfig",
+    "usernamehw.errorlens",
+    "antfu.goto-alias",
+    "Vue.vscode-typescript-vue-plugin"
+  ]
+}

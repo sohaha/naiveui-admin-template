@@ -1,0 +1,16 @@
+body {
+  overflow: hidden;
+ background-color: var(--a-bg-color);
+}
+
+.tip-text{
+  color: hsla(var(--a-base-color),var(--a-text-emphasis-light-opacity));
+}
+
+i[class^='mi-'] {
+  background-size: 100% 100% !important;
+}
+
+vite-error-overlay {
+  z-index: 999999;
+}
