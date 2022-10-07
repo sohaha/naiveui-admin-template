@@ -176,7 +176,7 @@ const menuOptions = computed(() => [
     :options="menuOptions"
     @select="menuSelect"
   >
-    <div class="px-4 py-2 flex items-center group cursor-pointer">
+    <div class="px-4 py-2 flex items-center relative group cursor-pointer">
       <NAvatar
         v-if="user.getAvatar"
         round
@@ -193,10 +193,10 @@ const menuOptions = computed(() => [
       >
         {{ user.getNickName }}
       </NAvatar>
-      <div class="truncate flex-1 pl-3 relative" :class="{ hidden: props.collapsed }">
+      <div class="truncate flex-1 pl-3 " :class="{ hidden: props.collapsed }">
         {{ user.getNickName }}
       </div>
-      <NIcon v-show="!props.collapsed " class="i-bx-log-out absolute right-2" />
+      <NIcon v-show="!props.collapsed " class="i-bx-log-out absolute right-2  m-auto" />
     </div>
   </NDropdown>
   <NModal

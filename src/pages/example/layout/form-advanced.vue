@@ -119,7 +119,10 @@ function submit() {
 <route lang="json">
 {
   "meta": {
-    "title": "高级表单"
+    "title": "高级表单",
+    "i18n": {
+      "en":"AdvancedForm"
+    }
   }
 }
 </route>

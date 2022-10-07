@@ -22,11 +22,16 @@ const state = stateStore()
       <NMessageProvider>
         <NNotificationProvider>
           <NDialogProvider>
-            <NSpin :show="!!state.loadingMsg">
+            <NSpin class="bg-black" :show="!!state.loadingMsg">
+              <template #icon>
+                <NIcon />
+              </template>
               <slot />
               <LayoutLoadingContent />
               <template #description>
-                {{ state.loadingMsg }}
+                <div class="text-white">
+                  {{ state.loadingMsg }}
+                </div>
               </template>
             </NSpin>
           </NDialogProvider>

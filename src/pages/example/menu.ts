@@ -25,7 +25,7 @@ export default [
         icon: 'i-bx:layout',
         i18n: {
           en: 'Layout',
-          zh: '布局示例',
+          zh: '布局页面',
         },
         path: '/example/layout',
         children: [
@@ -37,8 +37,8 @@ export default [
             icon: 'i-bx:columns',
             path: '/example/layout/multi-column',
           },
-          { icon: 'i-bx:list-ol', path: '/example/layout/lists' },
-          { icon: 'i-bx:list-ol', path: '/example/layout/lists-form' },
+          { icon: 'i-bx:list-ol', path: '/example/layout/table' },
+          { icon: 'i-bx:table', path: '/example/layout/table-form' },
           {
             icon: 'i-bx:pencil',
             path: '/example/layout/form-basic',

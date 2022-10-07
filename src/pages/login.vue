@@ -3,6 +3,8 @@ const { t, toggleLocale } = useLanguage()
 
 const message = useMessage()
 
+const user = userStore()
+
 const login = ref(null)
 const { theme } = settingStore()
 const backgroundColor = computed(() => {
@@ -38,7 +40,6 @@ const backgroundColor = computed(() => {
 }
 
 // 表单
-const keepLogin = ref(true)
 const rules = computed(() => {
   return {
     username: {
@@ -78,7 +79,6 @@ const { run, error: loginErr } = useRequest(apiLogin, {
 const route = useRoute()
 const router = useRouter()
 
-const { setToken } = userStore()
 // const { run: getPermissions } = useRequest(apiPermissions, { manual: true })
 function onLogin() {
   formRef.value.validate(async (errors: string) => {
@@ -98,18 +98,21 @@ function onLogin() {
       message.error(res?.msg ?? '获取授权 Token 失败')
       return
     }
-    setToken(token)
+    user.setToken(token)
     nextTick(async () => {
       // if (!data?.is_super)
       //   console.log('不是超级管理员')
 
       // const p = await getPermissions()
-      // if (p?.code === 200)
+      // if (p?.code === 0)
       //   userStore.setPermissions(p.data?.permissions || [])
 
       message.success(t('success'))
-      if (keepLogin.value)
+      if (user.keepLogin) {
+        console.log('keepLogin')
+
         username.value = model.value.username
+      }
 
       await router.replace((route?.query?.redirect as string) || '/')
     })
@@ -207,10 +210,11 @@ function onTab() {
                   <!--  </n-form-item> -->
 
                   <div class="space-y-4">
-                    <NCheckbox v-model:checked="keepLogin">
+                    <NCheckbox v-model:checked="user.keepLogin">
                       {{ t('keep') }}
                     </NCheckbox>
                     <NButton
+                      v-throttled
                       type="primary"
                       block
                       :disabled="loading"
@@ -399,9 +403,9 @@ function onTab() {
     "password": "Please enter the password",
     "username": "Please enter user username",
     "account": "Account login",
-    "keep": "Remember Me",
+    "keep": "Keep the login",
     "not-open": "Temporarily closed",
-    "other": "Other login methods",
+    "other": "Other",
     "qr": "Scan code login",
     "register": "Register",
     "submit": "Log in",
@@ -417,7 +421,7 @@ function onTab() {
     "not-open": "暂不开放",
     "other": "其它登录方式",
     "qr": "扫码登录",
-    "keep": "记住我",
+    "keep": "保持登录",
     "register": "注册账号",
     "submit": "登 录",
     "success": "登录成功"

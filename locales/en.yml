@@ -1,12 +1,9 @@
-
-not-found: Notfound
-
-page_input: Then is Input Page
-page_home: Home
-page_login: Login
-page_table: Table
-
-loading_page: loading
 button:
   about: About
   back: Back
+loading_page: loading
+not-found: Notfound
+operation_tip: "Operate:"
+page_home: Home
+page_login: Login
+page_table: Table

@@ -229,7 +229,10 @@ function add() {
 <route lang="json">
 {
   "meta": {
-    "title": "动态表单"
+    "title": "动态表单",
+    "i18n": {
+      "en":"DynamicForm"
+    }
   }
 }
 </route>

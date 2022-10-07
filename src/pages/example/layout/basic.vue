@@ -6,16 +6,11 @@ const height = ref(false)
 const toggle = () => {
   height.value = !height.value
 }
-
-const state = stateStore()
-const fullHeight = computed(() => {
-  return `${state.getPageContentHeight}px`
-})
 </script>
 
 <template>
   <Card :height="height">
-    <NButton @click="toggle">
+    <NButton v-throttled @click="toggle">
       切换满屏
     </NButton>
     {{ t('header') }}

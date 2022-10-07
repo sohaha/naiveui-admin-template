@@ -1,10 +1,9 @@
-
-not-found: 未找到页面
-
-page_home: 首页
-page_login: 登录
-page_table: 表格
-loading_page: 页面加载中
 button:
   about: 关于
   back: 返回
+loading_page: 页面加载中
+not-found: 未找到页面
+operation_tip: "操作："
+page_home: 首页
+page_login: 登录
+page_table: 表格

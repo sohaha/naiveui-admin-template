@@ -1,14 +1,18 @@
 import { ACard } from 'ayyui'
-import { NButton, NDataTable, NIcon, NPagination, NTooltip } from 'naive-ui'
+import { NButton, NDataTable, NEllipsis, NIcon, NPagination, NTooltip } from 'naive-ui'
 import type { TableColumns } from 'naive-ui/lib/data-table/src/interface'
 import type { PropType } from 'vue'
-import ColumnSetting from './components/index'
+import { resolveDirective, withDirectives } from 'vue'
+import ColumnSetting from './components'
 import { renderActionCol } from './utils'
 
 export default defineComponent({
   name: 'DataTable',
   inheritAttrs: false,
   props: {
+    id: {
+      type: String,
+    },
     request: {
       type: Object,
       required: true,
@@ -43,6 +47,7 @@ export default defineComponent({
     const { slots } = ctx
     const { size } = p
 
+    const { t } = useI18n()
     const state = stateStore()
     const listsContentHeight = computed(
       () => state.getPageContentHeight - 40 - (p.pagination ? 44 + 16 : 2),
@@ -51,6 +56,19 @@ export default defineComponent({
     const select = ref<string[]>([])
     p.columns.forEach((v: any) => {
       select.value.push(v.key)
+    })
+
+    const boxClass = computed(() => {
+      let c = 'z-data-table '
+      const { columns } = getBindValues.value
+
+      if (
+        columns.length > 0
+        && (columns[0].align === 'left' || !columns[0].align)
+      )
+        c += ' z-data-table--pl'
+
+      return c
     })
 
     const lists = computed(() => {
@@ -90,84 +108,10 @@ export default defineComponent({
       return page
     })
 
-    function renderToolbar() {
-      const btnOption = {
-        size,
-        quaternary: true,
-        circle: true,
-      }
-      return h(
-        'div',
-        {
-          class: 'flex space-x-0 items-center justify-around',
-        },
-        [
-          h('span', '操作：'),
-          p.toolbar?.includes('new') && h(
-            NTooltip,
-            {},
-            {
-              default: () => h('span', '添加数据'),
-              trigger: () =>
-                h(NButton, {
-                  onClick: () => {
-                    ctx.emit('actions', {
-                      action: 'new',
-                    })
-                  },
-                  ...btnOption,
-                }, {
-                  default: () =>
-                    h(NIcon, { size: 18, class: 'i-bx:layer-plus' }),
-                }),
-            },
-          ),
-          p.toolbar?.includes('columns') && h(
-            ColumnSetting as any,
-            {
-              'columns': p.columns,
-              'select': select.value,
-              'onUpdate:select': (s: string[]) => {
-                select.value = s
-              },
-            },
-            {
-              default: () =>
-                h(
-                  NTooltip,
-                  {},
-                  {
-                    default: () => h('span', '列设置'),
-                    trigger: () =>
-                      h(NButton, btnOption, {
-                        default: () =>
-                          h(NIcon, { size: 18, class: 'i-bx:wrench' }),
-                      }),
-                  },
-                ),
-            },
-          ),
-          p.toolbar?.includes('reload') && h(
-            NTooltip,
-            {},
-            {
-              default: () => h('span', '刷新列表'),
-              trigger: () =>
-                h(
-                  NButton,
-                  {
-                    ...btnOption,
-                    onClick: p.request.refresh,
-                  },
-                  {
-                    default: () =>
-                      h(NIcon, { size: 18, class: 'i-bx:rotate-left' }),
-                  },
-                ),
-            },
-          ),
-        ],
-      )
+    const btnOption = {
+      size,
+      quaternary: true,
+      circle: true,
     }
     const defAction = {
       key: 'action',
@@ -239,18 +183,118 @@ export default defineComponent({
       return values
     })
 
-    const boxClass = computed(() => {
-      let c = 'z-data-table '
-      const { columns } = getBindValues.value
+    const throttled = resolveDirective('throttled')!
 
-      if (
-        columns.length > 0
-        && (columns[0].align === 'left' || !columns[0].align)
+    function getToolbar(t: string | { [key: string]: any }) {
+      if (typeof t === 'string') {
+        switch (t) {
+          case 'columns':
+            return h(
+              ColumnSetting as any,
+              {
+                'columns': p.columns,
+                'select': select.value,
+                'onUpdate:select': (s: string[]) => {
+                  select.value = s
+                },
+              },
+              {
+                default: () =>
+                  h(
+                    NTooltip,
+                    {},
+                    {
+                      default: () => h('span', '列设置'),
+                      trigger: () =>
+                        h(NButton, btnOption, {
+                          default: () =>
+                            h(NIcon, { size: 18, class: 'i-bx:wrench' }),
+                        }),
+                    },
+                  ),
+              },
+            )
+          case 'new':
+            return h(
+              NTooltip,
+              { },
+              {
+                default: () => h('span', '添加数据'),
+                trigger: () =>
+                  h(NButton, {
+                    onClick: () => {
+                      ctx.emit('actions', {
+                        action: 'new',
+                      })
+                    },
+                    ...btnOption,
+                  }, {
+                    default: () =>
+                      h(NIcon, { size: 18, class: 'i-bx:layer-plus' }),
+                  }),
+              },
+            )
+          case 'reload':
+            return h(
+              NTooltip,
+              {},
+              {
+                default: () => h('span', '刷新列表'),
+                trigger: () =>
+                  withDirectives(h(
+                    NButton,
+                    {
+                      ...btnOption,
+                      onClick: p.request.refresh,
+                    },
+                    {
+                      default: () =>
+                        h(NIcon, { size: 18, class: 'i-bx:rotate-left' }),
+                    },
+                  ), [[throttled, '', '1000']]),
+              },
+            )
+        }
+      }
+      else if (t) {
+        const { title = '', action = () => {}, icon = '', options = {} } = t
+        return h(
+          NTooltip,
+          {},
+          {
+            default: () => h('span', title || ''),
+            trigger: () =>
+              withDirectives(h(
+                NButton,
+                {
+                  ...btnOption,
+                  ...options,
+                  onClick: action,
+                },
+                {
+                  default: () =>
+                    h(NIcon, { size: 18, class: icon }),
+                },
+              ), [[throttled, '', '1000']]),
+          },
+        )
+      }
+      return null
+    }
+
+    function renderToolbar() {
+      return h(
+        'div',
+        {
+          class: 'flex space-x-0 items-center justify-around',
+        },
+        [
+          h(NEllipsis, {
+          }, { default: () => t('operation_tip') }),
+          ...p.toolbar!.map((v: any) => getToolbar(v)),
+        ],
       )
-        c += ' z-data-table--pl'
-
-      return c
-    })
+    }
 
     return () =>
       h(
@@ -261,7 +305,10 @@ export default defineComponent({
         [
           h(
             ACard,
-            {},
+            {
+              id: p.id,
+              class: 'relative',
+            },
             {
               default: () => {
                 const slot: any = {}

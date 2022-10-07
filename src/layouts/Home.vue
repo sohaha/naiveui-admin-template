@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-const collapsed = usePrefixStorage('collapsed', false)
 const state = stateStore()
 const setting = settingStore()
-const collapsedWidth = computed(() => (state.isSmallScreen ? 0 : 80))
 
 const { isFullscreen } = useFullscreen()
+
+const collapsed = usePrefixStorage('collapsed', state.isSmallScreen)
+const collapsedWidth = computed(() => (state.isSmallScreen ? 0 : 80))
+
 watch(
   () => state.isSmallScreen,
   (val) => {
@@ -12,7 +14,8 @@ watch(
   },
 )
 
-const width = 180
+const baseWidth = 180
+const width = ref(baseWidth)
 </script>
 
 <template>

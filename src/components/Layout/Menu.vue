@@ -1,12 +1,18 @@
 <script lang="ts" setup>
 import { isObject } from '@vueuse/core'
 import type { MenuInst, MenuOption } from 'naive-ui'
-import { mergeLocaleMessage } from '@/modules/i18n'
+import { NEllipsis } from 'naive-ui'
 import exampleMenu, { locales } from '@/pages/example/menu'
+import { mergeLocaleMessage } from '@/modules/i18n'
 
 const props = defineProps<{
   collapsed: boolean
   inverted: boolean
+}>()
+
+const emit = defineEmits<{
+  (e: 'update:collapsed', value: boolean): void
+  (e: 'expanded', value: string[]): void
 }>()
 
 const menuInstRef = ref<MenuInst | null>(null)
@@ -16,8 +22,10 @@ const { isDark } = useDarks()
 
 const route = useRoute()
 const router = useRouter()
+
 const collapsed = useVModel(props, 'collapsed')
 const isSmallScreen = useMediaQuery('(max-width: 440px)')
+
 const { data } = useRequest(apiMenus)
 
 function parse(d: any) {
@@ -42,6 +50,8 @@ function parse(d: any) {
     if (i)
       data.label = i
   }
+  const label = data.label
+  data.label = () => h(NEllipsis, null, { default: () => label })
   if (d.children && d.children.length > 0) {
     const children = []
     for (let i = 0; i < d.children.length; i++)
@@ -136,6 +146,7 @@ const styleVal = computed(() =>
   <div :style="styleVal">
     <NMenu
       ref="menuInstRef"
+      accordion
       :inverted="inverted || setting.isMenuInverted"
       :collapsed="collapsed"
       :collapsed-width="64"
