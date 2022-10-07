@@ -8,6 +8,10 @@ export default defineComponent({
       type: [Boolean, Number, String],
       default: false,
     },
+    contentClass: {
+      type: String,
+      default: '',
+    },
   },
   setup(props: { height: any }, ctx: any) {
     const state = stateStore()

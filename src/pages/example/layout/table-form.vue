@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { mockLists } from '@/api/test'
 
+// 过滤器
+const showFilterDrawer = ref(false)
 const { config: formConfig, setItems } = useDataForm()
 
 setItems({
@@ -22,8 +24,13 @@ function actions(data: any) {
   drawerAction.value = data.action
 }
 
+// 表格配置
 const { config, setRowKey, setColumns, setRequest, setToolbar, setAction } = useDataTable()
+
+// 设置行主键
 setRowKey('id')
+
+// 请求数据
 setRequest(
   (param: any) => {
     return mockLists(param)
@@ -38,7 +45,28 @@ setRequest(
   },
 )
 
-setToolbar(['new', 'reload', 'columns'])
+const filterOptions = ref({
+  type: 'default',
+  quaternary: true,
+})
+// 工具栏
+setToolbar([{
+  title: '过滤',
+  icon: 'i-bx-filter',
+  options: filterOptions,
+  action: () => {
+    // 修改过滤按钮样式
+    filterOptions.value.type = 'primary'
+    filterOptions.value.quaternary = false
+    showFilterDrawer.value = true
+  },
+}, 'new', 'reload', 'columns', {
+  title: '导出',
+  icon: 'i-bx:export',
+  action: () => {
+    window.$message.info('点击了导出')
+  },
+}])
 
 // setAction(false)
 
@@ -66,7 +94,6 @@ setColumns([
     width: 70,
     align: 'left',
     // align: 'center',
-    fixed: 'left',
   },
   {
     title: '用户名',
@@ -91,6 +118,7 @@ setColumns([
 
 <template>
   <DataTable
+    id="data-table"
     :scroll-x="600"
     v-bind="config"
     @actions="actions"
@@ -105,6 +133,15 @@ setColumns([
     :title="drawerAction"
     @submit="submitForm"
   />
+  <DrawerForm
+    v-model:show="showFilterDrawer"
+    placement="top"
+    :trap-focus="false"
+    to="#data-table"
+    v-bind="formConfig"
+    title="过滤条件"
+    @submit="submitForm"
+  />
 </template>
 
 <style scoped></style>
@@ -114,8 +151,8 @@ setColumns([
   "meta": {
     "icon": "i-bx:list-ol",
     "i18n": {
-      "en": "Lists From",
-      "zh": "列表布局"
+      "en": "FunctionTable",
+      "zh": "功能表格"
     }
   }
 }

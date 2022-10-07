@@ -32,8 +32,6 @@ setColumns([
     key: 'id',
     width: 70,
     align: 'left',
-    // align: 'center',
-    fixed: 'left',
   },
   {
     title: '用户名',
@@ -69,8 +67,8 @@ setColumns([
   "meta": {
     "icon": "i-bx:list-ol",
     "i18n": {
-      "en": "Lists",
-      "zh": "列表展示"
+      "en": "Table",
+      "zh": "普通表格"
     }
   }
 }
