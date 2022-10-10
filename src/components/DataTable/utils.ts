@@ -3,7 +3,7 @@ import {
 } from 'naive-ui'
 import type { TableColumn } from 'naive-ui/lib/data-table/src/interface'
 import type { PaginationInfo } from 'naive-ui/lib/pagination/src/interface'
-import type { ComponentPublicInstance } from 'vue'
+import type { ComponentPublicInstance, VNodeChild } from 'vue'
 import { usePagination } from 'vue-use-api'
 import type { PaginationBaseOptions } from 'vue-use-api/dist/types/usePagination'
 export * from './info'
@@ -146,7 +146,7 @@ export function useDataTable() {
     setPagination(p: Object) {
       pagination.value = p as PaginationInfo
     },
-    setAction(a: boolean | TableColumn | any[]) {
+    setAction(a: boolean | TableColumn | any[] | ((rowData: any, rowIndex: number) => VNodeChild)) {
       action.value = a as any
     },
     reload() {

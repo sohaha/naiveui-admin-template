@@ -113,9 +113,10 @@ export default defineComponent({
       quaternary: true,
       circle: true,
     }
+
     const defAction = {
       key: 'action',
-      width: 150,
+      minWidth: 150,
       align: 'center',
       fixed: 'right',
       title: () => {
@@ -156,7 +157,7 @@ export default defineComponent({
       else if (Array.isArray(p.action)) {
         values.columns.push({
           ...defAction,
-          width: defAction.width + p.action.length * 60,
+          minWidth: defAction.minWidth + p.action.length * 60,
           render: (row: any) => {
             return renderActionCol(
               (action: string) => {
@@ -169,6 +170,12 @@ export default defineComponent({
               p.action as [],
             )
           },
+        })
+      }
+      else if (typeof p.action === 'function') {
+        values.columns.push({
+          ...defAction,
+          render: p.action,
         })
       }
       else if (p.action !== false) {
