@@ -9,7 +9,7 @@ export const locales = {
   },
 }
 
-export default [
+export default <StMenu[]>[
   {
     icon: 'i-bx:slideshow',
     i18n: {
@@ -19,6 +19,7 @@ export default [
     path: '/example',
     children: [
       {
+        show: true,
         path: '/example/readme',
       },
       {
@@ -37,8 +38,20 @@ export default [
             icon: 'i-bx:columns',
             path: '/example/layout/multi-column',
           },
-          { icon: 'i-bx:list-ol', path: '/example/layout/table' },
-          { icon: 'i-bx:table', path: '/example/layout/table-form' },
+          { path: '/example/layout/table' },
+          {
+            icon: 'i-bx:table',
+            path: '/example/layout/table-form',
+            i18n: {
+              en: 'FunctionTable',
+              zh: '功能表格',
+            },
+            children: [
+              { path: '/example/layout/table-form1' },
+              { path: '/example/layout/table-form2' },
+              { path: '/example/layout/table-form3' },
+            ],
+          },
           {
             icon: 'i-bx:pencil',
             path: '/example/layout/form-basic',
@@ -95,4 +108,4 @@ export default [
       },
     ],
   },
-] as StMenu[]
+]

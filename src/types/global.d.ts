@@ -29,6 +29,7 @@ export interface InstApi {
 export interface StMenu {
   path : string
   i18n?: boolean | {[key: string]: string}
+  show?: boolean
   title?: string
   icon ?: string
   url ?: string

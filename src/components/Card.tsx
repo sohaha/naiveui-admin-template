@@ -1,5 +1,5 @@
-import { NCard } from 'naive-ui'
-import { h } from 'vue'
+import { NCard } from 'naive-ui';
+import { h } from 'vue';
 
 export default defineComponent({
   name: 'ZCard',
@@ -12,8 +12,16 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    contentStyle: {
+      type: String,
+      default: '',
+    },
+    padding: {
+      type: [Number, String],
+      default: '',
+    },
   },
-  setup(props: { height: any }, ctx: any) {
+  setup(props: { height: any; padding: Number | String;contentStyle: string }, ctx: any) {
     const state = stateStore()
     const cardStyle = computed(() => {
       const h = props.height
@@ -39,12 +47,16 @@ export default defineComponent({
       return { height }
     })
 
+    const contentStyle = computed(() => {
+      return props.contentStyle + (props.padding !== '' && `padding:${props.padding}`)
+    })
+
     return () => {
       const slots: { [key: string]: Function } = {}
 
       return h(
         NCard,
-        { ...ctx.attrs, style: cardStyle.value },
+        { ...ctx.attrs, contentStyle: contentStyle.value, style: cardStyle.value },
         { ...slots, ...ctx.slots },
       )
     }

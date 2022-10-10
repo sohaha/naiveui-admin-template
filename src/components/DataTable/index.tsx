@@ -7,7 +7,7 @@ import ColumnSetting from './components'
 import { renderActionCol } from './utils'
 
 export default defineComponent({
-  name: 'DataTable',
+  name: 'ZDataTable',
   inheritAttrs: false,
   props: {
     id: {
@@ -18,7 +18,7 @@ export default defineComponent({
       required: true,
     },
     action: {
-      type: [Boolean, Object],
+      type: [Boolean, Object, Function],
       default: true,
     },
     maxHeight: {
@@ -116,7 +116,7 @@ export default defineComponent({
 
     const defAction = {
       key: 'action',
-      minWidth: 150,
+      width: 150,
       align: 'center',
       fixed: 'right',
       title: () => {
@@ -129,6 +129,10 @@ export default defineComponent({
       if (!p.maxHeight) {
         if (listsContentHeight.value > 0)
           values.maxHeight = listsContentHeight.value
+      }
+      else if (typeof p.maxHeight === 'number' && p.maxHeight < 0) {
+        if (listsContentHeight.value > 0)
+          values.maxHeight = listsContentHeight.value + p.maxHeight
       }
       else {
         values.maxHeight = p.maxHeight
@@ -157,7 +161,7 @@ export default defineComponent({
       else if (Array.isArray(p.action)) {
         values.columns.push({
           ...defAction,
-          minWidth: defAction.minWidth + p.action.length * 60,
+          width: defAction.width + p.action.length * 60,
           render: (row: any) => {
             return renderActionCol(
               (action: string) => {

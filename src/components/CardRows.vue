@@ -11,7 +11,7 @@ export default {
         return h('div')
 
       const slots = flatten(s).map((v: any) => {
-        if (v?.type?.name?.indexOf('ZCard') === 0)
+        if (v?.type?.name?.indexOf('Z') === 0)
           return v
 
         return h(

@@ -49,6 +49,7 @@ const filterOptions = ref({
   type: 'default',
   quaternary: true,
 })
+
 // 工具栏
 setToolbar([{
   title: '过滤',
@@ -68,7 +69,20 @@ setToolbar([{
   },
 }])
 
-// setAction(false)
+// 自定义渲染操作栏
+// setAction((row) => {
+//   return h('div', '定义操作栏')
+// })
+
+// 自定义渲染整个操作栏（包括头部）
+// setAction({
+//   title: '操作',
+//   key: 'more',
+//   align: 'center',
+//   render(row) {
+//     return h('div', '自定义操作')
+//   },
+// })
 
 setAction([
   {
@@ -77,15 +91,6 @@ setAction([
     key: 'other',
   },
 ])
-
-// setAction({
-//   title: '更多',
-//   key: 'more',
-//   align: 'center',
-//   render(row) {
-//     return h('div', `更多${row.id}`)
-//   },
-// })
 
 setColumns([
   {
@@ -117,13 +122,30 @@ setColumns([
 </script>
 
 <template>
-  <DataTable
-    id="data-table"
-    :scroll-x="600"
-    v-bind="config"
-    @actions="actions"
-  />
-
+  <CardRows>
+    <Card padding="10px">
+      <div class="text-center">
+        <NButtonGroup size="small">
+          <NButton>
+            全部
+          </NButton>
+          <NButton>
+            分类1
+          </NButton>
+          <NButton>
+            分类2
+          </NButton>
+        </NButtonGroup>
+      </div>
+    </Card>
+    <DataTable
+      id="data-table"
+      :max-height="-(48 + (16 / 2))"
+      :scroll-x="600"
+      v-bind="config"
+      @actions="actions"
+    />
+  </CardRows>
   <DrawerForm
     v-model:show="showDrawer"
     height="100vh"
@@ -151,8 +173,8 @@ setColumns([
   "meta": {
     "icon": "i-bx:list-ol",
     "i18n": {
-      "en": "FunctionTable",
-      "zh": "功能表格"
+      "en": "Table3",
+      "zh": "功能表格3"
     }
   }
 }

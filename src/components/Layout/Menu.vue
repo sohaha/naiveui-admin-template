@@ -43,6 +43,7 @@ function parse(d: any) {
     key: d.path || '',
     label: title,
     url: d.url,
+    show: d.show,
     icon: renderIcon(icon || 'i-bx:detail'),
   }
   if (isObject(d.i18n)) {
