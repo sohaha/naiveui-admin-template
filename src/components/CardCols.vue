@@ -3,9 +3,7 @@ import Card from './Card'
 
 export default {
   name: 'ZCardCols',
-  props: {
-  },
-  setup(props: any, ctx: any) {
+  setup(_: any, ctx: any) {
     return () => {
       const s = ctx.slots?.default()
       if (!s)

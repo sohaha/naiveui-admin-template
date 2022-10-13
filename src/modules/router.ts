@@ -33,7 +33,7 @@ const first = () => {
   const loading = document.querySelector('#loading') as HTMLElement
   loading
     && setTimeout(() => {
-      loading.style.opacity = '0.05'
+      loading.style.opacity = '0.02'
       setTimeout(() => document.body.removeChild(loading), 600)
     })
 }

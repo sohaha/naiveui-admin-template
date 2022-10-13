@@ -1,5 +1,5 @@
-import { NCard } from 'naive-ui';
-import { h } from 'vue';
+import { NCard } from 'naive-ui'
+import { h } from 'vue'
 
 export default defineComponent({
   name: 'ZCard',
@@ -48,7 +48,7 @@ export default defineComponent({
     })
 
     const contentStyle = computed(() => {
-      return props.contentStyle + (props.padding !== '' && `padding:${props.padding}`)
+      return `${(props.padding !== '' && `padding:${props.padding};`) + props.contentStyle};overflow: auto;`
     })
 
     return () => {

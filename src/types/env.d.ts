@@ -18,6 +18,7 @@ declare module '*.md' {
 	export default Component
 }
 
+
 interface ImportMetaEnv {
   readonly VITE_APP_TITLE: string
   readonly VITE_DEV_PROXY: string

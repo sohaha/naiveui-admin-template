@@ -4,7 +4,7 @@ import type { TableColumns } from 'naive-ui/lib/data-table/src/interface'
 import type { PropType } from 'vue'
 import { resolveDirective, withDirectives } from 'vue'
 import ColumnSetting from './components'
-import { renderActionCol } from './utils'
+import { btnDefaultOption, createNewIcon, createReloadIcon, renderActionCol } from './utils'
 
 export default defineComponent({
   name: 'ZDataTable',
@@ -86,7 +86,7 @@ export default defineComponent({
         }
       }
       let page = {
-        'pageSizes': [10, 20, 50, 100],
+        'pageSizes': [10, 20, 30, 50, 100],
         'pageSlot': 5,
         'itemCount': p.request.total,
         'pageSize': p.request.pagesize,
@@ -109,9 +109,8 @@ export default defineComponent({
     })
 
     const btnOption = {
+      ...btnDefaultOption,
       size,
-      quaternary: true,
-      circle: true,
     }
 
     const defAction = {
@@ -226,45 +225,16 @@ export default defineComponent({
               },
             )
           case 'new':
-            return h(
-              NTooltip,
-              { },
-              {
-                default: () => h('span', '添加数据'),
-                trigger: () =>
-                  h(NButton, {
-                    onClick: () => {
-                      ctx.emit('actions', {
-                        action: 'new',
-                      })
-                    },
-                    ...btnOption,
-                  }, {
-                    default: () =>
-                      h(NIcon, { size: 18, class: 'i-bx:layer-plus' }),
-                  }),
+            return createNewIcon({
+              ...btnOption,
+              onClick: () => {
+                ctx.emit('actions', {
+                  action: 'new',
+                })
               },
-            )
+            })
           case 'reload':
-            return h(
-              NTooltip,
-              {},
-              {
-                default: () => h('span', '刷新列表'),
-                trigger: () =>
-                  withDirectives(h(
-                    NButton,
-                    {
-                      ...btnOption,
-                      onClick: p.request.refresh,
-                    },
-                    {
-                      default: () =>
-                        h(NIcon, { size: 18, class: 'i-bx:rotate-left' }),
-                    },
-                  ), [[throttled, '', '1000']]),
-              },
-            )
+            return createReloadIcon({ ...btnOption, onClick: p.request.refresh })
         }
       }
       else if (t) {

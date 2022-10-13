@@ -1,5 +1,6 @@
 import { isObject } from '@vueuse/core'
 import { defineStore } from 'pinia'
+import type { StMenu } from '@/types/global'
 
 const isSmallScreen = useMediaQuery('(max-width: 640px)')
 const { height } = useWindowSize()
@@ -11,6 +12,7 @@ export default defineStore('stateStore', {
       loadingMsg: '',
       pageHeaderHeight: defPageHeaderHeight,
       unreadMessage: 0,
+      memu: [],
     }
   },
   getters: {
@@ -19,6 +21,9 @@ export default defineStore('stateStore', {
     },
     isSmallScreen() {
       return isSmallScreen.value
+    },
+    getMemu(): StMenu[] {
+      return this.memu
     },
   },
   actions: {
@@ -52,6 +57,9 @@ export default defineStore('stateStore', {
     },
     setUnreadMessage(i: number) {
       this.unreadMessage = i
+    },
+    setMenu(m: any) {
+      this.memu = m
     },
   },
   // persist: true,

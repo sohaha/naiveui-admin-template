@@ -9,8 +9,6 @@ export default defineStore('user', {
   },
   getters: {
     getToken(): string {
-      console.log(sessionToken.value)
-
       return this.keepLogin ? this.token : sessionToken.value
     },
     getNickName(): string {

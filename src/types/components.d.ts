@@ -9,7 +9,9 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AButton: typeof import('ayyui')['AButton']
     ACard: typeof import('ayyui')['ACard']
+    AdaptiveScreen: typeof import('./../components/AdaptiveScreen/index.vue')['default']
     ADrawer: typeof import('ayyui')['ADrawer']
+    AutoScreen: typeof import('./../components/AutoScreen/index.vue')['default']
     Card: typeof import('./../components/Card.tsx')['default']
     CardCols: typeof import('./../components/CardCols.vue')['default']
     CardRows: typeof import('./../components/CardRows.vue')['default']
@@ -18,6 +20,7 @@ declare module '@vue/runtime-core' {
     DataTableComponentsColumnSetting: typeof import('./../components/DataTable/components/ColumnSetting.vue')['default']
     Drawer: typeof import('./../components/Drawer/index.vue')['default']
     DrawerForm: typeof import('./../components/DrawerForm/index.tsx')['default']
+    Echart: typeof import('./../components/Echart/index.tsx')['default']
     LayoutHeader: typeof import('./../components/Layout/Header.vue')['default']
     LayoutHeaderDark: typeof import('./../components/Layout/Header/Dark.vue')['default']
     LayoutHeaderFullscreen: typeof import('./../components/Layout/Header/Fullscreen.vue')['default']
@@ -34,6 +37,9 @@ declare module '@vue/runtime-core' {
     LayoutMultiWindowLoading: typeof import('./../components/Layout/MultiWindow/Loading.tsx')['default']
     LayoutProvider: typeof import('./../components/Layout/Provider.vue')['default']
     LayoutUser: typeof import('./../components/Layout/User.vue')['default']
+    MavonDditor: typeof import('./../components/MavonDditor/index.vue')['default']
+    MavonEditor: typeof import('./../components/MavonEditor/index.vue')['default']
+    MdEditor: typeof import('./../components/MdEditor/index.tsx')['default']
     NAlert: typeof import('naive-ui')['NAlert']
     NAvatar: typeof import('naive-ui')['NAvatar']
     NBackTop: typeof import('naive-ui')['NBackTop']
@@ -72,5 +78,6 @@ declare module '@vue/runtime-core' {
     NTooltip: typeof import('naive-ui')['NTooltip']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    VChart: typeof import('./../components/VChart/index.tsx')['default']
   }
 }

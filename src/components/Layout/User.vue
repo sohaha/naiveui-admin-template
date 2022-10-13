@@ -6,10 +6,18 @@ const props = defineProps<{
   collapsed: boolean
 }>()
 
+const emit = defineEmits<{
+  (e: 'loaded'): void
+}>()
+
 const { t } = useLanguage()
 const state = stateStore()
 const user = userStore()
 const router = useRouter()
+
+const { data: inlayMenu } = useRequest(apiMenus, {
+  initialData: { data: [], code: 0, msg: '' },
+})
 
 const logout = () => {
   state.setLoadingMsg(t('logouting'))
@@ -101,15 +109,24 @@ function handleUpdatePassword(e: Event) {
 }
 
 const { loading } = useRequest(apiMe, {
-  onBefore() {
-    state.setLoadingMsg(t('loading'))
+  onBefore(params) {
+    // state.setLoadingMsg(t('loading'))
+    return params
   },
   onAfter() {
-    state.setLoadingMsg('')
+    // state.setLoadingMsg('')
   },
   onSuccess(data) {
     // TODO 后期可以动态设置菜单
     user.setUset(data.data?.info ?? {})
+    const menu = data.data?.menu
+
+    if (menu && Array.isArray(menu))
+      state.setMenu(menu)
+    else if (inlayMenu.value)
+      state.setMenu(inlayMenu.value.data || [])
+
+    nextTick(() => emit('loaded'))
   },
   onError(err) {
     if (err)

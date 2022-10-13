@@ -26,8 +26,6 @@ const router = useRouter()
 const collapsed = useVModel(props, 'collapsed')
 const isSmallScreen = useMediaQuery('(max-width: 440px)')
 
-const { data } = useRequest(apiMenus)
-
 function parse(d: any) {
   let title = d.title
   let icon = d.icon
@@ -92,14 +90,15 @@ if (
 )
   mergeLocaleMessage(locales)
 
+const state = stateStore()
 const menuOptions = computed<MenuOption[]>(() => {
   const menu: MenuOption[] = []
-  if (data.value?.data)
-    for (const d of data.value.data) menu.push(parse(d))
+  if (state.memu.length)
+    for (const d of state.memu) menu.push(parse(d))
 
   if (
     import.meta.env.DEV
-    || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true'
+  || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true'
   ) {
     if (isObject(exampleMenu))
       menu.push(parse(exampleMenu))
@@ -109,6 +108,8 @@ const menuOptions = computed<MenuOption[]>(() => {
 
   return menu
 })
+
+const hasMenu = computed(() => menuOptions.value.length > 0)
 
 const selectedKeys = ref()
 
@@ -141,11 +142,17 @@ const setting = settingStore()
 const styleVal = computed(() =>
   props.inverted && !isDark.value ? 'background:#2e2e2e;' : '',
 )
+
+const loading = ref(true)
+function loaded() {
+  loading.value = false
+}
 </script>
 
 <template>
   <div :style="styleVal">
     <NMenu
+      v-if="hasMenu && !loading"
       ref="menuInstRef"
       accordion
       :inverted="inverted || setting.isMenuInverted"
@@ -159,8 +166,8 @@ const styleVal = computed(() =>
       :value="selectedKeys"
       @update:value="selectMenu"
     />
-    <NDivider class="!m-0" />
-    <LayoutUser :collapsed="collapsed" />
+    <NDivider v-show="hasMenu && !loading" class="!m-0" />
+    <LayoutUser :collapsed="collapsed" @loaded="loaded" />
   </div>
 </template>
 

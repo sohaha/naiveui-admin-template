@@ -38,7 +38,7 @@ export default [
     url: '/manage/base/me',
     method: 'get',
     statusCode: 200,
-    timeout: 1000,
+    timeout: 0,
     response: () => {
       return {
         code: 0,

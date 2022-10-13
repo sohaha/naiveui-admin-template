@@ -1,9 +1,13 @@
 import {
-  NButton, NPopconfirm,
+  NButton,
+
+  NIcon,
+
+  NPopconfirm, NTooltip,
 } from 'naive-ui'
 import type { TableColumn } from 'naive-ui/lib/data-table/src/interface'
 import type { PaginationInfo } from 'naive-ui/lib/pagination/src/interface'
-import type { ComponentPublicInstance, VNodeChild } from 'vue'
+import type { ComponentPublicInstance, VNode, VNodeChild } from 'vue'
 import { usePagination } from 'vue-use-api'
 import type { PaginationBaseOptions } from 'vue-use-api/dist/types/usePagination'
 export * from './info'
@@ -102,9 +106,15 @@ export function renderActionCol(
   )
 }
 
+const defaultParams = {
+  page: 1,
+  pagesize: 20,
+}
+
 export function useDataTable() {
   const tableRef = ref<ComponentPublicInstance | null>(null)
   const request = ref<any>({})
+  const props = ref<{ [key: string]: any }>({})
   const action = ref<boolean | TableColumn>(true)
   const columns = ref<TableColumn[]>([])
   const pagination = ref<PaginationInfo>()
@@ -118,24 +128,25 @@ export function useDataTable() {
     toolbar: toolbar.value,
     rowKey: rowKey.value,
     ref: tableRef,
+    ...props.value,
   }))
+
+  const params = computed(() => request.value?.params || [])
 
   return {
     tableRef,
     config,
     setRequest(api: Function, options?: PaginationBaseOptions<any, any>) {
       request.value = usePagination(api as any, {
-        defaultParams: [
-          {
-            page: 1,
-            pagesize: 20,
-          },
-        ],
+        defaultParams: [{ ...(options?.defaultParams || defaultParams) }],
         ...(options || {}),
       })
     },
     setColumns(c: TableColumn[]) {
       columns.value = c as any
+    },
+    setProps(p: { [key: string]: any }) {
+      props.value = p
     },
     setRowKey(key: string) {
       rowKey.value = (row: any) => row[key]
@@ -149,8 +160,65 @@ export function useDataTable() {
     setAction(a: boolean | TableColumn | any[] | ((rowData: any, rowIndex: number) => VNodeChild)) {
       action.value = a as any
     },
+    params,
+    run(params: { [key: string]: any }) {
+      const arrg = request.value?.params[0] || {}
+      if (Object.keys(params).length === 0) {
+        const { page, pagesize } = arrg
+
+        return request.value?.run({ page, pagesize })
+      }
+
+      return request.value?.run({ ...arrg, ...params })
+    },
     reload() {
       nextTick(request.value?.refresh)
     },
   }
+}
+
+export const btnDefaultOption = {
+  quaternary: true,
+  circle: true,
+}
+
+export function createReloadIcon(btn: { [key: string]: any }): VNode {
+  return h(
+    NTooltip,
+    {},
+    {
+      default: () => h('span', '刷新列表'),
+      trigger: () => h(
+        NButton,
+        {
+          size: 'small',
+          ...btnDefaultOption,
+          ...(btn || {}),
+        },
+        {
+          default: () =>
+            h(NIcon, { size: 18, class: 'i-bx:rotate-left' }),
+        },
+      ),
+    },
+  )
+}
+
+export function createNewIcon(btn: { [key: string]: any }): VNode {
+  return h(
+    NTooltip,
+    { },
+    {
+      default: () => h('span', '添加数据'),
+      trigger: () =>
+        h(NButton, {
+          size: 'small',
+          ...btnDefaultOption,
+          ...(btn || {}),
+        }, {
+          default: () =>
+            h(NIcon, { size: 18, class: 'i-bx:layer-plus' }),
+        }),
+    },
+  )
 }

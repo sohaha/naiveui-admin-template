@@ -22,7 +22,7 @@ const state = stateStore()
       <NMessageProvider>
         <NNotificationProvider>
           <NDialogProvider>
-            <NSpin class="bg-black" :show="!!state.loadingMsg">
+            <NSpin :class="state.loadingMsg && 'bg-black'" :show="!!state.loadingMsg">
               <template #icon>
                 <NIcon />
               </template>

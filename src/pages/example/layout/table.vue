@@ -65,7 +65,6 @@ setColumns([
 <route lang="json">
 {
   "meta": {
-    "icon": "i-bx:list-ol",
     "i18n": {
       "en": "Table",
       "zh": "普通表格"

@@ -1,25 +1,28 @@
 import mock from 'mockjs'
 
-const infoFake = {
-  'username|+1': '@name',
-  'nickname': '@last',
-  'status': 1,
-  avatar(): any {
-    return mock.Random.image('64x64', mock.Random.color(), this.nickname)
-  },
-  'remark': '@cparagraph(1, 3)',
-  'email': '@email',
-  'roles_name': ['管理员'],
-  'created_at': '@date("yyyy-MM-dd HH:mm:ss")',
-  'updated_at': '@datetime',
+const infoFake = (status?: number) => {
+  return {
+    'username|+1': '@name',
+    'nickname': '@last',
+    'status': status || '@pick([1, 2])',
+    avatar(): any {
+      return mock.Random.image('64x64', mock.Random.color(), this.nickname)
+    },
+    'remark': '@cparagraph(1, 3)',
+    'email': '@email',
+    'roles_name': ['管理员'],
+    'created_at': '@date("yyyy-MM-dd HH:mm:ss")',
+    'updated_at': '@datetime',
+  }
 }
 
 export function info() {
-  return mock.mock(infoFake)
+  return mock.mock(infoFake())
 }
 
 function createLists(v: any) {
   const { query } = v
+
   return {
     code: 200,
     msg: '用户列表',
@@ -32,7 +35,7 @@ function createLists(v: any) {
       [`items|${query.pagesize}`]: [
         {
           'id|+1': query.pagesize * (query.page - 1) + 1,
-          ...infoFake,
+          ...infoFake(+query.status),
         },
       ],
     },
@@ -59,7 +62,7 @@ export default [
       const { query } = v
       if (query.id)
         return UseriInfo(v)
-      return createLists(v)
+      return createLists(v, query)
     },
   },
   {
@@ -115,6 +118,7 @@ export default [
   {
     url: '/_mock/lists',
     method: 'get',
+    timeout: 1000,
     response: createLists,
   },
 ]

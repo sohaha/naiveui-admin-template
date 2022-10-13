@@ -38,7 +38,7 @@ export default <StMenu[]>[
             icon: 'i-bx:columns',
             path: '/example/layout/multi-column',
           },
-          { path: '/example/layout/table' },
+          { icon: 'i-bx:list-ol', path: '/example/layout/table' },
           {
             icon: 'i-bx:table',
             path: '/example/layout/table-form',
@@ -47,9 +47,9 @@ export default <StMenu[]>[
               zh: '功能表格',
             },
             children: [
-              { path: '/example/layout/table-form1' },
-              { path: '/example/layout/table-form2' },
-              { path: '/example/layout/table-form3' },
+              { path: '/example/layout/table-form/1' },
+              { path: '/example/layout/table-form/2' },
+              { path: '/example/layout/table-form/3' },
             ],
           },
           {
@@ -97,6 +97,10 @@ export default <StMenu[]>[
           {
             path: '/example/function/fullscreen',
             icon: 'i-bx:fullscreen',
+          },
+          {
+            icon: 'i-bx:bxs-file-md',
+            path: '/example/function/markdown',
           },
         ],
       },
