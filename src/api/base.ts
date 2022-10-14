@@ -1,5 +1,4 @@
 import api from '@/api/index'
-import menus from '@/menu'
 import settings from '@/settings.json'
 import type { InstApi } from '@/types/global'
 
@@ -53,19 +52,6 @@ export function apiSettings(): Promise<InstApi> {
   // 可以远程获取配置
   return new Promise((resolve) => {
     resolve(settings)
-  }).then((res: any) => {
-    if (res.code === 200)
-      return res.data
-    return res
-  })
-}
-
-/**
- * 获取菜单
- */
-export function apiMenus(): Promise<InstApi> {
-  return new Promise((resolve) => {
-    resolve({ data: menus })
   }).then((res: any) => {
     if (res.code === 200)
       return res.data

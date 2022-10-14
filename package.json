@@ -42,6 +42,7 @@
     "@vitejs/plugin-vue-jsx": "^2.0.1",
     "@vueuse/core": "^9.3.0",
     "axios": "^1.1.2",
+    "date-fns": "^2.29.3",
     "echarts": "^5.4.0",
     "eslint": "^8.25.0",
     "eslint-plugin-vue": "^9.6.0",

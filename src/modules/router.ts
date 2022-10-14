@@ -39,7 +39,7 @@ const first = () => {
 }
 
 router.afterEach((v) => {
-  if (import.meta.env.SSR || v.fullPath === '/reload')
+  if (import.meta.env.SSR || v.fullPath === '/load')
     return
 
   nextTick(() => {
@@ -76,8 +76,9 @@ router.beforeEach(
     next: NavigationGuardNext,
   ) => {
     window.$loading?.start()
-    const { getToken } = userStore()
-    if (!getToken && to.name !== 'login') {
+    const { getToken, validPermission, isLogged } = userStore()
+    const isLogin = to.name === 'login'
+    if (!getToken && !isLogin) {
       next({
         path: '/login',
         query: {
@@ -87,6 +88,23 @@ router.beforeEach(
       return
     }
 
+    const permission = to.meta?.permission || []
+
+    if (Array.isArray(permission) && permission.length > 0) {
+      if (!isLogged) {
+        next('/')
+        return
+      }
+
+      if (!validPermission(permission!)) {
+        if (import.meta.env.DEV
+          || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true')
+          window.$message.error(`该页面需要以下权限：${JSON.stringify(permission)}`)
+        next(false)
+        multiWindowStore()?.closeTab(to.fullPath)
+        return
+      }
+    }
     next()
   },
 )

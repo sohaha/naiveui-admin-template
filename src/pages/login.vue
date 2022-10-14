@@ -87,34 +87,47 @@ function onLogin() {
     loading.value = true
     const res = await run(model.value.username, model.value.password)
 
-    loading.value = false
     if (loginErr.value) {
+      loading.value = false
       message.error(loginErr.value?.message)
       return
     }
+
     const { data } = res!
     const token = data?.token
     if (!token) {
+      loading.value = false
       message.error(res?.msg ?? '获取授权 Token 失败')
       return
     }
+
+    message.success(t('success'))
     user.setToken(token)
-    nextTick(async () => {
-      // if (!data?.is_super)
-      //   console.log('不是超级管理员')
+    nextTick(() => {
+      useRequest(apiMe, {
+        cacheKey: 'me',
+        onAfter() {
+          loading.value = false
+        },
+        onError(err) {
+          if (err)
+            window.$message.error(err.message)
+        },
+        onSuccess() {
+          loading.value = false
+          // if (!data?.is_super)
+          //   console.log('不是超级管理员')
 
-      // const p = await getPermissions()
-      // if (p?.code === 0)
-      //   userStore.setPermissions(p.data?.permissions || [])
+          // const p = await getPermissions()
+          // if (p?.code === 0)
+          //   userStore.setPermissions(p.data?.permissions || [])
 
-      message.success(t('success'))
-      if (user.keepLogin) {
-        console.log('keepLogin')
+          if (user.keepLogin)
+            username.value = model.value.username
 
-        username.value = model.value.username
-      }
-
-      await router.replace((route?.query?.redirect as string) || '/')
+          router.replace((route?.query?.redirect as string) || '/')
+        },
+      })
     })
   })
 }

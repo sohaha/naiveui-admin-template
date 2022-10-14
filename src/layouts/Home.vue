@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import Loading from '@/components/Layout/MultiWindow/Loading'
+
+const user = userStore()
+
 const state = stateStore()
 const setting = settingStore()
 
@@ -62,7 +66,8 @@ const width = ref(baseWidth)
             class="p-4 pt-4 relative "
             :class="{ 'overflow-auto': isFullscreen, 'bg-[var(--a-bg-color)]': isFullscreen }"
           >
-            <LayoutMultiWindow />
+            <Component :is="Loading" v-if="!user.isLogged" />
+            <LayoutMultiWindow v-else />
           </div>
           <NBackTop :right="20" :bottom="20" class="z-20" />
         </NScrollbar>

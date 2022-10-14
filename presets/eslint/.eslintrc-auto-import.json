@@ -8,7 +8,6 @@
     "apiLogin": true,
     "apiLogout": true,
     "apiMe": true,
-    "apiMenus": true,
     "apiSettings": true,
     "apiUserCreare": true,
     "apiUserDelete": true,

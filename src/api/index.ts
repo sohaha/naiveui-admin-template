@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_DEV_PROXY
+  baseURL: import.meta.env.VITE_DEV_PROXY === 'true'
     ? '/proxy'
     : (import.meta.env.VITE_APP_API_BASEURL as string),
   timeout: import.meta.env.VITE_APP_API_TIMEOUT || 10000,

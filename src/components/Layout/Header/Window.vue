@@ -37,10 +37,10 @@ function menuSelect(key: string) {
     case 'refresh':
       if (window.currentWindow) {
         window.currentWindow.refresh()
-        router.push('/reload')
+        router.push('/load')
         return
       }
-      router.push('/reload')
+      router.push('/load')
       break
     case 'toggleFullscreen':
       toggleFullscreen()

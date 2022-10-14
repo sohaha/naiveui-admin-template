@@ -6,7 +6,7 @@ export default defineStore('settingStore', {
   state() {
     return {
       theme: {
-        PrimaryColor: '#54b6fc',
+        PrimaryColor: '#54b6fc', // #db3327
       },
       menu: {
         collapsed: false,

@@ -102,6 +102,15 @@ export default <StMenu[]>[
             icon: 'i-bx:bxs-file-md',
             path: '/example/function/markdown',
           },
+          {
+            icon: 'i-bx:message-alt-error',
+            path: '/example/function/permission',
+          },
+          {
+            icon: 'i-bx:message-alt-error',
+            path: '/example/function/permission/admin',
+            show: false,
+          },
         ],
       },
       {

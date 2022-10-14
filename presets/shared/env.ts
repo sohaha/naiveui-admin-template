@@ -21,6 +21,7 @@ const useEnv = () => {
     VITE_APP_TYPE,
     VITE_APP_DISABLED_API_AUTO_IMPORT,
     VITE_APP_COMPRESSINON_ALGORITHM,
+    VITE_APP_API_BASEURL,
   } = env
 
   return {
@@ -29,7 +30,9 @@ const useEnv = () => {
     VITE_APP_TITLE,
     VITE_APP_TYPE,
     VITE_APP_COMPRESSINON_ALGORITHM,
-    VITE_APP_INSPECT: stringToBoolean(env.VITE_APP_INSPECT),
+    VITE_APP_API_BASEURL,
+    VITE_DEV_INSPECT: stringToBoolean(env.VITE_DEV_INSPECT),
+    VITE_DEV_PROXY: stringToBoolean(env.VITE_DEV_PROXY),
     VITE_DEV_SERVE_PORT: Number(env.VITE_DEV_SERVE_PORT) || 4000,
     VITE_BUILD_LEGACY: stringToBoolean(env.VITE_BUILD_LEGACY),
     VITE_APP_MARKDOWN: stringToBoolean(env.VITE_APP_MARKDOWN),

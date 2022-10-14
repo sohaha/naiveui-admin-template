@@ -9,7 +9,6 @@ declare global {
   const apiLogin: typeof import('../api/base')['apiLogin']
   const apiLogout: typeof import('../api/base')['apiLogout']
   const apiMe: typeof import('../api/base')['apiMe']
-  const apiMenus: typeof import('../api/base')['apiMenus']
   const apiSettings: typeof import('../api/base')['apiSettings']
   const apiUserCreare: typeof import('../api/user')['apiUserCreare']
   const apiUserDelete: typeof import('../api/user')['apiUserDelete']

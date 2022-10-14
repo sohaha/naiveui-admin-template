@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { NIcon, useMessage } from 'naive-ui'
+import inlayMenu from '@/menu'
 import type { RefFormInst } from '@/types/global'
 
 const props = defineProps<{
@@ -10,14 +11,12 @@ const emit = defineEmits<{
   (e: 'loaded'): void
 }>()
 
+console.log('内置菜单', inlayMenu)
+
 const { t } = useLanguage()
 const state = stateStore()
 const user = userStore()
 const router = useRouter()
-
-const { data: inlayMenu } = useRequest(apiMenus, {
-  initialData: { data: [], code: 0, msg: '' },
-})
 
 const logout = () => {
   state.setLoadingMsg(t('logouting'))
@@ -108,7 +107,9 @@ function handleUpdatePassword(e: Event) {
   })
 }
 
-const { loading } = useRequest(apiMe, {
+const { loading, data } = useRequest(apiMe, {
+  cacheKey: 'me',
+  staleTime: 3000,
   onBefore(params) {
     // state.setLoadingMsg(t('loading'))
     return params
@@ -117,22 +118,30 @@ const { loading } = useRequest(apiMe, {
     // state.setLoadingMsg('')
   },
   onSuccess(data) {
-    // TODO 后期可以动态设置菜单
-    user.setUset(data.data?.info ?? {})
-    const menu = data.data?.menu
-
-    if (menu && Array.isArray(menu))
-      state.setMenu(menu)
-    else if (inlayMenu.value)
-      state.setMenu(inlayMenu.value.data || [])
-
-    nextTick(() => emit('loaded'))
   },
   onError(err) {
     if (err)
       window.$message.error(err.message)
   },
 })
+watch(data, (data) => {
+  if (data) {
+    user.setUset(data.data?.info ?? {})
+    const menu = data.data?.menu
+    if (menu && Array.isArray(menu))
+      user.setMenu(menu)
+    else if (inlayMenu)
+      user.setMenu(inlayMenu)
+
+    const permission = data.data?.permission
+    if (permission && Array.isArray(permission))
+      user.setPermission(permission)
+
+    nextTick(() => {
+      user.setLogged()
+    })
+  }
+}, { immediate: true })
 
 function menuSelect(key: number) {
   switch (key) {

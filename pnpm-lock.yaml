@@ -14,6 +14,7 @@ specifiers:
   '@vueuse/core': ^9.3.0
   axios: ^1.1.2
   ayyui: ^0.1.13
+  date-fns: ^2.29.3
   echarts: ^5.4.0
   eslint: ^8.25.0
   eslint-plugin-vue: ^9.6.0
@@ -69,6 +70,7 @@ devDependencies:
   '@vitejs/plugin-vue-jsx': 2.0.1_vite@3.1.8+vue@3.2.40
   '@vueuse/core': 9.3.0_vue@3.2.40
   axios: 1.1.2
+  date-fns: 2.29.3
   echarts: 5.4.0
   eslint: 8.25.0
   eslint-plugin-vue: 9.6.0_eslint@8.25.0
@@ -2015,7 +2017,6 @@ packages:
   /date-fns/2.29.3:
     resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
     engines: {node: '>=0.11'}
-    dev: false
 
   /debug/2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}

@@ -1,5 +1,6 @@
 import { info } from './user'
 
+let username = ''
 export default [
   {
     url: '/manage/base/login',
@@ -7,6 +8,7 @@ export default [
     method: 'post',
     response: ({ body }: { body: any }) => {
       let result = {}
+      username = body.username || ''
       switch (body?.password) {
         case '123456':
           result = {
@@ -40,12 +42,19 @@ export default [
     statusCode: 200,
     timeout: 0,
     response: () => {
+      const data: any = {
+        info: info(),
+      }
+
+      if (username === 'manage')
+        data.permission = ['admin']
+      else
+        data.permission = ['user']
+
       return {
         code: 0,
         msg: '当前用户信息',
-        data: {
-          info: info(),
-        },
+        data,
       }
     },
   },

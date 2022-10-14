@@ -90,11 +90,11 @@ if (
 )
   mergeLocaleMessage(locales)
 
-const state = stateStore()
+const user = userStore()
 const menuOptions = computed<MenuOption[]>(() => {
   const menu: MenuOption[] = []
-  if (state.memu.length)
-    for (const d of state.memu) menu.push(parse(d))
+  if (user.getMemu.length)
+    for (const d of user.getMemu) menu.push(parse(d))
 
   if (
     import.meta.env.DEV
@@ -143,10 +143,7 @@ const styleVal = computed(() =>
   props.inverted && !isDark.value ? 'background:#2e2e2e;' : '',
 )
 
-const loading = ref(true)
-function loaded() {
-  loading.value = false
-}
+const loading = computed(() => !user.isLogged)
 </script>
 
 <template>
@@ -167,7 +164,7 @@ function loaded() {
       @update:value="selectMenu"
     />
     <NDivider v-show="hasMenu && !loading" class="!m-0" />
-    <LayoutUser :collapsed="collapsed" @loaded="loaded" />
+    <LayoutUser :collapsed="collapsed" />
   </div>
 </template>
 

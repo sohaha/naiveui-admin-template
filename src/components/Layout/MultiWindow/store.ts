@@ -43,7 +43,7 @@ export default function useStore() {
         meta: item.meta,
       }
     })
-    if (!currentWindow.value && route.fullPath !== '/reload') {
+    if (!currentWindow.value && route.fullPath !== '/load') {
       tabs.push({
         meta: route.meta,
         fullPath: route.fullPath,

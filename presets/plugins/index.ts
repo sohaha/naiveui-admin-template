@@ -76,8 +76,8 @@ export default () => {
       defaultLayout: 'Home',
     }),
     Inspect({
-      dev: env.VITE_APP_INSPECT,
-      enabled: env.VITE_APP_INSPECT,
+      dev: env.VITE_DEV_INSPECT,
+      enabled: env.VITE_DEV_INSPECT,
     }),
     Unocss({
       presets: [
