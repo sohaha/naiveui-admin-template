@@ -25,6 +25,10 @@ const { t, language } = useLanguage()
       640px 占用 3；1024px 占用 2
     </Card>
 
+    <Card :bordered="false">
+      无阴影
+    </Card>
+
     <Card v-for="i in 15" :key="i">
       内容区域 : {{ t('hello') }} / {{ language }}
     </Card>

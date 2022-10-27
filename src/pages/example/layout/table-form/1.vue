@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useForm } from './form'
-import { useTable } from './table'
+import { useForm } from './form';
+import { useTable } from './table';
 
 const { config: formConfig, showDrawer, drawerAction, submitForm } = useForm()
 
@@ -24,7 +24,7 @@ function actions(data: any) {
   <DrawerForm
     v-model:show="showDrawer"
     height="100vh"
-    placement="top"
+    placement="right"
     closable
     v-bind="formConfig"
     :title="drawerAction"

@@ -36,6 +36,7 @@ const useEnv = () => {
     VITE_DEV_SERVE_PORT: Number(env.VITE_DEV_SERVE_PORT) || 4000,
     VITE_BUILD_LEGACY: stringToBoolean(env.VITE_BUILD_LEGACY),
     VITE_APP_MARKDOWN: stringToBoolean(env.VITE_APP_MARKDOWN),
+    VITE_APP_REMOVE_MENU: stringToBoolean(env.VITE_APP_REMOVE_MENU),
     VITE_APP_DISABLED_API_AUTO_IMPORT: stringToBoolean(
       VITE_APP_DISABLED_API_AUTO_IMPORT,
     ),

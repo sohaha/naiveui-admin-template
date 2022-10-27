@@ -1,12 +1,25 @@
 export function useForm() {
   const form = useDataForm()
-  const { setItems } = form
+  const { setItems, setOptions } = form
+
+  setOptions({
+    labelWidth: 80,
+    labelPlacement: 'top',
+  })
 
   setItems({
     name: {
-      label: '数据 1',
+      label: '用户名',
       component: 'NInput',
       required: true,
+    },
+    passwd: {
+      label: '密码',
+      component: 'NInput',
+      required: true,
+      props: {
+        type: 'password',
+      },
     },
   })
 

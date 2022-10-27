@@ -128,7 +128,7 @@ watch(data, (data) => {
   if (data) {
     user.setUset(data.data?.info ?? {})
     const menu = data.data?.menu
-    if (menu && Array.isArray(menu))
+    if (import.meta.env.VITE_APP_REMOVE_MENU && menu && Array.isArray(menu))
       user.setMenu(menu)
     else if (inlayMenu)
       user.setMenu(inlayMenu)

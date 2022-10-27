@@ -9,5 +9,5 @@ export function mockLists(params: {
   page: number
   pagesize: number
 }): Promise<InstApi> {
-  return api.get(`${getHost()}/_mock/lists`, { params })
+  return api.get(`/_mock/lists`, { params })
 }

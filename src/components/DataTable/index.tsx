@@ -22,7 +22,10 @@ export default defineComponent({
       default: true,
     },
     maxHeight: {
-      type: [Number, String] as PropType<string | number>,
+      type: [Number, String],
+    },
+    minHeight: {
+      type: [Number, String, Boolean],
     },
     size: {
       type: String as PropType<'small' | 'medium' | 'large'>,
@@ -136,6 +139,20 @@ export default defineComponent({
       else {
         values.maxHeight = p.maxHeight
       }
+
+      if (typeof p.minHeight === 'number') {
+        if (p.minHeight < 0) {
+          if (listsContentHeight.value > 0)
+            values.minHeight = listsContentHeight.value + p.minHeight
+        }
+        else {
+          values.minHeight = p.minHeight
+        }
+      }
+      else if (p.minHeight === true) {
+        values.minHeight = listsContentHeight.value
+      }
+      else if (p.minHeight) { values.minHeight = p.minHeight }
 
       values.columns = p.columns.filter((c: any) => {
         return select.value.includes(c.key)
@@ -296,11 +313,16 @@ export default defineComponent({
                 if (slots.empty)
                   slot.empty = slots.empty
                 const v = getBindValues.value
+                const hasData = (v.data && v.data.length > 0)
                 let page
-                if (pagination.value.itemCount > 0)
-                  page = pagination.value
-                else if (!(v.data && v.data.length > 0))
-                  v.minHeight = v.maxHeight + 44
+
+                if (pagination.value.itemCount > 0) { page = pagination.value }
+                else if (v.loading && !hasData && !v.minHeight) {
+                  if (Object.keys(pagination.value).length > 1)
+                    v.minHeight = v.maxHeight + 44
+                  else
+                    v.minHeight = v.maxHeight
+                }
 
                 return [
                   h(NDataTable, v, slots),

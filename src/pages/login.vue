@@ -80,6 +80,33 @@ const route = useRoute()
 const router = useRouter()
 
 // const { run: getPermissions } = useRequest(apiPermissions, { manual: true })
+
+const { run: getMe } = useRequest(apiMe, {
+  cacheKey: 'me',
+  manual: true,
+  onAfter() {
+    loading.value = false
+  },
+  onError(err) {
+    if (err)
+      window.$message.error(err.message)
+  },
+  onSuccess() {
+    loading.value = false
+    // if (!data?.is_super)
+    //   console.log('不是超级管理员')
+
+    // const p = await getPermissions()
+    // if (p?.code === 0)
+    //   userStore.setPermissions(p.data?.permissions || [])
+
+    if (user.keepLogin)
+      username.value = model.value.username
+
+    router.replace((route?.query?.redirect as string) || '/')
+  },
+})
+
 function onLogin() {
   formRef.value.validate(async (errors: string) => {
     if (errors)
@@ -103,32 +130,7 @@ function onLogin() {
 
     message.success(t('success'))
     user.setToken(token)
-    nextTick(() => {
-      useRequest(apiMe, {
-        cacheKey: 'me',
-        onAfter() {
-          loading.value = false
-        },
-        onError(err) {
-          if (err)
-            window.$message.error(err.message)
-        },
-        onSuccess() {
-          loading.value = false
-          // if (!data?.is_super)
-          //   console.log('不是超级管理员')
-
-          // const p = await getPermissions()
-          // if (p?.code === 0)
-          //   userStore.setPermissions(p.data?.permissions || [])
-
-          if (user.keepLogin)
-            username.value = model.value.username
-
-          router.replace((route?.query?.redirect as string) || '/')
-        },
-      })
-    })
+    nextTick(getMe)
   })
 }
 

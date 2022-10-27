@@ -36,6 +36,15 @@ html.dark .n-popover {
     var(--un-shadow);
 }
 
-.n-card:not(.border){
+.n-card:not(.n-card--bordered) {
   border: none !important;
+  --un-shadow: "";
+}
+
+.n-card.n-card.n-card--bordered{
+  border: none;
+}
+
+.n-card.n-card--bordered>.n-card__content>.z-data-table>.a-card {
+  --un-shadow: "";
 }

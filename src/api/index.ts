@@ -24,10 +24,12 @@ api.interceptors.request.use((request: any) => {
     }
   }
 
-  if (typeof request.data === 'string' && request.method !== 'post')
-    request.headers['Content-Type'] = 'text/plain'
-  else if (typeof request.data === 'object')
-    request.headers['Content-Type'] = 'application/json;charset=UTF-8'
+  if (!request.headers['Content-Type']) {
+    if (typeof request.data === 'string' && request.method !== 'post')
+      request.headers['Content-Type'] = 'text/plain'
+    else if (typeof request.data === 'object')
+      request.headers['Content-Type'] = 'application/json;charset=UTF-8'
+  }
 
   return request
 })
