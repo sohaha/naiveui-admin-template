@@ -1,17 +1,14 @@
 <script lang="ts" setup>
-import { mockLists } from '@/api/test'
+import { mockLists } from '@/apis/test'
 
 const { config, setPagination, setRowKey, setColumns, setRequest, setAction } = useDataTable()
-
-// 数据唯一字段
-setRowKey('id')
 
 // 不显示分页条
 setPagination(false)
 
+// 请求接口数据
 setRequest(
   (param: any) => {
-    // 请求接口数据
     return mockLists(param)
   },
   {
@@ -56,7 +53,7 @@ setColumns([
 
 <template>
   <div>
-    <DataTable :scroll-x="600" v-bind="config" />
+    <DataTable :scroll-x="320" v-bind="config" />
   </div>
 </template>
 

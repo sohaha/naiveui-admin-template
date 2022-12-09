@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const { run: deleteUser } = useRequest(apiUserDelete, {
   manual: true,
-  onBefore: () => {
+  onBefore: (): any => {
     config.value.request.loading = true
   },
   onSuccess: (_, params) => {
@@ -24,7 +24,7 @@ const { run: deleteUser } = useRequest(apiUserDelete, {
 
 const { run: updateUser } = useRequest(apiUserUpdate, {
   manual: true,
-  onBefore: () => {
+  onBefore: (): any => {
     setLoading(true)
   },
   onAfter: () => {
@@ -41,7 +41,7 @@ const { run: updateUser } = useRequest(apiUserUpdate, {
 
 const { run: createUser } = useRequest(apiUserCreare, {
   manual: true,
-  onBefore: () => {
+  onBefore: (): any => {
     setLoading(true)
   },
   onAfter: () => {

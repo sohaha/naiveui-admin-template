@@ -1,5 +1,5 @@
 import { NTag } from 'naive-ui'
-import { mockLists } from '@/api/test'
+import { mockLists } from '@/apis/test'
 
 export function useTable() {
   const table = useDataTable()
@@ -31,7 +31,7 @@ export function useTable() {
     icon: 'i-bx-filter',
     options: filterOptions,
     action: () => {
-    // 修改过滤按钮样式
+      // 修改过滤按钮样式
       filterOptions.value.type = 'primary'
       filterOptions.value.quaternary = false
       showFilterDrawer.value = true
@@ -142,3 +142,4 @@ export function useTable() {
 
   return { ...table, showFilterDrawer }
 }
+

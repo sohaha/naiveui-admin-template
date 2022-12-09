@@ -1,8 +1,6 @@
-import 'ayyui/dist/style.css'
 import 'uno.css'
 import './styles/main.css'
 
-import ayyui from 'ayyui'
 import App from './App.vue'
 
 const loading = document.querySelector('#loading') as HTMLElement
@@ -12,5 +10,4 @@ if (loading) {
 }
 
 const app = createApp(App)
-app.use(ayyui)
 app.mount('#app')

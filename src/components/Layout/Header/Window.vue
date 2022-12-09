@@ -37,7 +37,7 @@ function menuSelect(key: string) {
     case 'refresh':
       if (window.currentWindow) {
         window.currentWindow.refresh()
-        router.push('/load')
+        // router.push('/load')
         return
       }
       router.push('/load')

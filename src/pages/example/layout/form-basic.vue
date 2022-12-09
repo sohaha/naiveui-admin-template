@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { NIcon, useMessage } from 'naive-ui'
 
-const { config, setItems, setOptions } = useDataForm()
+const { config, setItems, setOptions, setValue } = useDataForm()
 
 setOptions({
   labelWidth: 100,
@@ -60,7 +60,21 @@ setItems({
       },
     ],
   },
+  birthday: {
+    label: '生日',
+    component: 'NDatePicker',
+    props: {
+      'type': 'datetime',
+      'value-format': 'yyyy.MM.dd HH:mm:ss',
+    },
+
+  },
 })
+
+setTimeout(() => {
+  // 延时设置生日
+  setValue('birthday', +new Date())
+}, 1000)
 
 const message = useMessage()
 

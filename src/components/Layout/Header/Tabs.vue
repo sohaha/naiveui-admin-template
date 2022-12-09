@@ -20,7 +20,7 @@ function resetBarPosition(v?: string) {
 }
 
 const tabs = computed(() => {
-  return multiWindow.windowTab.map((w) => {
+  const tabs = multiWindow.windowTab.map((w) => {
     const meta = w.meta || {}
     let { title } = meta
     const i18n: undefined = meta?.i18n as any
@@ -32,9 +32,16 @@ const tabs = computed(() => {
 
     return {
       fullPath: w.fullPath,
-      name: title || 'Unknown',
+      name: title || w.name || 'Unknown',
     }
   })
+  if (tabs.length === 0) {
+    tabs.push({
+      fullPath: '/',
+      name: ' ',
+    })
+  }
+  return tabs
 })
 watch(tabs, () => resetBarPosition())
 
@@ -46,7 +53,7 @@ function renderTab(tab: any) {
       class: 'relative px-2 group',
     },
     [
-      h('div', tab.name),
+      h('div', { class: 'h-[21px]' }, tab.name),
       tabs.value.length > 1
         ? h(NIcon, {
           onClick: (even: any) => {

@@ -33,6 +33,7 @@ export interface StMenu {
   title?: string
   icon ?: string
   url ?: string
+  redirect ?: string
   children?: StMenu[]
 }
 

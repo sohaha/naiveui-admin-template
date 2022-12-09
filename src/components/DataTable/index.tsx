@@ -53,7 +53,7 @@ export default defineComponent({
     const { t } = useI18n()
     const state = stateStore()
     const listsContentHeight = computed(
-      () => state.getPageContentHeight - 40 - (p.pagination ? 44 + 16 : 2),
+      () => state.getPageContentHeight - 38 - (p.pagination ? 44 + 12 : 1),
     )
 
     const select = ref<string[]>([])
@@ -70,6 +70,8 @@ export default defineComponent({
         && (columns[0].align === 'left' || !columns[0].align)
       )
         c += ' z-data-table--pl'
+      if (typeof attrs.class === 'string')
+        c += ` ${attrs.class}`
 
       return c
     })
@@ -89,7 +91,7 @@ export default defineComponent({
         }
       }
       let page = {
-        'pageSizes': [10, 20, 30, 50, 100],
+        'pageSizes': [10, 30, 50, 100],
         'pageSlot': 5,
         'itemCount': p.request.total,
         'pageSize': p.request.pagesize,
@@ -127,7 +129,7 @@ export default defineComponent({
     }
 
     const getBindValues = computed(() => {
-      const values: any = { ...attrs }
+      const values: any = { bordered: false, ...attrs, class: '' }
       if (!p.maxHeight) {
         if (listsContentHeight.value > 0)
           values.maxHeight = listsContentHeight.value
@@ -156,6 +158,11 @@ export default defineComponent({
 
       values.columns = p.columns.filter((c: any) => {
         return select.value.includes(c.key)
+      })
+      values.columns = values.columns.map((c: any) => {
+        return {
+          ellipsis: { tooltip: true }, ...c,
+        }
       })
       if (p.action === true) {
         values.columns.push({

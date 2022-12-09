@@ -22,6 +22,7 @@ const useEnv = () => {
     VITE_APP_DISABLED_API_AUTO_IMPORT,
     VITE_APP_COMPRESSINON_ALGORITHM,
     VITE_APP_API_BASEURL,
+    VITE_BUILD_BASE,
   } = env
 
   return {
@@ -31,7 +32,9 @@ const useEnv = () => {
     VITE_APP_TYPE,
     VITE_APP_COMPRESSINON_ALGORITHM,
     VITE_APP_API_BASEURL,
+    VITE_BUILD_BASE,
     VITE_DEV_INSPECT: stringToBoolean(env.VITE_DEV_INSPECT),
+    VITE_APP_API_BASEURL_DYNAMIC: stringToBoolean(env.VITE_APP_API_BASEURL_DYNAMIC),
     VITE_DEV_PROXY: stringToBoolean(env.VITE_DEV_PROXY),
     VITE_DEV_SERVE_PORT: Number(env.VITE_DEV_SERVE_PORT) || 4000,
     VITE_BUILD_LEGACY: stringToBoolean(env.VITE_BUILD_LEGACY),
@@ -47,3 +50,16 @@ const useEnv = () => {
 }
 
 export const env = useEnv()
+
+export const browserslist = [
+  '> 1%, last 1 version, ie >= 11',
+  'safari >= 10',
+  'Android > 28',
+  'Chrome >= 60',
+  'Safari >= 10.1',
+  'iOS >= 10.3',
+  'Firefox >= 54',
+  'Edge >= 15',
+]
+
+export const LegacBrowserslist = ['Android > 28']

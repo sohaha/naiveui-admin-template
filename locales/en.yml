@@ -3,7 +3,7 @@ button:
   back: Back
 loading_page: loading
 not-found: Notfound
-operation_tip: "Operate:"
+operation_tip: "Action:"
 page_home: Home
 page_login: Login
 page_table: Table

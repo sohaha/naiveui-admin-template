@@ -5,6 +5,19 @@ export function openURL(url: string) {
   window.open(url, '', 'noopener=yes,noreferrer=yes')
 }
 
+export function getQuery(key: string, url?: string): string | null {
+  if (!url)
+    url = window.location.href
+
+  const r = (new RegExp(`[?|&]${key}=` + '([^&;]+?)(&|#|;|$)').exec(url) || ['', ''])
+
+  return decodeURIComponent(r[1].replace(/\+/g, '%20')) || null
+}
+
+export function random(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
 export function flatten(
   vNodes: VNodeChild[],
   filterCommentNode = true,

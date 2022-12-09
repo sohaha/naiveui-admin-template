@@ -12,18 +12,18 @@ const collapsed = useVModel(props, 'collapsed')
     <div class="flex">
       <LayoutHeaderTabs>
         <template #prefix>
-          <NTooltip>
-            <template #trigger>
-              <NButton text class="px-2" @click="collapsed = !collapsed">
-                <NIcon
-                  size="20"
-                  :class="{ '!rotate-0': collapsed }"
-                  class="transition rotate-180 text-base i-bx:right-indent"
-                />
-              </NButton>
-            </template>
+          <!-- <NTooltip>
+            <template #trigger> -->
+          <NButton text class="px-2" @click="collapsed = !collapsed">
+            <NIcon
+              size="20"
+              :class="{ '!rotate-0': collapsed }"
+              class="transition rotate-180 text-base i-bx:right-indent"
+            />
+          </NButton>
+          <!-- </template>
             {{ collapsed ? t('expand') : t('collapsed') }}
-          </NTooltip>
+          </NTooltip> -->
         </template>
         <template #suffix>
           <div
@@ -47,7 +47,7 @@ const collapsed = useVModel(props, 'collapsed')
 }
 
 :deep(.n-tabs .n-tabs-nav .n-tabs-nav__prefix) {
-  padding-right: 2px;
+  padding-right: 0;
 }
 
 :deep(.n-tabs .n-tabs-tab-pad) {

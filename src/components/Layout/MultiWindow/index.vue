@@ -2,10 +2,11 @@
 const props = withDefaults(
   defineProps<{
     transition?: string
+    disabledAnimation?: boolean
     max?: number
   }>(),
   {
-    max: 50,
+    max: 30,
     transition: 'fade-slide',
   },
 )
@@ -16,7 +17,7 @@ const keepAliveInclude = computed(() =>
 </script>
 
 <template>
-  <template v-if="props.transition">
+  <template v-if="props.transition && !props.disabledAnimation">
     <RouterView v-slot="{ Component: c }">
       <Transition appear :name="props.transition" mode="out-in">
         <KeepAlive :max="max" :include="keepAliveInclude">
@@ -37,7 +38,7 @@ const keepAliveInclude = computed(() =>
 <style scoped>
 .fade-slide-leave-active,
 .fade-slide-enter-active {
-  transition: transform .38s ease, opacity .35s;
+  transition: transform .33s ease, opacity .3s;
 }
 
 .fade-slide-enter-from {

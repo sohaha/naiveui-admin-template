@@ -1,3 +1,4 @@
+<script lang="ts">
 import { NForm, NGrid, NSpin } from 'naive-ui'
 import { computed, defineComponent, h, isRef, ref, toRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -149,6 +150,7 @@ export default defineComponent({
     return h(
       NSpin,
       {
+        class: 'data-form',
         show: this.loading,
       },
       {
@@ -165,4 +167,11 @@ export default defineComponent({
     )
   },
 })
+</script>
+
+<style scoped>
+.data-form :deep(.n-input-number),.data-form :deep(.n-date-picker),.data-form :deep(.n-time-picker),.data-form :deep(.n-select),.data-form :deep(.n-input-number),.data-form :deep(.n-input-number){
+   width: 100%;
+}
+</style>
 

@@ -108,7 +108,7 @@ export function renderActionCol(
 
 const defaultParams = {
   page: 1,
-  pagesize: 20,
+  pagesize: 30,
 }
 
 export function useDataTable() {
@@ -191,7 +191,6 @@ export function createReloadIcon(btn: { [key: string]: any }): VNode {
       trigger: () => h(
         NButton,
         {
-          size: 'small',
           ...btnDefaultOption,
           ...(btn || {}),
         },

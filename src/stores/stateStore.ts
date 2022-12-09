@@ -4,7 +4,7 @@ import { defineStore } from 'pinia'
 const isSmallScreen = useMediaQuery('(max-width: 640px)')
 const { height } = useWindowSize()
 
-const defPageHeaderHeight = 33 + 16
+const defPageHeaderHeight = 33 + 12
 export default defineStore('stateStore', {
   state() {
     return {
@@ -15,7 +15,7 @@ export default defineStore('stateStore', {
   },
   getters: {
     getPageContentHeight(): number {
-      return height.value - this.pageHeaderHeight - 16 * 2
+      return height.value - this.pageHeaderHeight - 12 * 2
     },
     isSmallScreen() {
       return isSmallScreen.value

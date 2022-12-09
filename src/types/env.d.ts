@@ -7,19 +7,20 @@
 /// <reference types="@intlify/vite-plugin-vue-i18n/client" />
 
 declare module '*.vue' {
-	import type { DefineComponent } from 'vue'
-	const component: DefineComponent<{}, {}, any>
-	export default component
+  import type { DefineComponent } from 'vue'
+  const component: DefineComponent<{}, {}, any>
+  export default component
 }
 
 declare module '*.md' {
-	import { ComponentOptions } from 'vue'
-	const Component: ComponentOptions
-	export default Component
+  import { ComponentOptions } from 'vue'
+  const Component: ComponentOptions
+  export default Component
 }
 
 
 interface ImportMetaEnv {
+  [x: string]: any
   readonly VITE_APP_TITLE: string
   readonly VITE_DEV_PROXY: string
 }
@@ -27,3 +28,5 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+declare module 'postcss-preset-env'

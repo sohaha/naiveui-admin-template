@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { dateEnUS, dateZhCN, enUS, zhCN } from 'naive-ui'
+import { dateEnUS, dateZhCN, enUS, useThemeVars, zhCN } from 'naive-ui'
 
 const { isDark } = useDarks()
 const theme = themeStore()
@@ -19,21 +19,24 @@ const state = stateStore()
     :theme="isDark ? theme.darkTheme : null"
   >
     <NLoadingBarProvider>
+      <!-- <NGlobalStyle /> -->
       <NMessageProvider>
         <NNotificationProvider>
           <NDialogProvider>
-            <NSpin :class="state.loadingMsg && 'bg-black'" :show="!!state.loadingMsg">
-              <template #icon>
-                <NIcon />
-              </template>
-              <slot />
-              <LayoutLoadingContent />
-              <template #description>
-                <div class="text-white">
-                  {{ state.loadingMsg }}
-                </div>
-              </template>
-            </NSpin>
+            <div :bordered="false" embedded>
+              <NSpin :class="state.loadingMsg && 'bg-black'" :show="!!state.loadingMsg">
+                <template #icon>
+                  <NIcon />
+                </template>
+                <slot />
+                <LayoutLoadingContent />
+                <template #description>
+                  <div class="text-white">
+                    {{ state.loadingMsg }}
+                  </div>
+                </template>
+              </NSpin>
+            </div>
           </NDialogProvider>
         </NNotificationProvider>
       </NMessageProvider>

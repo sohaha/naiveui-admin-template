@@ -1,4 +1,3 @@
-import api from '@/api/index'
 import settings from '@/settings.json'
 import type { InstApi } from '@/types/global'
 
@@ -8,28 +7,28 @@ import type { InstApi } from '@/types/global'
  * @param password 密码
  */
 export function apiLogin(username: string, password: string): Promise<InstApi> {
-  return api.post('/manage/base/login', { username, password })
+  return apis.post('/manage/base/login', { username, password })
 }
 
 /**
  * 退出
  */
 export function apiLogout(): Promise<InstApi> {
-  return api.post('/manage/base/logout')
+  return apis.post('/manage/base/logout')
 }
 
 /**
  * 当前用户信息
  */
 export function apiMe(): Promise<InstApi> {
-  return api.get('/manage/base/me')
+  return apis.get('/manage/base/me')
 }
 
 /**
  * 心跳
  */
 export function apiHeartbeat(): Promise<InstApi> {
-  return api.get('/manage/base/message')
+  return apis.get('/manage/base/message')
 }
 
 /**
@@ -39,7 +38,7 @@ export function apiEditPassword(
   oldPasswd: string,
   password: string,
 ): Promise<InstApi> {
-  return api.put('/manage/base/password', {
+  return apis.put('/manage/base/password', {
     old_passwd: oldPasswd,
     password,
   })

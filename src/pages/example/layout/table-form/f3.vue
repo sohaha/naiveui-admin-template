@@ -4,35 +4,37 @@ import { useTable } from './table'
 
 const { config: formConfig, showDrawer, drawerAction, submitForm } = useForm()
 
-const { config, showFilterDrawer } = useTable()
+const { config, showFilterDrawer, run: requestData, setToolbar } = useTable()
 
-function actions(data: any) {
-  console.log('action', data)
+setToolbar([])
+
+function actions({ action = '', row = {} as Record<string, any> }) {
+  console.log('action', action, row)
   showDrawer.value = true
-  drawerAction.value = data.action
+  drawerAction.value = action
 }
+
+const active = ref('')
+watch(active, (v) => {
+  requestData({ status: v, page: 1 })
+})
 </script>
 
 <template>
   <CardRows>
     <Card padding="10px">
-      <div class="text-center">
-        <NButtonGroup size="small">
-          <NButton>
-            全部
-          </NButton>
-          <NButton>
-            分类1
-          </NButton>
-          <NButton>
-            分类2
-          </NButton>
-        </NButtonGroup>
-      </div>
+      <NRadioGroup v-model:value="active" size="small">
+        <NRadioButton
+          v-for="v in [{ label: '全部', value: '' }, { label: '正常', value: '1' }, { label: '禁用', value: '2' }]"
+          :key="v.value"
+          :value="v.value"
+          :label="v.label"
+        />
+      </NRadioGroup>
     </Card>
     <DataTable
       id="data-table"
-      :max-height="-(48 + (16 / 2))"
+      :max-height="-(48 + 12 / 6)"
       :scroll-x="600"
       v-bind="config"
       @actions="actions"
@@ -41,7 +43,7 @@ function actions(data: any) {
   <DrawerForm
     v-model:show="showDrawer"
     height="100vh"
-    placement="top"
+    placement="right"
     closable
     v-bind="formConfig"
     :title="drawerAction"
@@ -63,6 +65,7 @@ function actions(data: any) {
 <route lang="json">
 {
   "meta": {
+    "maxWidth":900,
     "icon": "i-bx:table",
     "i18n": {
       "en": "Table3",

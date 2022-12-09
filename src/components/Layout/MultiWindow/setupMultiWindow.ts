@@ -1,6 +1,6 @@
 import { type AsyncComponentLoader, KeepAlive, h, provide } from 'vue'
 import { type RouteRecordRaw, onBeforeRouteUpdate } from 'vue-router'
-import Loading from './Loading'
+import Loading from '../Loading'
 import { type UseStore } from './store'
 import { baseComponentKey, injectionKey } from '.'
 
@@ -24,6 +24,7 @@ export function createMultiWindowComponentWrap(
 
   const name = routeRaw.name as string
 
+  /* eslint-disable vue/one-component-per-file */
   routeRaw.component = defineComponent({
     name,
     setup() {
@@ -91,8 +92,19 @@ export function setupMultiWindow(routes: RouteRecordRaw[], useStore: any): any {
         const { layout = 'Home', multiWindow = true } = meta
         meta.multiWindow = multiWindow
         r.meta = meta
-        if (multiWindow && layout === 'Home')
-          createMultiWindowComponentWrap(r, useStoreProxy)
+        if (multiWindow && layout === 'Home') { createMultiWindowComponentWrap(r, useStoreProxy) }
+        else {
+          const component = r.component
+          if (component) {
+            r.component = defineComponent({
+              render() {
+                return h('div', { class: 'not-keep' }, h(defineAsyncComponent({
+                  loader: component as AsyncComponentLoader,
+                })))
+              },
+            })
+          }
+        }
       })
     }
   })

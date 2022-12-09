@@ -1,13 +1,13 @@
 import type { StMenu } from '@/types/global'
 
-export default [
+export default <StMenu[]>[
   {
     title: '系统管理',
     i18n: {
       en: 'System',
     },
     icon: 'i-bx:wrench',
-    path: '',
+    path: 'system',
     children: [
       {
         icon: 'i-bx:bxs-user-detail',

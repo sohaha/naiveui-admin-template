@@ -1,6 +1,9 @@
+<script lang="ts">
 import { NButton } from 'naive-ui'
-import DataForm from '@/components/DataForm/index'
+import type { PropType } from 'vue'
+import DataForm from '@/components/DataForm/index.vue'
 import { props } from '@/components/DataForm/utils'
+import { props as drawerProps } from '@/components/Drawer/utils'
 import Drawer from '@/components/Drawer/index.vue'
 export { useDataForm } from '@/components/DataForm/utils'
 
@@ -8,7 +11,7 @@ export default defineComponent({
   inheritAttrs: false,
   props: {
     ...props,
-    show: Boolean,
+    ...drawerProps,
     submitBtn: {
       type: String,
       default: '提 交',
@@ -38,7 +41,7 @@ export default defineComponent({
         Drawer,
         {
           ...attrs,
-          'show': showDrawer.value,
+          ...props,
           'onUpdate:show': (b: boolean) => {
             showDrawer.value = b
           },
@@ -73,7 +76,7 @@ export default defineComponent({
             h(
               'div',
               {
-                class: 'flex justify-center justify-around space-x-4 w-full',
+                class: 'flex justify-center justify-around space-x-3 w-full',
               },
               [
                 h(
@@ -111,3 +114,4 @@ export default defineComponent({
       )
   },
 })
+</script>

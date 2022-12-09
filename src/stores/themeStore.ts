@@ -5,6 +5,7 @@ import type {
 } from 'naive-ui'
 import { darkTheme as dark } from 'naive-ui'
 import type { BuiltInGlobalTheme } from 'naive-ui/es/themes/interface'
+import type { DataTableThemeVars } from 'naive-ui/lib/data-table/styles'
 
 const { isDark } = useDarks()
 
@@ -32,7 +33,7 @@ function lighten(color: string, amount: number) {
 export default defineStore('themeStore', {
   state() {
     return {
-      primaryColor,
+      style: 'block',
     }
   },
   getters: {
@@ -40,13 +41,25 @@ export default defineStore('themeStore', {
       return dark
     },
     getBaseTheme(): GlobalThemeOverrides {
-      const appTheme = this.primaryColor || '#1768AC'
+      const setting = settingStore()
+      let appTheme = setting.theme.PrimaryColor || '#1768AC'
       const common: Partial<ThemeCommonVars & CustomThemeCommonVars> = {}
       common.borderRadius = '.5rem'
 
-      if (isDark.value)
+      const dataTable: Partial<DataTableThemeVars> = {}
+
+      if (this.style === 'block')
+        common.borderRadius = '0'
+
+      if (isDark.value) {
         common.baseColor = '#101014'
-      else common.baseColor = '#f5f7f9'
+        dataTable.thColor = '#18181c'
+        appTheme = lighten(appTheme, 9)
+      }
+      else {
+        dataTable.thColor = '#fff'
+        common.baseColor = '#f5f7f9'
+      }
 
       return {
         common: {
@@ -56,6 +69,7 @@ export default defineStore('themeStore', {
           primaryColorPressed: lighten(appTheme, 6),
           primaryColorSuppl: lighten(appTheme, 9),
         },
+        DataTable: dataTable,
         LoadingBar: {
           colorLoading: appTheme,
         },

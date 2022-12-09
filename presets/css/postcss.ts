@@ -1,4 +1,6 @@
-import { env } from './../shared/env'
+import autoprefixer from 'autoprefixer'
+import preset from 'postcss-preset-env'
+import { LegacBrowserslist, browserslist, env } from './../shared/env'
 
 export const PostcssConfig = () => {
   const plugins = []
@@ -18,6 +20,17 @@ export const PostcssConfig = () => {
 
   if (isH5)
     plugins.push(pxtorem)
+
+  const browsers = env.VITE_BUILD_LEGACY ? browserslist : LegacBrowserslist
+
+  plugins.push(
+    autoprefixer({
+      overrideBrowserslist: browsers,
+    }),
+    preset({
+      browsers,
+    }),
+  )
 
   return {
     plugins,

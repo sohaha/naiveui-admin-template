@@ -25,8 +25,8 @@ function replaceText() {
 </script>
 
 <template>
-  <Card>
-    <div class="flex flex-col space-y-4">
+  <CardRows>
+    <div class="flex flex-col space-y-3">
       <div>
         <NAlert v-if="isSupported" title="支持操作剪切板" type="success" />
         <NAlert v-else title="不支持操作剪切板" type="error" />
@@ -44,7 +44,7 @@ function replaceText() {
         </NButton>
       </div>
     </div>
-  </Card>
+  </CardRows>
 </template>
 
 <style scoped></style>

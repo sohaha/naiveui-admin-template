@@ -1,19 +1,35 @@
 import axios from 'axios'
 
+export const baseURL = import.meta.env.VITE_DEV_PROXY === 'true'
+  ? '/proxy'
+  : (import.meta.env.VITE_APP_API_BASEURL as string)
+
+const dynamicBaseURL = usePrefixStorage('baseURL', '')
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_DEV_PROXY === 'true'
-    ? '/proxy'
-    : (import.meta.env.VITE_APP_API_BASEURL as string),
+  baseURL,
   timeout: import.meta.env.VITE_APP_API_TIMEOUT || 10000,
   responseType: 'json',
 })
 
-const source = axios.CancelToken.source()
-const lock = false
+export function getBaseURL() {
+  return api.defaults.baseURL
+}
+
+if (import.meta.env.VITE_APP_API_BASEURL_DYNAMIC === 'true') {
+  if (dynamicBaseURL.value)
+    api.defaults.baseURL = dynamicBaseURL.value
+
+  let u = getQuery('__')
+  try {
+    u = window.atob(u || '')
+  }
+  catch (error) { }
+  if (u)
+    dynamicBaseURL.value = api.defaults.baseURL = u
+}
 
 api.interceptors.request.use((request: any) => {
-  if (lock)
-    source.cancel()
   const token = userStore().getToken
   if (token) {
     try {
@@ -22,6 +38,15 @@ api.interceptors.request.use((request: any) => {
     catch (e) {
       request.headers.Authorization = token
     }
+  }
+
+  if (import.meta.env.VITE_APP_API_BASEURL_DYNAMIC === 'true') {
+    // if (request.baseURL === baseURL && dynamicBaseURL.value !== baseURL && dynamicBaseURL.value !== '') {
+    //   console.log('覆盖 baseURL')
+    //   console.log('===', dynamicBaseURL.value)
+    //   // if (request.url === '/manage/base/message')
+    //   //   request.baseURL = dynamicBaseURL.value
+    // }
   }
 
   if (!request.headers['Content-Type']) {
@@ -76,7 +101,7 @@ api.interceptors.response.use(
       case 400:
         message = data?.msg || '输入不合法'
         return Promise.reject(Error(message, cause))
-        // break
+      // break
       case 401:
         throttledFn()
         return Promise.reject()
@@ -84,7 +109,9 @@ api.interceptors.response.use(
         message = '权限不足'
         break
       case 500:
-        message = '服务端异常'
+        message = '服务端错误'
+        if (data?.msg)
+          message += `: ${data.msg}`
         break
       default:
         if (message === 'Network Error')
@@ -95,6 +122,7 @@ api.interceptors.response.use(
           message = `接口 ${message.slice(message.length - 3)} 异常`
     }
     errorHandler(0, Error(message, cause))
+
     return Promise.reject()
   },
 )

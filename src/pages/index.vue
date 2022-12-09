@@ -1,46 +1,14 @@
 <script lang="ts" setup>
-import { format } from 'date-fns'
-
-const now = useNow()
-const nowTime = computed(() => format(now.value, 'yyyy-MM-dd HH:mm:ss'))
+const { nowTime, ask } = useHello()
 
 const user = userStore()
 const hi = computed(() => {
-  const now = new Date()
-  const hour = now.getHours()
-  let text
-  switch (true) {
-    case hour < 6:
-      text = '凌晨好'
-      break
-    case hour < 9:
-      text = '早上好'
-      break
-    case hour < 12:
-      text = '上午好'
-      break
-    case hour < 14:
-      text = '中午好'
-      break
-    case hour < 17:
-      text = '下午好'
-      break
-    case hour < 19:
-      text = '傍晚好'
-      break
-    case hour < 22:
-      text = '晚上好'
-      break
-    default:
-      text = '深夜好'
-  }
-
-  return `${text}，${user.getNickName}！`
+  return `${ask.value}，${user.getNickName}！`
 })
 </script>
 
 <template>
-  <Card height class="text-center">
+  <Card height class="text-center whitespace-nowrap">
     <div
       class="flex h-full item-center justify-center flex-col text-3xl space-y-5"
     >

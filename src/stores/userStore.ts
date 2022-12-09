@@ -12,6 +12,7 @@ export default defineStore('user', {
     return {
       keepLogin: true,
       token: '',
+      aloneMenu: [] as StMenu[],
     }
   },
   getters: {
@@ -25,7 +26,13 @@ export default defineStore('user', {
       return user.value?.avatar
     },
     getMemu(): StMenu[] {
-      return memu.value
+      return memu.value || []
+    },
+    getAloneMenu(): StMenu[] {
+      return this.aloneMenu || []
+    },
+    getAllMenu(): StMenu[] {
+      return [...this.getMemu, ...this.getAloneMenu]
     },
     getUser(): { [key: string]: any } {
       return user.value
@@ -33,14 +40,14 @@ export default defineStore('user', {
     getPermission(): string[] {
       return permission.value
     },
-    getAllMemuPath(): string[] {
+    getAllMenuPath(): string[] {
       let p: string[] = []
-      memu.value.forEach((v) => {
+      this.getAllMenu.forEach((v: StMenu) => {
         p = p.concat(memuPath(v))
       })
       if (
         import.meta.env.DEV
-  || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true'
+  || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true' || import.meta.env.VITE_BUILD_DEMONSTRATE === 'true'
       ) {
         exampleMenu.forEach((v) => {
           p = p.concat(memuPath(v))
@@ -65,7 +72,7 @@ export default defineStore('user', {
     setToken(token: string) {
       if (!token) {
         this.setUset({})
-        this.setMenu([])
+        this.setMenus([])
         logged.value = false
       }
 
@@ -80,8 +87,11 @@ export default defineStore('user', {
     setUset(u: { [key: string]: any }) {
       user.value = u
     },
-    setMenu(m: any) {
+    setMenus(m: any) {
       memu.value = m
+    },
+    appendMenus(m: StMenu[]) {
+      this.aloneMenu = m
     },
     setPermission(p: string[]) {
       permission.value = p

@@ -196,6 +196,7 @@ export interface FormItemProps {
   validator?: FormRules | FormItemRule | FormItemRule[]
   required?: boolean
   disabled?: boolean
+  readonly?: boolean
   hidden?: boolean
   slots?: any
 }
@@ -207,7 +208,7 @@ export function formBtns(opt: any, isGrid = false) {
       h(
         NButton,
         {
-          class: 'px-4',
+          class: 'px-3',
           secondary: true,
           onClick: opt.reset[1],
         },
@@ -222,7 +223,7 @@ export function formBtns(opt: any, isGrid = false) {
           NButton,
           {
             type: 'primary',
-            class: 'px-4',
+            class: 'px-3',
             onClick: opt.submit[1],
           },
           {
@@ -270,12 +271,13 @@ export function formItem(
 
       const { onUpdateValue } = props || {}
       const value = model.value[key]
-      if (v.disabled && !isNew.value && (value !== undefined && value !== null))
-        props.disabled = true
+      if (v.readonly && !isNew.value && (value !== undefined && value !== null))
+        props.readonly = true
 
       return h(
         component,
         {
+          disabled: v.disabled,
           ...props,
           value,
           onUpdateValue: (n: any) => {

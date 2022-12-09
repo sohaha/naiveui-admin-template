@@ -78,7 +78,7 @@ function open(u: string) {
 </script>
 
 <template>
-  <div class="space-y-4">
+  <CardRows>
     <Card
       v-for="(u, v) in {
         message: 'https://www.naiveui.com/zh-CN/light/components/notification',
@@ -110,7 +110,7 @@ function open(u: string) {
         </NButton>
       </div>
     </Card>
-  </div>
+  </CardRows>
 </template>
 
 <style scoped></style>

@@ -53,7 +53,6 @@ export default defineComponent({
 
     return () => {
       const slots: { [key: string]: Function } = {}
-
       return h(
         NCard,
         { ...ctx.attrs, contentStyle: contentStyle.value, style: cardStyle.value },

@@ -1,6 +1,6 @@
 body {
   overflow: hidden;
- background-color: var(--a-bg-color);
+  background-color: var(--a-bg-color);
 }
 
 .tip-text{

@@ -40,8 +40,7 @@ function parse(d: any) {
   const data: { [key: string]: any } = {
     key: d.path || '',
     label: title,
-    url: d.url,
-    show: d.show,
+    ...d,
     icon: renderIcon(icon || 'i-bx:detail'),
   }
   if (isObject(d.i18n)) {
@@ -86,19 +85,19 @@ function findRoute(path: string) {
 
 if (
   import.meta.env.DEV
-  || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true'
+  || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true' || import.meta.env.VITE_BUILD_DEMONSTRATE === 'true'
 )
   mergeLocaleMessage(locales)
 
 const user = userStore()
 const menuOptions = computed<MenuOption[]>(() => {
   const menu: MenuOption[] = []
-  if (user.getMemu.length)
-    for (const d of user.getMemu) menu.push(parse(d))
+  for (const d of user.getMemu) menu.push(parse(d))
+  for (const d of user.getAloneMenu) menu.push(parse(d))
 
   if (
     import.meta.env.DEV
-  || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true'
+  || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true' || import.meta.env.VITE_BUILD_DEMONSTRATE === 'true'
   ) {
     if (isObject(exampleMenu))
       menu.push(parse(exampleMenu))
@@ -114,6 +113,10 @@ const hasMenu = computed(() => menuOptions.value.length > 0)
 const selectedKeys = ref()
 
 function selectMenu(key: string, item: MenuOption) {
+  if (item.redirect) {
+    router.push(item.redirect)
+    return
+  }
   const path = String(item?.key || '')
   if (isURL(path) || item?.url) {
     const newWindow = window.open((item?.url || path) as string)
@@ -130,8 +133,9 @@ function selectMenu(key: string, item: MenuOption) {
 watch(
   () => route.fullPath,
   (fullPath) => {
-    selectedKeys.value = fullPath
-    setTimeout(() => menuInstRef.value?.showOption(fullPath))
+    const activate = (route?.meta?.activate || fullPath) as string
+    selectedKeys.value = activate
+    setTimeout(() => menuInstRef.value?.showOption(activate))
   },
   {
     immediate: true,
@@ -154,8 +158,8 @@ const loading = computed(() => !user.isLogged)
       accordion
       :inverted="inverted || setting.isMenuInverted"
       :collapsed="collapsed"
-      :collapsed-width="64"
-      :collapsed-icon-size="32"
+      :collapsed-width="56"
+      :collapsed-icon-size="36"
       :icon-size="26"
       :options="menuOptions"
       :indent="setting.menu.indent"

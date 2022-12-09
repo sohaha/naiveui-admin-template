@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { format } from 'date-fns'
 import { NIcon, useMessage } from 'naive-ui'
 import inlayMenu from '@/menu'
 import type { RefFormInst } from '@/types/global'
@@ -11,12 +12,13 @@ const emit = defineEmits<{
   (e: 'loaded'): void
 }>()
 
-console.log('内置菜单', inlayMenu)
-
 const { t } = useLanguage()
 const state = stateStore()
 const user = userStore()
 const router = useRouter()
+
+const { say, ask, time } = useHello()
+const tip = computed(() => `${ask.value}，${say.value}`)
 
 const logout = () => {
   state.setLoadingMsg(t('logouting'))
@@ -129,9 +131,11 @@ watch(data, (data) => {
     user.setUset(data.data?.info ?? {})
     const menu = data.data?.menu
     if (import.meta.env.VITE_APP_REMOVE_MENU && menu && Array.isArray(menu))
-      user.setMenu(menu)
+      user.setMenus(menu)
     else if (inlayMenu)
-      user.setMenu(inlayMenu)
+      user.setMenus(inlayMenu)
+
+    user.appendMenus(data.data?.alone_menu ?? [])
 
     const permission = data.data?.permission
     if (permission && Array.isArray(permission))
@@ -191,7 +195,7 @@ const menuOptions = computed(() => [
 </script>
 
 <template>
-  <div v-if="loading" class="px-4 py-2 flex items-center group cursor-pointer">
+  <div v-if="loading" class="p-4 py-2 flex items-center group cursor-pointer">
     <NSkeleton class="flex-shrink-0" height="34px" width="34px" circle />
     <NSkeleton class=" ml-4" text />
   </div>
@@ -202,7 +206,7 @@ const menuOptions = computed(() => [
     :options="menuOptions"
     @select="menuSelect"
   >
-    <div class="px-4 py-2 flex items-center relative group cursor-pointer">
+    <div class="flex items-center relative group cursor-pointer p-2">
       <NAvatar
         v-if="user.getAvatar"
         round
@@ -219,10 +223,11 @@ const menuOptions = computed(() => [
       >
         {{ user.getNickName }}
       </NAvatar>
-      <div class="truncate flex-1 pl-3 " :class="{ hidden: props.collapsed }">
+      <div class="truncate flex-1 pl-2 pr-3" :class="{ hidden: props.collapsed }">
         {{ user.getNickName }}
+        <span class="block text-xs opacity-70">{{ tip }}</span>
       </div>
-      <NIcon v-show="!props.collapsed " class="i-bx-log-out absolute right-2  m-auto" />
+      <NIcon v-show="!props.collapsed " class="i-bx-log-out absolute right-2 m-auto top-1.5" />
     </div>
   </NDropdown>
   <NModal

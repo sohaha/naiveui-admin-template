@@ -47,9 +47,9 @@ export default <StMenu[]>[
               zh: '功能表格',
             },
             children: [
-              { path: '/example/layout/table-form/1' },
-              { path: '/example/layout/table-form/2' },
-              { path: '/example/layout/table-form/3' },
+              { path: '/example/layout/table-form/f1' },
+              { path: '/example/layout/table-form/f2' },
+              { path: '/example/layout/table-form/f3' },
             ],
           },
           {
@@ -63,6 +63,10 @@ export default <StMenu[]>[
           {
             icon: 'i-bx:bxs-edit-alt',
             path: '/example/layout/form-dynamic',
+          },
+          {
+            icon: 'i-bx-windows',
+            path: '/example/layout/form-drawer',
           },
         ],
       },

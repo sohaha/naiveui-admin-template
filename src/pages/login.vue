@@ -74,6 +74,17 @@ const formRef = ref()
 const loading = ref(false)
 const { run, error: loginErr } = useRequest(apiLogin, {
   manual: true,
+  onAfter() {
+    loading.value = false
+  },
+  onBefore(params) {
+    loading.value = true
+    return params
+  },
+  onError(err) {
+    if (err)
+      window.$message.error(err.message)
+  },
 })
 
 const route = useRoute()
@@ -92,7 +103,6 @@ const { run: getMe } = useRequest(apiMe, {
       window.$message.error(err.message)
   },
   onSuccess() {
-    loading.value = false
     // if (!data?.is_super)
     //   console.log('不是超级管理员')
 
@@ -111,11 +121,9 @@ function onLogin() {
   formRef.value.validate(async (errors: string) => {
     if (errors)
       return
-    loading.value = true
     const res = await run(model.value.username, model.value.password)
 
     if (loginErr.value) {
-      loading.value = false
       message.error(loginErr.value?.message)
       return
     }
@@ -123,7 +131,6 @@ function onLogin() {
     const { data } = res!
     const token = data?.token
     if (!token) {
-      loading.value = false
       message.error(res?.msg ?? '获取授权 Token 失败')
       return
     }
@@ -157,7 +164,7 @@ function onTab() {
         </div>
       </div>
       <NElement
-        class="w-full lg:min-w-[470px] flex items-center justify-center px-0 z-0 bg-[var(--base-color)] md:px-16 lg:w-2/5"
+        class="w-full lg:min-w-[470px] flex items-center justify-center px-0 z-0 bg-[var(--a-bg-color)] md:px-16 lg:w-2/5"
       >
         <div
           class="lg:hidden fixed z-10 inset-0 bg-no-repeat bg-cover items-center bg-black bg-image"
@@ -165,7 +172,7 @@ function onTab() {
           <div class="absolute bg-black opacity-60 inset-0 z-0" />
         </div>
         <NElement
-          class="w-full py-6 z-20 mb-10 min-h-[300px] min-w-[200px] max-w-[400px] rounded-lg p-14 shadow-lg bg-[var(--base-color)] text-[var(--primary-color)] mx-4 sm:mx-auto lg:opacity-100 lg:shadow-none opacity-90"
+          class="w-full py-6 z-20 mb-10 min-h-[300px] min-w-[200px] max-w-[400px] p-14 shadow-lg bg-[var(--a-bg-color)] text-[var(--primary-color)] mx-4 sm:mx-auto lg:opacity-100 lg:shadow-none opacity-90"
         >
           <div class="text-center text-2xl font-bold relative">
             <div class="pb-1">

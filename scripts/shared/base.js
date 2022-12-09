@@ -16,7 +16,7 @@ const moduleTypes = [
 
 const showDir = (type) => {
   if (type === 'api')
-    return 'api'
+    return 'apis'
 
   return `${type}s`
 }

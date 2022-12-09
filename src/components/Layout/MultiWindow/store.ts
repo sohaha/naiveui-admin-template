@@ -21,7 +21,6 @@ export interface Window {
   baseComponent?: Component
   close: () => void
   refresh: () => void
-
   rename: (name: string) => {}
 }
 
@@ -41,11 +40,13 @@ export default function useStore() {
       return {
         fullPath: item.fullPath,
         meta: item.meta,
+        name: item.name,
       }
     })
     if (!currentWindow.value && route.fullPath !== '/load') {
       tabs.push({
         meta: route.meta,
+        name: '',
         fullPath: route.fullPath,
       })
     }
@@ -225,8 +226,10 @@ export default function useStore() {
       refresh() {
         refreshWindow(key)
       },
-      rename(name: string) {
-        windowRename(key, name)
+      rename(name: string, meta?: any) {
+        if (isObject(name))
+          windowRename(key, '', name)
+        else windowRename(key, name, meta)
       },
     }) as any
 
@@ -249,21 +252,35 @@ export default function useStore() {
   }
 
   function closeWindow(windowOrKey: Window | string) {
+    // const l = windows.length
     // TODO dev 禁止关闭全部？
-    // if (windows.length === 1) {
+    // if (l === 1) {
     //   return
     // }
 
-    if (hasCurrentWindow(windowOrKey))
-      router.back()
-
+    console.time('closeWindow')
     const index = findWindowIndex(windowOrKey)
 
-    if (index > -1)
-      windows.splice(index, 1)
+    if (hasCurrentWindow(windowOrKey)) {
+      const next = windows[index + 1] || windows[index - 1]
+      next && router.push(next.path)
+      console.log(next.path)
+    }
+
+    windows.splice(index, 1)
+    // setTimeout(() => {
+    //   if (index > -1) {
+    //     console.time('splice')
+    //     windows.splice(index, 1)
+    //     console.timeEnd('splice')
+    //   }
+    // })
+
+    console.timeEnd('closeWindow')
   }
 
   function closeTab(fullPath: string) {
+    console.time('closeTab')
     const w = findWindowByFullPath(fullPath)
     if (!w) {
       if (route.fullPath === fullPath) {
@@ -275,6 +292,8 @@ export default function useStore() {
       return
     }
     w.close()
+
+    console.timeEnd('closeTab')
   }
 
   function closeWindowForOther(
@@ -329,10 +348,13 @@ export default function useStore() {
     }
   }
 
-  function windowRename(windowOrKey: Window | string, name: string) {
+  function windowRename(windowOrKey: Window | string, name: string, meta?: any) {
     const window = findWindow(windowOrKey)
-    if (window)
-      window.name = name
+    if (window) {
+      name && (window.name = name)
+      window.meta = { ...window.meta, title: null, i18n: null, ...meta }
+      updateTitle()
+    }
   }
 
   return {

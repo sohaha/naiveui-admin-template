@@ -21,7 +21,7 @@ export default {
           },
         )
       })
-      return h('div', { class: 'space-y-4' }, [...slots])
+      return h('div', { class: 'space-y-3' }, [...slots])
     }
   },
 }

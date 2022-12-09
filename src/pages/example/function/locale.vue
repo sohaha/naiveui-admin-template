@@ -4,7 +4,7 @@ const { t, locale, toggleLocale } = useLanguage()
 
 <template>
   <Card>
-    <div class="space-y-4">
+    <div class="space-y-3">
       <div>
         内容 : {{ t('hello') }} | {{ t('not-found') }} |
         {{ t('login.title') }}

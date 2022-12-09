@@ -8,9 +8,9 @@ function back() {
 </script>
 
 <template>
-  <div class="p-4 h-full bg-[var(--a-bg-color)] ">
+  <div class="p-3 h-full bg-[var(--a-bg-color)] ">
     <Card>
-      <div class="space-x-4">
+      <div class="space-x-3">
         <NButton @click="toggle">
           切换满屏
         </NButton>

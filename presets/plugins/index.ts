@@ -148,7 +148,7 @@ export default () => {
         dirs: [
           !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/stores',
           !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/composables',
-          !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/api',
+          !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/apis',
           !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/utils',
         ],
         dts: resolve(__dirname, '../../src/types/auto-imports.d.ts'),
