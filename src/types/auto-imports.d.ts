@@ -15,6 +15,7 @@ declare global {
   const apiModelLists: typeof import('../apis/model')['apiModelLists']
   const apiModelSave: typeof import('../apis/model')['apiModelSave']
   const apiModelView: typeof import('../apis/model')['apiModelView']
+  const apiOperationLogs: typeof import('../apis/base')['apiOperationLogs']
   const apiSettings: typeof import('../apis/base')['apiSettings']
   const apiUserCreare: typeof import('../apis/user')['apiUserCreare']
   const apiUserDelete: typeof import('../apis/user')['apiUserDelete']

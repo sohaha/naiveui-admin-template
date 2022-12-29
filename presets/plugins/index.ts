@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import I18n from '@intlify/vite-plugin-vue-i18n'
+import I18n from '@intlify/unplugin-vue-i18n/vite'
 import htmlMinimize from '@sergeymakinen/vite-plugin-html-minimize'
 import presetIcons from '@unocss/preset-icons'
 import presetWind from '@unocss/preset-wind'

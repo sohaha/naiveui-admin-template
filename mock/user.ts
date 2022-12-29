@@ -62,7 +62,7 @@ export default [
       const { query } = v
       if (query.id)
         return UseriInfo(v)
-      return createLists(v, query)
+      return createLists(v)
     },
   },
   {

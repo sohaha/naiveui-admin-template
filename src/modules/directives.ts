@@ -1,6 +1,8 @@
 import type { App, ObjectDirective } from 'vue'
+import { MotionPlugin } from '@vueuse/motion'
 
 export default (app: App<Element>) => {
+  app.use(MotionPlugin)
   app.directive('throttled', throttle())
   app.directive('permission', permission())
 }

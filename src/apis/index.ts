@@ -100,8 +100,8 @@ api.interceptors.response.use(
     switch (status) {
       case 400:
         message = data?.msg || '输入不合法'
-        return Promise.reject(Error(message, cause))
-      // break
+        // return Promise.reject(Error(message, cause))
+        break
       case 401:
         throttledFn()
         return Promise.reject()

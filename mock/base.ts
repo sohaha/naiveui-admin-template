@@ -80,4 +80,47 @@ export default [
       return { code: 0, msg: '更新成功' }
     },
   },
+  {
+    url: '/manage/base/logs',
+    method: 'get',
+    response: (v) => {
+      const { query } = v
+      return {
+        code: 0,
+        data: {
+          page: {
+            total: 100,
+            curpage: query.page,
+          },
+          [`items|${query.pagesize}`]: [
+            {
+              'id|+1': query.pagesize * (query.page - 1) + 1,
+              ...logsFake(),
+            },
+          ],
+        },
+      }
+    },
+  },
 ]
+
+const logsFake = () => {
+  return {
+    _id: '@id',
+    action: '@pick([\'登录\', \'退出\', \'添加\', \'删除\', \'修改\'])',
+    os: '@pick(["Windows", "MacOS", "android"])',
+    path: '@url',
+    result: '@pick([1,2])',
+    nickname: '@cname',
+    module: '@pick(["用户管理", "角色管理", "菜单管理", "日志管理", "系统设置"])',
+    os_version: '',
+    method: '@pick(["GET", "POST", "PUT", "DELETE"])',
+    browser: 'Edge',
+    browser_version: '108.0.1462.46',
+    ip: '@ip',
+    ip_region: '@county',
+    roles_name: ['管理员'],
+    created_at: '@date("yyyy-MM-dd HH:mm:ss")',
+    updated_at: '@datetime',
+  }
+}

@@ -32,14 +32,27 @@ export function apiHeartbeat(): Promise<InstApi> {
 }
 
 /**
+ * 操作日志
+ */
+export function apiOperationLogs(params: {
+  [x: string]: any
+  page: number
+  pagesize: number
+}, category?: number): Promise<InstApi> {
+  if (category)
+    params.category = category
+  return apis.get('/manage/base/logs', { params })
+}
+
+/**
  * 更新密码
  */
 export function apiEditPassword(
-  oldPasswd: string,
+  old_password: string,
   password: string,
 ): Promise<InstApi> {
-  return apis.put('/manage/base/password', {
-    old_passwd: oldPasswd,
+  return apis.patch('/manage/base/password', {
+    old_password,
     password,
   })
 }

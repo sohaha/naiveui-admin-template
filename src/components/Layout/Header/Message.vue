@@ -17,10 +17,15 @@ useRequest(apiHeartbeat, {
       console.error(e)
   },
 })
+
+const router = useRouter()
+function goMessagePage() {
+  router.push(`/message?_v=${Date.now()}`)
+}
 </script>
 
 <template>
-  <NButton v-if="state.unreadMessage" class="px-2" text>
+  <NButton v-if="state.unreadMessage" class="px-2" text @click="goMessagePage">
     <NBadge dot :value="state.unreadMessage" :max="10">
       <NIcon size="20" class="i-bx:mail-send" />
     </NBadge>

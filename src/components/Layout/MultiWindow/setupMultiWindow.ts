@@ -87,12 +87,14 @@ export function setupMultiWindow(routes: RouteRecordRaw[], useStore: any): any {
   const useStoreProxy = createUseStore(useStore)
   routes.forEach((route) => {
     if (route.path !== '/' && route.children) {
-      route.children.forEach((r) => {
+      route.children.forEach((r: RouteRecordRaw) => {
         const meta = r.meta || {}
         const { layout = 'Home', multiWindow = true } = meta
         meta.multiWindow = multiWindow
         r.meta = meta
-        if (multiWindow && layout === 'Home') { createMultiWindowComponentWrap(r, useStoreProxy) }
+        if (multiWindow && layout === 'Home') {
+          createMultiWindowComponentWrap(r, useStoreProxy)
+        }
         else {
           const component = r.component
           if (component) {

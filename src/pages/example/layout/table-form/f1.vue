@@ -22,7 +22,7 @@ function actions({ action = '', row = {} as Record<string, any> }) {
 </script>
 
 <template>
-  <DataTable id="data-table" :scroll-x="600" v-bind="config" @actions="actions" />
+  <DataTable id="data-table" virtual-scroll :scroll-x="600" v-bind="config" @actions="actions" />
 
   <DrawerForm
     v-model:show="showDrawer" height="100vh" placement="right" closable v-bind="formConfig"

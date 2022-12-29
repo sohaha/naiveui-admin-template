@@ -41,4 +41,3 @@ function uploadImg(files: Array<File>, callBack: (urls: string[]) => void) {
 <route lang="json">
 { "meta": {"title": "Markdown" } }
 </route>
-

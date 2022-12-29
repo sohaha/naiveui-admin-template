@@ -72,7 +72,7 @@ if (username.value)
 const model = ref(defaultVal)
 const formRef = ref()
 const loading = ref(false)
-const { run, error: loginErr } = useRequest(apiLogin, {
+const { run } = useRequest(apiLogin, {
   manual: true,
   onAfter() {
     loading.value = false
@@ -123,10 +123,8 @@ function onLogin() {
       return
     const res = await run(model.value.username, model.value.password)
 
-    if (loginErr.value) {
-      message.error(loginErr.value?.message)
+    if (!res)
       return
-    }
 
     const { data } = res!
     const token = data?.token

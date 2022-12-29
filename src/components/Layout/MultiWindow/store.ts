@@ -258,25 +258,17 @@ export default function useStore() {
     //   return
     // }
 
-    console.time('closeWindow')
     const index = findWindowIndex(windowOrKey)
 
     if (hasCurrentWindow(windowOrKey)) {
       const next = windows[index + 1] || windows[index - 1]
-      next && router.push(next.path)
-      console.log(next.path)
+      if (next)
+        router.push(next.path)
+      else
+        router.push('/')
     }
 
     windows.splice(index, 1)
-    // setTimeout(() => {
-    //   if (index > -1) {
-    //     console.time('splice')
-    //     windows.splice(index, 1)
-    //     console.timeEnd('splice')
-    //   }
-    // })
-
-    console.timeEnd('closeWindow')
   }
 
   function closeTab(fullPath: string) {

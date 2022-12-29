@@ -14,7 +14,7 @@ const props = defineProps({
 })
 
 const columns = props.columns.filter((v: any) => {
-  return typeof v.title !== 'function'
+  return typeof v.title !== 'function' && v.type !== 'expand'
 })
 
 const keys = useVModel(props, 'select') as any

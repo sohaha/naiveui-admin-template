@@ -46,7 +46,9 @@ router.afterEach((v) => {
     window.$loading?.finish()
   })
   const meta = v?.meta || {}
-  if (!firstDone) { first() }
+  if (!firstDone) {
+    first()
+  }
   else if (meta?.fullscreen) {
     (() => {
       const { toggle, isFullscreen, isSupported } = useWindowFullscreen(meta.layout === 'Home' || meta.layout === undefined)

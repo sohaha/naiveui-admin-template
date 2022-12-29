@@ -142,4 +142,3 @@ export function useTable() {
 
   return { ...table, showFilterDrawer }
 }
-

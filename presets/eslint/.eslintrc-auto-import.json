@@ -14,6 +14,7 @@
     "apiModelLists": true,
     "apiModelSave": true,
     "apiModelView": true,
+    "apiOperationLogs": true,
     "apiSettings": true,
     "apiUserCreare": true,
     "apiUserDelete": true,

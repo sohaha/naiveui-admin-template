@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { format } from 'date-fns'
 import { NIcon, useMessage } from 'naive-ui'
 import inlayMenu from '@/menu'
 import type { RefFormInst } from '@/types/global'
@@ -159,7 +158,9 @@ function menuSelect(key: number) {
       break
     case 2:
       logout()
-
+      break
+    case 3:
+      router.push('/message')
       break
   }
 }
@@ -170,6 +171,15 @@ const menuOptions = computed(() => [
     icon() {
       return h(NIcon, {
         class: 'i-bx-bxs-user',
+      })
+    },
+  },
+  {
+    label: t('logs'),
+    key: 3,
+    icon() {
+      return h(NIcon, {
+        class: 'i-bx-bxs-bell-ring',
       })
     },
   },
@@ -293,6 +303,7 @@ const menuOptions = computed(() => [
   "en": {
     "loading":"loading",
     "me": "Personal settings",
+    "logs": "Log view",
     "pass": "Change password",
     "logout": "Log out",
     "oPass": "Current",
@@ -308,6 +319,7 @@ const menuOptions = computed(() => [
   },
   "zh": {
     "me": "个人设置",
+    "logs": "日志查看",
     "loading": "数据载入中",
     "pass": "修改密码",
     "logout": "退出登录",

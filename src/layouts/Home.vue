@@ -2,7 +2,6 @@
 import type { StyleValue } from 'vue'
 import { useThemeVars } from 'naive-ui'
 import Loading from '@/components/Layout/Loading'
-
 const user = userStore()
 const route = useRoute()
 
@@ -75,7 +74,7 @@ watch(themeVars, (r) => {
       @expand="collapsed = false"
     >
       <ACard
-        class="m-3 mr-1"
+        v-motion-roll-left class="m-3 mr-1"
       >
         <div>
           <LayoutMenu
@@ -91,6 +90,7 @@ watch(themeVars, (r) => {
         <NScrollbar style="max-height: 100vh">
           <div class="p-3 pl-2 pb-0 sticky -top-4 z-10">
             <LayoutHeader
+              v-motion-roll-top
               :collapsed="collapsed"
               @update:collapsed="collapsed = $event"
             />

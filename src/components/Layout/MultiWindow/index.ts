@@ -30,11 +30,9 @@ export function onRefresh(callback: any) {
   refreshCallback.push(callback)
 
   function removeEvent() {
-    console.time('removeEvent')
     const index = refreshCallback.indexOf(callback)
     if (index > -1)
       refreshCallback.splice(index, 1)
-    console.timeEnd('removeEvent')
   }
 
   onBeforeUnmount(() => removeEvent())
