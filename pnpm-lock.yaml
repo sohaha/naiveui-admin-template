@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@sohaha/zlog':
+    specifier: ^0.0.2
+    version: 0.0.2
   '@vueuse/core':
     specifier: ^9.13.0
     version: 9.13.0(vue@3.3.4)
@@ -1348,6 +1351,10 @@ packages:
       html-minifier-terser: 5.1.1
       vite: 4.3.9(@types/node@18.11.13)(terser@5.18.1)
     dev: true
+
+  /@sohaha/zlog@0.0.2:
+    resolution: {integrity: sha512-Ct+pdV5e7pe1VpoGXzBin4bPv2KBZwoZAd9OCiz71Gplxowu1zMLsiSEjT+7c2g9aXvnkikcEtRLALksirc6ag==}
+    dev: false
 
   /@types/estree@1.0.0:
     resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
@@ -7339,7 +7346,7 @@ packages:
       '@babel/types': registry.npmmirror.com/@babel/types@7.20.7
       '@vue/shared': registry.npmmirror.com/@vue/shared@3.0.11
       estree-walker: registry.npmmirror.com/estree-walker@2.0.2
-      source-map: registry.npmmirror.com/source-map@0.6.1
+      source-map: 0.6.1
     dev: true
 
   registry.npmmirror.com/@vue/compiler-dom@3.0.11:
@@ -8336,7 +8343,7 @@ packages:
     name: merge-source-map
     version: 1.1.0
     dependencies:
-      source-map: registry.npmmirror.com/source-map@0.6.1
+      source-map: 0.6.1
     dev: true
 
   registry.npmmirror.com/merge2@1.4.1:
@@ -9050,7 +9057,7 @@ packages:
     dependencies:
       colorette: registry.npmmirror.com/colorette@1.4.0
       nanoid: registry.npmmirror.com/nanoid@3.3.4
-      source-map: registry.npmmirror.com/source-map@0.6.1
+      source-map: 0.6.1
       vfile-location: registry.npmmirror.com/vfile-location@3.2.0
     dev: true
 

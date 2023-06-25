@@ -19,6 +19,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@sohaha/zlog": "^0.0.2",
     "@vueuse/core": "^9.13.0",
     "@vueuse/motion": "2.0.0-beta.26",
     "ayyui": "^0.1.14",

@@ -74,6 +74,14 @@ export default [
     },
   },
   {
+    url: '/manage/base/site',
+    method: 'get',
+    timeout: 0,
+    response: () => {
+      return { code: 0, msg: '系统信息', data: {} }
+    },
+  },
+  {
     url: '/manage/base/password',
     method: 'put',
     response: () => {

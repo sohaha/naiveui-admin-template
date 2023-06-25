@@ -60,8 +60,8 @@ export default () => {
       exclude: (() => {
         const exclude = ['**/components/**', '**/layouts/**']
 
-        if (!env.IS_PROD || env.VITE_APP_MOCK_IN_PRODUCTION)
-          exclude.push('src/pages/example/**')
+        if (env.IS_PROD && !env.VITE_APP_MOCK_IN_PRODUCTION)
+          exclude.push('**/example/**')
 
         return exclude
       })(),

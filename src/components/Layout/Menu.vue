@@ -62,7 +62,7 @@ function parse(d: any) {
 
 const routes = router.getRoutes()
 function findRoute(path: string) {
-  const r = routes.find((route) => {
+  const r = routes.find((route: any) => {
     return route.path === path
   })
 

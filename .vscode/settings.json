@@ -1,4 +1,7 @@
 {
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "vue-router"
+  ],
   "i18n-ally.localesPaths": [
     "locales"
   ],
