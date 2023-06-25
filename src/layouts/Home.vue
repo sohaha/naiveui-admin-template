@@ -50,17 +50,10 @@ const contentStyle = computed(() => {
     margin: 'auto',
   } as StyleValue
 })
-
-const layoutRef = ref()
-const themeVars = useThemeVars()
-const borderRadius = useCssVar('--n-border-radius', layoutRef)
-watch(themeVars, (r) => {
-  borderRadius.value = r.borderRadius
-}, { immediate: true })
 </script>
 
 <template>
-  <NLayout ref="layoutRef" class="h-screen " has-sider :style="layoutStyle">
+  <NLayout class="h-screen " has-sider :style="layoutStyle">
     <NLayoutSider
       :inverted="setting.isMenuInverted"
       collapse-mode="width"

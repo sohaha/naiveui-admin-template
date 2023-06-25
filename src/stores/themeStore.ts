@@ -49,7 +49,7 @@ export default defineStore('themeStore', {
       const dataTable: Partial<DataTableThemeVars> = {}
 
       if (this.style === 'block')
-        common.borderRadius = '0'
+        common.borderRadius = '3px'
 
       if (isDark.value) {
         common.baseColor = '#101014'

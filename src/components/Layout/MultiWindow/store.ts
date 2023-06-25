@@ -213,7 +213,7 @@ export default function useStore() {
       path,
       fullPath,
       meta,
-      name: typeof meta.title === 'string' ? meta.title : name || '<未命名>',
+      name: typeof meta.title === 'string' ? meta.title : (name || '<未命名>'),
       scrollTop: 0,
       scrollLeft: 0,
       refreshKey: 1,

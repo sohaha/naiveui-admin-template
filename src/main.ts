@@ -2,6 +2,7 @@ import 'uno.css'
 import './styles/main.css'
 
 import App from './App.vue'
+import model from './modules'
 
 const loading = document.querySelector('#loading') as HTMLElement
 if (loading) {
@@ -10,4 +11,5 @@ if (loading) {
 }
 
 const app = createApp(App)
+model(app)
 app.mount('#app')

@@ -29,9 +29,11 @@ export const i18n = createI18n({
   locale: locale.value as string,
   fallbackLocale: 'en',
 })
+
 watch(locale, (locale) => {
   i18n.global.locale.value = locale
 })
+
 Object.keys(messages).forEach((k) => {
   i18n.global.setLocaleMessage(k, messages[k])
 })

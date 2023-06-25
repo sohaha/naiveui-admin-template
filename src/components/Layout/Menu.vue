@@ -144,7 +144,7 @@ watch(
 
 const setting = settingStore()
 const styleVal = computed(() =>
-  props.inverted && !isDark.value ? 'background:#2e2e2e;' : '',
+  (props.inverted && !isDark.value) ? 'background:#2e2e2e;' : '',
 )
 
 const loading = computed(() => !user.isLogged)

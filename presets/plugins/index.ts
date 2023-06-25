@@ -1,8 +1,7 @@
 import { resolve } from 'path'
 import I18n from '@intlify/unplugin-vue-i18n/vite'
 import htmlMinimize from '@sergeymakinen/vite-plugin-html-minimize'
-import presetIcons from '@unocss/preset-icons'
-import presetWind from '@unocss/preset-wind'
+
 import Vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { AyyComponentResolver, presetCore, presetThemeDefault } from 'ayyui'
@@ -35,10 +34,8 @@ import {
   ViewUiResolver, VueUseComponentsResolver, Vuetify3Resolver,
 } from 'unplugin-vue-components/resolvers'
 import type { ComponentResolver } from 'unplugin-vue-components/types'
-import Modules from 'vite-plugin-use-modules'
 import { env } from '../shared/env'
 import { AutoImportResolvers, normalizeResolvers } from '../shared/resolvers'
-// import { ESLintPlugin } from './eslint'
 import { ESLintPlugin } from './eslint'
 import H5Plugins from './h5'
 import { GenerateTitle } from './html'
@@ -48,9 +45,6 @@ import { RemovelogPlugin } from './removelog'
 
 export default () => {
   return [
-    Modules({
-      auto: true,
-    }),
     GenerateTitle(),
     Vue({
       include: [/\.vue$/, /\.md$/],
@@ -79,34 +73,7 @@ export default () => {
       dev: env.VITE_DEV_INSPECT,
       enabled: env.VITE_DEV_INSPECT,
     }),
-    Unocss({
-      presets: [
-        presetAttributify(),
-        presetUno(),
-        presetWind(),
-        presetCore(),
-        presetThemeDefault(),
-        // https://icones.netlify.app/
-        presetIcons({
-          scale: 1.2,
-          extraProperties: {
-            'height': '1em',
-            'width': '1em',
-            'flex-shrink': '0',
-            'display': 'inline-block',
-            'vertical-align': 'middle',
-          },
-        }),
-      ],
-      include: [
-        /.*\/ayyui\.js(.*)?$/,
-        './**/*.vue',
-        './**/*.md',
-        './**/*.ts',
-        './**/*.tsx',
-        './src/menu.json',
-      ],
-    }),
+    Unocss(),
     MockPlugin(),
     Components({
       dirs: ['src/components'],

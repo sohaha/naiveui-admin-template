@@ -8,28 +8,26 @@
   // 开启 eslint
   "eslint.enable": true,
   // 开启 prettier
-  "prettier.enable": false,
+  "prettier.enable": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
   "editor.linkedEditing": true,
   // 开启 eslint 作为格式化工具
   "eslint.format.enable": true,
-  // 包管理器 pnpm
-  "eslint.packageManager": "npm",
   // 默认格式化选择 prettier,
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[vue]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
   "[css]": {
     "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "[javascript]": {
     "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
@@ -37,6 +35,8 @@
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "i18n-ally.sortKeys": true,
+  "i18n-ally.keepFulfilled": true,
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
@@ -73,5 +73,8 @@
     "titleBar.inactiveBackground": "#59444b99",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "#59444b"
+  "peacock.color": "#59444b",
+  "[json]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  }
 }

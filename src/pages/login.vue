@@ -56,7 +56,7 @@ const rules = computed(() => {
 })
 
 const defaultVal
-  = import.meta.env.DEV || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true'
+  = (import.meta.env.DEV || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true')
     ? {
         username: 'manage',
         password: '123456',
@@ -170,7 +170,7 @@ function onTab() {
           <div class="absolute bg-black opacity-60 inset-0 z-0" />
         </div>
         <NElement
-          class="w-full py-6 z-20 mb-10 min-h-[300px] min-w-[200px] max-w-[400px] p-14 shadow-lg bg-[var(--a-bg-color)] text-[var(--primary-color)] mx-4 sm:mx-auto lg:opacity-100 lg:shadow-none opacity-90"
+          class="w-full py-6 z-20 mb-10 min-h-[300px] min-w-[200px] max-w-[400px] p-14 shadow-lg bg-[var(--a-bg-color)] text-[var(--primary-color)] mx-4 sm:mx-auto lg:opacity-100 lg:shadow-none opacity-90 rounded-[var(--n-border-radius)]"
         >
           <div class="text-center text-2xl font-bold relative">
             <div class="pb-1">
@@ -216,19 +216,6 @@ function onTab() {
                       </template>
                     </NInput>
                   </NFormItem>
-                  <!--  <n-form-item> -->
-                  <!--    <div class="flex w-full justify-between"> -->
-                  <!--      <div class="flex-initial"> -->
-                  <!--        <n-checkbox> 自动登录</n-checkbox> -->
-                  <!--      </div> -->
-                  <!--      <div class="flex-initial order-last"> -->
-                  <!--        <NButton text> -->
-                  <!--          忘记密码 -->
-                  <!--        </NButton> -->
-                  <!--      </div> -->
-                  <!--    </div> -->
-                  <!--  </n-form-item> -->
-
                   <div class="space-y-4">
                     <NCheckbox v-model:checked="user.keepLogin">
                       {{ t('keep') }}

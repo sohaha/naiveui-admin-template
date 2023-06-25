@@ -8,10 +8,18 @@ const isZhCN = computed(() => language.value === '中文')
 const uiLocale = computed(() => (isZhCN.value ? zhCN : enUS))
 const dateLocale = computed(() => (isZhCN.value ? dateZhCN : dateEnUS))
 const state = stateStore()
+
+const layoutRef = ref()
+const themeVars = useThemeVars()
+const borderRadius = useCssVar('--n-border-radius', layoutRef)
+watch(themeVars, (r) => {
+  borderRadius.value = r.borderRadius
+}, { immediate: true })
 </script>
 
 <template>
   <NConfigProvider
+    ref="layoutRef"
     preflight-style-disabled
     :date-locale="dateLocale"
     :locale="uiLocale"
