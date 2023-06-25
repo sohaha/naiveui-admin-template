@@ -16,6 +16,7 @@
     "auto:remove": "plop --plopfile scripts/remove.js",
     "lint": "eslint --ext .ts,.js,.jsx,.vue .",
     "lint:fix": "eslint --fix --ext .ts,.js,.jsx,.vue .",
+    "release": "npx bumpp -r && npm -r publish --access public",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -71,8 +72,10 @@
     "vite-plugin-inspect": "^0.7.29",
     "vite-plugin-mock": "^2.9.8",
     "vite-plugin-pages": "^0.28.0",
+    "vite-plugin-pwa": "^0.16.4",
     "vite-plugin-removelog": "^0.2.1",
     "vite-plugin-restart": "^0.2.0",
+    "vite-plugin-vue-devtools": "^0.3.0",
     "vite-plugin-vue-meta-layouts": "^0.1.2",
     "vue-echarts": "^6.6.0",
     "vue-eslint-parser": "^9.3.1",

@@ -1,16 +1,13 @@
 import { resolve } from 'path'
 import I18n from '@intlify/unplugin-vue-i18n/vite'
 import htmlMinimize from '@sergeymakinen/vite-plugin-html-minimize'
-
 import Vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import { AyyComponentResolver, presetCore, presetThemeDefault } from 'ayyui'
-import { presetAttributify, presetUno } from 'unocss'
+import { AyyComponentResolver } from 'ayyui'
 import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import Compression from 'vite-plugin-compression'
-import Inspect from 'vite-plugin-inspect'
 import Pages from 'vite-plugin-pages'
 import ViteRestart from 'vite-plugin-restart'
 import Layouts from 'vite-plugin-vue-meta-layouts'
@@ -41,7 +38,9 @@ import H5Plugins from './h5'
 import { GenerateTitle } from './html'
 import { LegacyPlugin } from './legacy'
 import { MockPlugin } from './mock'
+import { DevPlugins } from './dev'
 import { RemovelogPlugin } from './removelog'
+import { PWAPlugin } from './pwa'
 
 export default () => {
   return [
@@ -49,6 +48,7 @@ export default () => {
     Vue({
       include: [/\.vue$/, /\.md$/],
     }),
+    ...DevPlugins(),
     Pages({
       extensions: ['vue', 'tsx'],
       importMode(filepath) {
@@ -69,10 +69,7 @@ export default () => {
     Layouts({
       defaultLayout: 'Home',
     }),
-    Inspect({
-      dev: env.VITE_DEV_INSPECT,
-      enabled: env.VITE_DEV_INSPECT,
-    }),
+    PWAPlugin(),
     Unocss(),
     MockPlugin(),
     Components({
