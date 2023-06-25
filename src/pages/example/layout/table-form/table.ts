@@ -36,7 +36,7 @@ export function useTable() {
       filterOptions.value.quaternary = false
       showFilterDrawer.value = true
     },
-  }, 'new', 'reload', 'columns', {
+  }, 'new', 'refresh', 'columns', {
     title: '导出',
     icon: 'i-bx:export',
     action: () => {

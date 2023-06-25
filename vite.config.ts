@@ -8,7 +8,7 @@ import { ServerConfig } from './presets/server'
 import { env } from './presets/shared/env'
 
 export default defineConfig({
-  base: env.IS_PROD && env.VITE_BUILD_BASE ? `${env.VITE_BUILD_BASE}` : '/',
+  base: (env.IS_PROD && env.VITE_BUILD_BASE) ? `${env.VITE_BUILD_BASE}` : '/',
   define: {
     __VUE_OPTIONS_API__: false,
     // __VUE_PROD_DEVTOOLS__: true,

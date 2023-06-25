@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import { NIcon } from 'naive-ui'
 
+const props = withDefaults(defineProps<{
+  size?: number
+}>(), { size: 20 })
+
 const { t } = useLanguage()
 const window = multiWindowStore()
 const state = stateStore()
@@ -37,10 +41,9 @@ function menuSelect(key: string) {
     case 'refresh':
       if (window.currentWindow) {
         window.currentWindow.refresh()
-        // router.push('/load')
         return
       }
-      router.push('/load')
+      router.push('/inlay/loading')
       break
     case 'toggleFullscreen':
       toggleFullscreen()
@@ -107,7 +110,7 @@ const menuOptions = computed(() => [
     @select="menuSelect"
   >
     <NButton class="px-2" text>
-      <NIcon size="20" class="i-bx:windows" />
+      <NIcon :size="props.size" class="i-bx:windows" />
     </NButton>
   </NDropdown>
 </template>

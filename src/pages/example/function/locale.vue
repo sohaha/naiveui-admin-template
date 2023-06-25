@@ -29,7 +29,7 @@ const { t, locale, toggleLocale } = useLanguage()
 meta:
   i18n:
     en: Localization
-    zh: 本土化
+    zh: 多语言包
 </route>
 
 <i18n lang="yml">

@@ -99,10 +99,15 @@ const menuOptions = computed<MenuOption[]>(() => {
     import.meta.env.DEV
   || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true' || import.meta.env.VITE_BUILD_DEMONSTRATE === 'true'
   ) {
+    if (menu.length > 0) {
+      menu.push({
+        type: 'divider',
+      })
+    }
     if (isObject(exampleMenu))
       menu.push(parse(exampleMenu))
-    else
-      for (const d of exampleMenu as any) menu.push(parse(d))
+
+    else for (const d of exampleMenu as any) menu.push(parse(d))
   }
 
   return menu
@@ -160,15 +165,13 @@ const loading = computed(() => !user.isLogged)
       :collapsed="collapsed"
       :collapsed-width="56"
       :collapsed-icon-size="36"
-      :icon-size="26"
+      :icon-size="30"
       :options="menuOptions"
       :indent="setting.menu.indent"
       :root-indent="setting.menu.rootIndent"
       :value="selectedKeys"
       @update:value="selectMenu"
     />
-    <NDivider v-show="hasMenu && !loading" class="!m-0" />
-    <LayoutUser :collapsed="collapsed" />
   </div>
 </template>
 

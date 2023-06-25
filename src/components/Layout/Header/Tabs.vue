@@ -3,6 +3,10 @@ import { isObject } from '@vueuse/core'
 import type { TabsInst } from 'naive-ui'
 import { NIcon } from 'naive-ui'
 
+const props = withDefaults(defineProps<{
+  size?: number
+}>(), { size: 20 })
+
 const { t, locale } = useLanguage()
 const multiWindow = multiWindowStore()
 const tabsRef = ref<TabsInst>()
@@ -79,7 +83,6 @@ const updateTab = router.push
   <NTabs
     ref="tabsRef"
     type="bar"
-    size="medium"
     :value="value"
     @update:value="updateTab"
   >

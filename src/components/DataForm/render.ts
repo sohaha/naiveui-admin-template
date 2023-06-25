@@ -29,7 +29,7 @@ import {
   NTreeSelect,
 } from 'naive-ui'
 import type { FormItemRule, FormRules } from 'naive-ui/lib/form/src/interface'
-import type { AllowedComponentProps, Component, VNodeArrayChildren } from 'vue'
+import type { AllowedComponentProps, Component, Ref, VNodeArrayChildren, VNodeChild } from 'vue'
 
 export type Components =
   | 'NInput'
@@ -68,9 +68,16 @@ function render(v: FormItemProps) {
 }
 
 export const renderMap: ComponentMap<Function> = {
-  div: (v: FormItemProps): renderData => ({
-    component: h('div', v.props, v.slots),
-  }),
+  div: (v: FormItemProps, model: any): renderData => {
+    if (v?.slots) {
+      return {
+        component: h('div', v.props, v.slots),
+      }
+    }
+    return {
+      component: h('div', v.props, v?.render?.(model) || []),
+    }
+  },
   NInput: (v: FormItemProps): renderData => ({
     component: NInput,
     ...render(v),
@@ -198,6 +205,7 @@ export interface FormItemProps {
   disabled?: boolean
   readonly?: boolean
   hidden?: boolean
+  render?: (v: Ref<Record<string, any>>) => VNodeChild
   slots?: any
 }
 
@@ -258,34 +266,37 @@ export function formItem(
   update: any,
 ) {
   const name = v.component
-  const { component, props, slots } = renderMap[name]
-    ? renderMap[name](v)
-    : ({} as renderData)
-  if (!component || v.hidden)
+  const isDiv = name === 'div'
+  const r = (!isDiv && name)
+    ? (renderMap[name]
+        ? renderMap[name](v, model)
+        : ({ component: h('div', { class: 'text-xs text-red' }, `不支持组件: ${name}`) } as renderData))
+    : { }
+  if (!isDiv && (!r.component || v.hidden))
     return ''
 
   const itemSlots: Record<string, any> = {
     default: () => {
-      if (name === 'div')
-        return component
+      if (isDiv)
+        return (renderMap.div)(v, model).component
 
-      const { onUpdateValue } = props || {}
+      const { onUpdateValue } = r.props || {}
       const value = model.value[key]
       if (v.readonly && !isNew.value && (value !== undefined && value !== null))
-        props.readonly = true
+        r.props.readonly = true
 
       return h(
-        component,
+        r.component,
         {
           disabled: v.disabled,
-          ...props,
+          ...r.props,
           value,
           onUpdateValue: (n: any) => {
             update(n)
             onUpdateValue && onUpdateValue(n)
           },
         },
-        slots,
+        r.slots,
       )
     },
   }

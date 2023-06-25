@@ -2,6 +2,7 @@
 import { NIcon, useMessage } from 'naive-ui'
 import inlayMenu from '@/menu'
 import type { RefFormInst } from '@/types/global'
+import { fixAvatar } from '@/utils/utils'
 
 const props = defineProps<{
   collapsed: boolean
@@ -101,6 +102,9 @@ function handleUpdatePassword(e: Event) {
         pass: '',
         reentered: '',
       }
+      const newToken = data?.data?.token
+      if (newToken)
+        user.setToken(newToken)
     }
     else if (data?.msg) {
       message.error(data.msg)
@@ -108,21 +112,12 @@ function handleUpdatePassword(e: Event) {
   })
 }
 
-const { loading, data } = useRequest(apiMe, {
-  cacheKey: 'me',
-  staleTime: 3000,
-  onBefore(params) {
-    // state.setLoadingMsg(t('loading'))
-    return params
-  },
-  onAfter() {
-    // state.setLoadingMsg('')
-  },
-  onSuccess(data) {
-  },
-  onError(err) {
-    if (err)
-      window.$message.error(err.message)
+lock.lockWrite()
+const { loading, data } = apiMe({
+  manual: false,
+  onAfter: (v: any) => {
+    lock.unlockWrite()
+    return v
   },
 })
 watch(data, (data) => {
@@ -149,9 +144,7 @@ watch(data, (data) => {
 function menuSelect(key: number) {
   switch (key) {
     case 0:
-      // router.push({
-      //   name: 'userDetail',
-      // })
+      router.push('/inlay/detail')
       break
     case 1:
       showUpdatePassword.value = true
@@ -160,7 +153,7 @@ function menuSelect(key: number) {
       logout()
       break
     case 3:
-      router.push('/message')
+      router.push('/inlay/message')
       break
   }
 }
@@ -220,14 +213,13 @@ const menuOptions = computed(() => [
       <NAvatar
         v-if="user.getAvatar"
         round
-        :src="user.getAvatar"
+        :src="fixAvatar(user.getAvatar)"
         class="flex-shrink-0"
         :class="{ 'm-auto': props.collapsed }"
       />
       <NAvatar
         v-else
         round
-        :src="user.getAvatar"
         class="flex-shrink-0"
         :class="{ 'm-auto': props.collapsed }"
       >
@@ -237,7 +229,7 @@ const menuOptions = computed(() => [
         {{ user.getNickName }}
         <span class="block text-xs opacity-70">{{ tip }}</span>
       </div>
-      <NIcon v-show="!props.collapsed " class="i-bx-log-out absolute right-2 m-auto top-1.5" />
+      <NIcon v-show="!props.collapsed " class="i-bx-dots-vertical absolute right-2 m-auto top-1.5" />
     </div>
   </NDropdown>
   <NModal

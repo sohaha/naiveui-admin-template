@@ -43,8 +43,8 @@ html.dark .n-popover {
 .n-card {
   --un-shadow: var(--un-shadow-inset) 0 10px 15px -3px var(--un-shadow-color, rgba(0, 0, 0, 0.1)),
     var(--un-shadow-inset) 0 4px 6px -4px var(--un-shadow-color, rgba(0, 0, 0, 0.1));
-  box-shadow: var(--un-ring-offset-shadow), var(--un-ring-shadow),
-    var(--un-shadow);
+  --un-ring-shadow: 0 -1px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--un-ring-offset-shadow), var(--un-ring-shadow), var(--un-shadow);
   --un-bg-opacity: 1;
   background-color: hsla(var(--a-layer), var(--un-bg-opacity))
 }

@@ -92,13 +92,11 @@ const router = useRouter()
 
 // const { run: getPermissions } = useRequest(apiPermissions, { manual: true })
 
-const { run: getMe } = useRequest(apiMe, {
-  cacheKey: 'me',
-  manual: true,
+const { run: getMe } = apiMe({
   onAfter() {
     loading.value = false
   },
-  onError(err) {
+  onError(err: Error) {
     if (err)
       window.$message.error(err.message)
   },
@@ -133,9 +131,9 @@ function onLogin() {
       return
     }
 
-    message.success(t('success'))
     user.setToken(token)
     nextTick(getMe)
+    message.success(t('success'))
   })
 }
 
@@ -154,10 +152,10 @@ function onTab() {
         <div class="absolute bg-black opacity-50 inset-0 z-0" />
         <div class="w-full text-white mt-50 px-24 z-10 tracking-wide">
           <p class="text-xl" style="mix-blend-mode: multiply">
-            {{ t('poetry1') }}
+            {{ t("poetry1") }}
           </p>
           <p class="text-2xl mt-10 leading-loose">
-            {{ t('poetry2') }}
+            {{ t("poetry2") }}
           </p>
         </div>
       </div>
@@ -174,7 +172,7 @@ function onTab() {
         >
           <div class="text-center text-2xl font-bold relative">
             <div class="pb-1">
-              {{ t('title') }}
+              {{ t("title") }}
             </div>
           </div>
           <NTabs
@@ -218,7 +216,7 @@ function onTab() {
                   </NFormItem>
                   <div class="space-y-4">
                     <NCheckbox v-model:checked="user.keepLogin">
-                      {{ t('keep') }}
+                      {{ t("keep") }}
                     </NCheckbox>
                     <NButton
                       v-throttled
@@ -228,30 +226,30 @@ function onTab() {
                       :loading="loading"
                       @click="onLogin"
                     >
-                      {{ t('submit') }}
+                      {{ t("submit") }}
                     </NButton>
                   </div>
                 </NForm>
                 <div class="flex view-account-other mt-4">
                   <div class="flex-initial">
-                    <span>{{ t('other') }}</span>
+                    <span>{{ t("other") }}</span>
                   </div>
                   <div class="flex-initial mx-2">
                     <NPopover trigger="click">
                       <template #trigger>
                         <NIcon size="18" class="mi-wechat" />
                       </template>
-                      <span>{{ t('not-open') }}</span>
+                      <span>{{ t("not-open") }}</span>
                     </NPopover>
                   </div>
                   <div class="flex-initial" style="margin-left: auto">
                     <NPopover trigger="click">
                       <template #trigger>
                         <NButton text>
-                          {{ t('register') }}
+                          {{ t("register") }}
                         </NButton>
                       </template>
-                      <span>{{ t('not-open') }}</span>
+                      <span>{{ t("not-open") }}</span>
                     </NPopover>
                   </div>
                 </div>
@@ -375,7 +373,7 @@ function onTab() {
 .bg-image {
   background-repeat: no-repeat;
   background-image: var(--backgroundImage);
-  /*background-image: url(https://source.unsplash.com/675x800/?Work&auto=format,enhance,compress&crop=entropy&fit=crop&q=80);*/
+  /*background-image: url(https://source.unsplash.com/675x800/?Eikon&auto=format,enhance,compress&crop=entropy&fit=crop&q=80);*/
   /*background-image: url(https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw=&ixlib=rb-1.2.1&auto=format,enhance,compress&crop=entropy&fit=crop&w=675&h=800&q=80);*/
 }
 

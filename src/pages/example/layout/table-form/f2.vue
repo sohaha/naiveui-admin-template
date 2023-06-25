@@ -31,7 +31,12 @@ watch(active, (v) => {
 
 <template>
   <Card id="data-table" padding="0" class="relative overflow-hidden">
-    <div class="text-center p-2">
+    <DataTable
+      :max-height="-(28 + 12 + 5)"
+      :scroll-x="600"
+      v-bind="config"
+      @actions="actions"
+    >
       <NRadioGroup v-model:value="active" size="small">
         <NRadioButton
           v-for="v in [{ label: '全部', value: '' }, { label: '正常', value: '1' }, { label: '禁用', value: '2' }]"
@@ -40,14 +45,7 @@ watch(active, (v) => {
           :label="v.label"
         />
       </NRadioGroup>
-    </div>
-    <NDivider class="!m-0" />
-    <DataTable
-      :max-height="-(28 + 12)"
-      :scroll-x="600"
-      v-bind="config"
-      @actions="actions"
-    />
+    </DataTable>
   </Card>
 
   <DrawerForm

@@ -4,3 +4,4 @@ node_modules
 .history/
 .idea/
 .env.*.local
+.DS_Store

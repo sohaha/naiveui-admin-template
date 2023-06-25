@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"path": ".",
+      "name": "Root"
+		},
+    {
+      "name": "Apis",
+      "path": "src/apis"
+    },
+    {
+      "name": "Pages",
+      "path": "src/pages"
+    },
+    {
+      "name": "Stores",
+      "path": "src/stores"
+    }
+  ],
+  "settings": {
+    "i18n-ally.localesPaths": [
+      "locales"
+    ]
+  }
+}

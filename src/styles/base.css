@@ -11,6 +11,10 @@ i[class^='mi-'] {
   background-size: 100% 100% !important;
 }
 
+.n-icon {
+  will-change: transform;
+}
+
 vite-error-overlay {
   z-index: 999999;
 }

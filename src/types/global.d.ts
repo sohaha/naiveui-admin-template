@@ -22,18 +22,19 @@ export { }
 
 export interface InstApi {
   code: number
-  msg: string
-  data: any
+  msg?: string
+  data?: any
 }
 
 export interface StMenu {
-  path : string
-  i18n?: boolean | {[key: string]: string}
+  type?: string
+  path: string
+  i18n?: boolean | { [key: string]: string }
   show?: boolean
   title?: string
-  icon ?: string
-  url ?: string
-  redirect ?: string
+  icon?: string
+  url?: string
+  redirect?: string
   children?: StMenu[]
 }
 

@@ -109,8 +109,10 @@ function memuPath(m: StMenu): string[] {
       p = p.concat(memuPath(item))
     })
   }
-  if (m.path)
+
+  else if (m.path) {
     p.push(m.path)
+  }
 
   return p
 }

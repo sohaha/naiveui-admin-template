@@ -4,7 +4,7 @@ import handler from './handler'
 import i18n from './i18n'
 import pinia from './pinia'
 import router from './router'
-import ui from './ui'
+import other from './other'
 
 export default (app: App) => {
   pinia(app)
@@ -12,5 +12,5 @@ export default (app: App) => {
   handler(app)
   directives(app)
   i18n(app)
-  ui(app)
+  other(app)
 }

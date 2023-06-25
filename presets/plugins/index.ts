@@ -87,6 +87,9 @@ export default () => {
           names: ['RouterLink', 'RouterView'],
         },
       ],
+      importPathTransform(path) {
+        return path.replace(/.tsx$/, '')
+      },
       resolvers: normalizeResolvers({
         onlyExist: [
           [VantResolver(), 'vant'],
@@ -111,41 +114,41 @@ export default () => {
       }) as ComponentResolver[],
     }),
     !env.VITE_APP_DISABLED_API_AUTO_IMPORT
-      && AutoImport({
-        dirs: [
-          !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/stores',
-          !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/composables',
-          !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/apis',
-          !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/utils',
-        ],
-        dts: resolve(__dirname, '../../src/types/auto-imports.d.ts'),
-        imports: normalizeResolvers({
-          onlyExist: [
-            [
-              {
-                'naive-ui': ['useMessage'],
-              } as any,
-              'naive-ui',
-            ],
-          ],
-          include: [
-            'vue',
-            'pinia',
-            'vue-i18n',
-            'vue-router',
-            '@vueuse/core',
+    && AutoImport({
+      dirs: [
+        !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/stores',
+        !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/composables',
+        !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/apis',
+        !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/utils',
+      ],
+      dts: resolve(__dirname, '../../src/types/auto-imports.d.ts'),
+      imports: normalizeResolvers({
+        onlyExist: [
+          [
             {
-              'vue-use-api': ['useRequest'],
-            },
+              'naive-ui': ['useMessage'],
+            } as any,
+            'naive-ui',
           ],
-        }) as any,
-        resolvers: AutoImportResolvers,
-        eslintrc: {
-          enabled: true,
-          globalsPropValue: true,
-          filepath: 'presets/eslint/.eslintrc-auto-import.json',
-        },
-      }),
+        ],
+        include: [
+          'vue',
+          'pinia',
+          'vue-i18n',
+          'vue-router',
+          '@vueuse/core',
+          {
+            'vue-use-api': ['useRequest'],
+          },
+        ],
+      }) as any,
+      resolvers: AutoImportResolvers,
+      eslintrc: {
+        enabled: true,
+        globalsPropValue: true,
+        filepath: 'presets/eslint/.eslintrc-auto-import.json',
+      },
+    }),
     I18n({
       runtimeOnly: true,
       compositionOnly: true,

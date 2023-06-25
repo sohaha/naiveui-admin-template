@@ -14,15 +14,10 @@ export * from './info'
 
 export function renderActionCol(
   click: Function,
-  size: 'tiny' | 'small' | 'medium' | 'large',
-  more: any[],
+  size: 'tiny' | 'small' | 'medium' | 'large' = 'small',
+  more?: any[],
 ) {
-  const popconfirmRef: any = ref(null)
-  const hide = () => {
-    popconfirmRef.value.$refs.popoverInstRef.setShow(false)
-  }
-
-  const children = more.map((v) => {
+  const children = (more || []).map((v) => {
     return h(
       NButton,
       {
@@ -57,49 +52,60 @@ export function renderActionCol(
           },
           { default: () => '[ 修改 ]' },
         ),
+        renderActionDelete(click, size),
+      ],
+    },
+  )
+}
+
+export function renderActionDelete(
+  click: Function,
+  size: 'tiny' | 'small' | 'medium' | 'large' = 'small',
+) {
+  const popconfirmRef: any = ref(null)
+  const hide = () => {
+    popconfirmRef.value.$refs.popoverInstRef.setShow(false)
+  }
+  return h(
+    NPopconfirm,
+    {
+      showIcon: false,
+      placement: 'left',
+      ref: popconfirmRef,
+    },
+    {
+      default: () => '请确定是否删除？',
+      trigger: () =>
         h(
-          NPopconfirm,
+          NButton,
           {
-            showIcon: false,
-            placement: 'left',
-            ref: popconfirmRef,
+            text: true,
+            type: 'error',
+            // ghost: true,
+            size,
           },
+          { default: () => '[ 删除 ]' },
+        ),
+      action: () => [
+        h(
+          NButton,
           {
-            default: () => '请确定是否删除？',
-            trigger: () =>
-              h(
-                NButton,
-                {
-                  text: true,
-                  type: 'error',
-                  // ghost: true,
-                  size,
-                },
-                { default: () => '[ 删除 ]' },
-              ),
-            action: () => [
-              h(
-                NButton,
-                {
-                  size,
-                  onClick: hide,
-                },
-                { default: () => '取消' },
-              ),
-              h(
-                NButton,
-                {
-                  type: 'error',
-                  size,
-                  onClick() {
-                    click('delete')
-                    hide()
-                  },
-                },
-                { default: () => '确定删除' },
-              ),
-            ],
+            size,
+            onClick: hide,
           },
+          { default: () => '取消' },
+        ),
+        h(
+          NButton,
+          {
+            type: 'error',
+            size,
+            onClick() {
+              click('delete')
+              hide()
+            },
+          },
+          { default: () => '确定删除' },
         ),
       ],
     },
@@ -118,9 +124,9 @@ export function useDataTable() {
   const action = ref<boolean | TableColumn>(true)
   const columns = ref<TableColumn[]>([])
   const pagination = ref<PaginationInfo>()
-  const toolbar = ref(['reload', 'columns']) // new, reload, columns
-  const rowKey = ref<any>((row: any) => row.id || row.key)
-  const config = computed(() => ({
+  const toolbar = ref<any[]>([]) // new, refresh, columns
+  const rowKey = ref<any>((row: any) => row.id || row._id || row.key)
+  const config = computed<any>(() => ({
     request: request.value,
     action: action.value,
     columns: columns.value,
@@ -171,7 +177,7 @@ export function useDataTable() {
 
       return request.value?.run({ ...arrg, ...params })
     },
-    reload() {
+    refresh() {
       nextTick(request.value?.refresh)
     },
   }
@@ -206,7 +212,7 @@ export function createReloadIcon(btn: { [key: string]: any }): VNode {
 export function createNewIcon(btn: { [key: string]: any }): VNode {
   return h(
     NTooltip,
-    { },
+    {},
     {
       default: () => h('span', '添加数据'),
       trigger: () =>

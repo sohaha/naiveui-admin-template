@@ -2,13 +2,14 @@ import type { NForm } from 'naive-ui'
 import type { PropType } from 'vue'
 import type { DynamicFormProps, FormItemProps } from './render'
 
-export function useDataForm() {
+export function useDataForm(o?: DynamicFormProps) {
   const formRef = ref<typeof NForm | null>(null)
   const loading = ref(false)
   const options = ref<DynamicFormProps>({
     requireMarkPlacement: 'left',
     submitBtn: '提 交',
     resetBtn: '重 置',
+    ...(o || {}),
   })
   const items = ref<Record<string, FormItemProps>>({})
   const config = computed(() => {

@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+const props = withDefaults(defineProps<{
+  size?: number
+}>(), { size: 20 })
+
 const { t } = useLanguage()
 </script>
 
@@ -6,7 +10,7 @@ const { t } = useLanguage()
   <NTooltip>
     <template #trigger>
       <NButton type="error" class="px-2" text>
-        <NIcon size="20" class="animate-pulse i-bx-wifi-off" />
+        <NIcon :size="props.size" class="animate-pulse i-bx-wifi-off" />
       </NButton>
     </template>
     {{ t('tip') }}

@@ -34,7 +34,7 @@ watch(active, (v) => {
     </Card>
     <DataTable
       id="data-table"
-      :max-height="-(48 + 12 / 6)"
+      :max-height="-(48 + 12 / 6 + 4)"
       :scroll-x="600"
       v-bind="config"
       @actions="actions"

@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+const props = withDefaults(defineProps<{
+  size?: number
+}>(), { size: 20 })
+
 const { t } = useLanguage()
 const { isFullscreen, isSupported, toggle: toggleFullscreen } = useFullscreen()
 </script>
@@ -8,7 +12,7 @@ const { isFullscreen, isSupported, toggle: toggleFullscreen } = useFullscreen()
     <template #trigger>
       <NButton v-if="isSupported" class="px-2" text @click="toggleFullscreen">
         <NIcon
-          size="20"
+          :size="props.size"
           :class="isFullscreen ? 'i-bx:exit-fullscreen' : 'i-bx:fullscreen'"
         />
       </NButton>

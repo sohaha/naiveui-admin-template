@@ -28,8 +28,8 @@ watch(themeVars, (r) => {
   >
     <NLoadingBarProvider>
       <!-- <NGlobalStyle /> -->
-      <NMessageProvider>
-        <NNotificationProvider>
+      <NMessageProvider :max="5">
+        <NNotificationProvider :max="8" placement="bottom-right">
           <NDialogProvider>
             <div :bordered="false" embedded>
               <NSpin :class="state.loadingMsg && 'bg-black'" :show="!!state.loadingMsg">

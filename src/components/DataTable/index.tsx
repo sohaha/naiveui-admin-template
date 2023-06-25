@@ -1,7 +1,7 @@
 import { ACard } from 'ayyui'
-import { NButton, NDataTable, NEllipsis, NIcon, NPagination, NTooltip } from 'naive-ui'
+import { NButton, NDataTable, NDivider, NEllipsis, NIcon, NPagination, NTooltip } from 'naive-ui'
 import type { TableColumns } from 'naive-ui/lib/data-table/src/interface'
-import type { PropType } from 'vue'
+import type { PropType, VNodeChild } from 'vue'
 import { resolveDirective, withDirectives } from 'vue'
 import ColumnSetting from './components'
 import { btnDefaultOption, createNewIcon, createReloadIcon, renderActionCol } from './utils'
@@ -46,14 +46,14 @@ export default defineComponent({
   },
   slots: [],
   emits: ['actions'],
-  setup(p, ctx) {
+  setup(p: any, ctx: any) {
     const { slots } = ctx
     const { size } = p
 
     const { t } = useI18n()
     const state = stateStore()
     const listsContentHeight = computed(
-      () => state.getPageContentHeight - 38 - (p.pagination ? 44 + 12 : 1),
+      () => state.getPageContentHeight - 38 - (p.pagination ? 44 + 12 - 4 : 2),
     )
 
     const select = ref<string[]>([])
@@ -124,7 +124,7 @@ export default defineComponent({
       align: 'center',
       fixed: 'right',
       title: () => {
-        return p.toolbar && p.toolbar?.length > 0 ? renderToolbar() : '操作'
+        return (p.toolbar && p.toolbar?.length > 0) ? renderToolbar() : '操作'
       },
     }
 
@@ -154,7 +154,9 @@ export default defineComponent({
       else if (p.minHeight === true) {
         values.minHeight = listsContentHeight.value
       }
-      else if (p.minHeight) { values.minHeight = p.minHeight }
+      else if (p.minHeight) {
+        values.minHeight = p.minHeight
+      }
 
       values.columns = p.columns.filter((c: any) => {
         return select.value.includes(c.key)
@@ -164,9 +166,20 @@ export default defineComponent({
           ellipsis: { tooltip: true }, ...c,
         }
       })
+
+      const actionWidth = (Array.isArray(p.action) ? p.action.length * 60 : 0)
+      const toolbarWidth = (p.toolbar?.length || 0) * 28
+
+      let actionColWidth = 0
+      if (actionWidth > toolbarWidth)
+        actionColWidth = defAction.width + actionWidth
+      else
+        actionColWidth = 118 + toolbarWidth
+
       if (p.action === true) {
         values.columns.push({
           ...defAction,
+          width: actionColWidth,
           render: (row: any) => {
             return renderActionCol(
               (action: string) => {
@@ -184,7 +197,7 @@ export default defineComponent({
       else if (Array.isArray(p.action)) {
         values.columns.push({
           ...defAction,
-          width: defAction.width + p.action.length * 60,
+          width: actionColWidth,
           render: (row: any) => {
             return renderActionCol(
               (action: string) => {
@@ -202,6 +215,7 @@ export default defineComponent({
       else if (typeof p.action === 'function') {
         values.columns.push({
           ...defAction,
+          width: actionColWidth,
           render: p.action,
         })
       }
@@ -257,12 +271,12 @@ export default defineComponent({
                 })
               },
             })
-          case 'reload':
+          case 'refresh':
             return createReloadIcon({ ...btnOption, onClick: p.request.refresh })
         }
       }
       else if (t) {
-        const { title = '', action = () => {}, icon = '', options = {} } = t
+        const { title = '', action = () => { }, icon = '', options = {} } = t
         return h(
           NTooltip,
           {},
@@ -291,7 +305,7 @@ export default defineComponent({
       return h(
         'div',
         {
-          class: 'flex space-x-0 items-center justify-around',
+          class: 'flex space-x-1 items-center ',
         },
         [
           h(NEllipsis, {
@@ -323,7 +337,9 @@ export default defineComponent({
                 const hasData = (v.data && v.data.length > 0)
                 let page
 
-                if (pagination.value.itemCount > 0) { page = pagination.value }
+                if (pagination.value.itemCount > 0) {
+                  page = pagination.value
+                }
                 else if (v.loading && !hasData && !v.minHeight) {
                   if (Object.keys(pagination.value).length > 1)
                     v.minHeight = v.maxHeight + 44
@@ -331,16 +347,32 @@ export default defineComponent({
                     v.minHeight = v.maxHeight
                 }
 
+                const toolbarChildren: VNodeChild = []
+                const s = slots.default?.() || []
+                if (s.length > 0)
+                  toolbarChildren.push(h('div', {}, [...s]))
+
+                const rt = slots['right-toolbar']?.() || []
+                if (rt.length > 0) {
+                  if (s.length === 0)
+                    toolbarChildren.push(h('div', {}))
+
+                  toolbarChildren.push(h('div', {}, [...rt]))
+                }
+                const toolbar = h('div', { class: 'flex space-x-1 items-center p-2 justify-between' }, toolbarChildren)
+
                 return [
-                  h(NDataTable, v, slots),
+                  ...(toolbarChildren.length > 0 ? [toolbar, h(NDivider, { class: '!m-0' })] : []),
+                  h('div', { class: 'px-2' }, h(NDataTable, v)),
+                  h(NDivider, { class: '!m-0' }),
                   page
-                    && h(
-                      'div',
-                      {
-                        class: 'flex justify-end overflow-auto p-2',
-                      },
-                      h(NPagination, page),
-                    ),
+                  && h(
+                    'div',
+                    {
+                      class: 'flex justify-end overflow-auto p-2',
+                    },
+                    h(NPagination, page),
+                  ),
                 ]
               },
             },
