@@ -5,3 +5,4 @@ node_modules
 .idea/
 .env.*.local
 .DS_Store
+.pnpm-store/

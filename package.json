@@ -27,7 +27,9 @@
     "naive-ui": "^2.34.4",
     "pinia": "^2.1.4",
     "push.js": "^1.0.12",
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.2",
+    "vue-use-api": "^0.0.8"
   },
   "engines": {
     "node": ">=16"
@@ -79,9 +81,7 @@
     "vite-plugin-vue-meta-layouts": "^0.1.2",
     "vue-echarts": "^6.6.0",
     "vue-eslint-parser": "^9.3.1",
-    "vue-i18n": "^9.2.2",
-    "vue-router": "^4.2.2",
-    "vue-use-api": "^0.0.7"
+    "vue-i18n": "^9.2.2"
   },
   "pnpm": {
     "peerDependencyRules": {

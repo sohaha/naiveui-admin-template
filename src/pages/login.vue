@@ -59,7 +59,7 @@ const defaultVal
   = (import.meta.env.DEV || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true')
     ? {
         username: 'manage',
-        password: '123456',
+        password: 'zls666',
       }
     : {
         username: '',
@@ -165,7 +165,7 @@ function onTab() {
         <div
           class="lg:hidden fixed z-10 inset-0 bg-no-repeat bg-cover items-center bg-black bg-image"
         >
-          <div class="absolute bg-black opacity-60 inset-0 z-0" />
+          <div class="absolute bg-black opacity-60 inset-0 z-0 m-0" />
         </div>
         <NElement
           class="w-full py-6 z-20 mb-10 min-h-[300px] min-w-[200px] max-w-[400px] p-14 shadow-lg bg-[var(--a-bg-color)] text-[var(--primary-color)] mx-4 sm:mx-auto lg:opacity-100 lg:shadow-none opacity-90 rounded-[var(--n-border-radius)]"

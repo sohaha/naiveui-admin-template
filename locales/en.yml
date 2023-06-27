@@ -2,7 +2,7 @@ button:
   about: About
   back: Back
 loading_page: loading
-not-found: Notfound
+not_found: Notfound
 operation_tip: "Action:"
 page_home: Home
 page_login: Login

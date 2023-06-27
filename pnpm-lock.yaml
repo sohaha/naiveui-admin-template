@@ -29,6 +29,12 @@ dependencies:
   vue:
     specifier: ^3.3.4
     version: 3.3.4
+  vue-router:
+    specifier: ^4.2.2
+    version: 4.2.2(vue@3.3.4)
+  vue-use-api:
+    specifier: ^0.0.8
+    version: 0.0.8(vue@3.3.4)
 
 devDependencies:
   '@antfu/eslint-config':
@@ -172,12 +178,6 @@ devDependencies:
   vue-i18n:
     specifier: ^9.2.2
     version: registry.npmmirror.com/vue-i18n@9.2.2(vue@3.3.4)
-  vue-router:
-    specifier: ^4.2.2
-    version: 4.2.2(vue@3.3.4)
-  vue-use-api:
-    specifier: ^0.0.7
-    version: registry.npmmirror.com/vue-use-api@0.0.7(vue@3.3.4)
 
 packages:
 
@@ -8488,7 +8488,6 @@ packages:
     dependencies:
       '@vue/devtools-api': 6.5.0
       vue: 3.3.4
-    dev: true
 
   /vue-template-compiler@2.7.14:
     resolution: {integrity: sha512-zyA5Y3ArvVG0NacJDkkzJuPQDF8RFeRlzV2vLeSnhSpieO6LK2OVbdLPi5MPPs09Ii+gMO8nY4S3iKQxBxDmWQ==}
@@ -8496,6 +8495,14 @@ packages:
       de-indent: 1.0.2
       he: 1.2.0
     dev: true
+
+  /vue-use-api@0.0.8(vue@3.3.4):
+    resolution: {integrity: sha512-vG1tfGt3oV5EzZGskr5TLzzISAvfYBdrZ85e5m6jxOWcXb1vnvtSxINzRnGK5xZ3qxEQ+NwALinAWdJjpx4zpw==}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      vue: 3.3.4
+    dev: false
 
   /vue@3.3.4:
     resolution: {integrity: sha512-VTyEYn3yvIeY1Py0WaYGZsXnz3y5UnGi62GjVEqvEGPl6nxbOrCXbVOTQWBEJUqAyTUk2uJ5JLVnYJ6ZzGbrSw==}
@@ -11703,17 +11710,6 @@ packages:
       '@intlify/shared': registry.npmmirror.com/@intlify/shared@9.2.2
       '@intlify/vue-devtools': registry.npmmirror.com/@intlify/vue-devtools@9.2.2
       '@vue/devtools-api': registry.npmmirror.com/@vue/devtools-api@6.4.5
-      vue: 3.3.4
-    dev: true
-
-  registry.npmmirror.com/vue-use-api@0.0.7(vue@3.3.4):
-    resolution: {integrity: sha512-hhnma5SzpXWw4wQjFDNict2EfgPOBmyFSudYy1NBU5mXxbUm/fJYOdy94LLzTyrEa8sdb7LyMNPuK5ndW3Q0rw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/vue-use-api/-/vue-use-api-0.0.7.tgz}
-    id: registry.npmmirror.com/vue-use-api/0.0.7
-    name: vue-use-api
-    version: 0.0.7
-    peerDependencies:
-      vue: ^3.0.0
-    dependencies:
       vue: 3.3.4
     dev: true
 

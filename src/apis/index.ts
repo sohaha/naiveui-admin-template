@@ -119,10 +119,11 @@ function afterError(err: any) {
   const { status = 0, data = {} } = response
   const cause = {}
   let message = err?.message
+  const dataMsg = data?.msg || ''
 
   switch (status) {
     case 400:
-      message = data?.msg || '输入不合法'
+      message = dataMsg || '输入不合法'
       // return Promise.reject(Error(message, cause))
       break
     case 401:
@@ -131,9 +132,12 @@ function afterError(err: any) {
     case 403:
       message = '权限不足'
       break
+    case 404:
+      message = dataMsg || '接口不存在'
+      break
     case 500:
       message = '服务端错误'
-      if (data?.msg)
+      if (dataMsg)
         message += `: ${data.msg}`
       break
     default:

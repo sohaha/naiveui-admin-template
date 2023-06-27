@@ -1,3 +1,5 @@
+import zlog, { field } from '@sohaha/zlog'
+
 export class ReadWriteLock {
   private readers: number
   private writer: boolean
@@ -29,7 +31,7 @@ export class ReadWriteLock {
   }
 
   async lockWrite(): Promise<void> {
-    console.log('lockWrite', this.writer, this.readers)
+    zlog.debug('lockWrite', field('writer', this.writer), field('readers', this.readers))
 
     if (this.writer || this.readers > 0)
       await new Promise(resolve => this.waitingWriters.push(resolve))

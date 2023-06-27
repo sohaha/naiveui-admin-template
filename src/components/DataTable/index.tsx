@@ -1,7 +1,7 @@
 import { ACard } from 'ayyui'
 import { NButton, NDataTable, NDivider, NEllipsis, NIcon, NPagination, NTooltip } from 'naive-ui'
 import type { TableColumns } from 'naive-ui/lib/data-table/src/interface'
-import type { PropType, VNodeChild } from 'vue'
+import type { PropType, SlotsType, VNodeChild } from 'vue'
 import { resolveDirective, withDirectives } from 'vue'
 import ColumnSetting from './components'
 import { btnDefaultOption, createNewIcon, createReloadIcon, renderActionCol } from './utils'
@@ -44,7 +44,7 @@ export default defineComponent({
       required: true,
     },
   },
-  slots: [],
+  slots: [] as SlotsType<Record<string, any>>,
   emits: ['actions'],
   setup(p: any, ctx: any) {
     const { slots } = ctx

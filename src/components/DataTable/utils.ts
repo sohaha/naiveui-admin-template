@@ -154,8 +154,12 @@ export function useDataTable() {
     setProps(p: { [key: string]: any }) {
       props.value = p
     },
-    setRowKey(key: string) {
-      rowKey.value = (row: any) => row[key]
+    setRowKey(key: string | Function) {
+      if (typeof key === 'string') {
+        rowKey.value = (row: any) => row[key]
+        return
+      }
+      rowKey.value = key
     },
     setToolbar(t: any[]) {
       toolbar.value = t
