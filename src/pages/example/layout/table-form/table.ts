@@ -76,7 +76,7 @@ export function useTable() {
     },
     {
       title: '用户名',
-      key: 'username',
+      key: 'account',
       ellipsis: {
         tooltip: true,
       },

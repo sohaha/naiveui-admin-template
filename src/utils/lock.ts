@@ -40,7 +40,10 @@ export class ReadWriteLock {
   }
 
   async unlockWrite(): Promise<void> {
+    zlog.debug('unlockWrite', field('waitingWriters', this.waitingWriters.length))
+
     this.writer = false
+
     if (this.waitingWriters.length > 0) {
       const nextWriter = this.waitingWriters.shift()
       if (nextWriter)

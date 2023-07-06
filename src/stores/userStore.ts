@@ -20,7 +20,7 @@ export default defineStore('user', {
       return this.keepLogin ? this.token : sessionToken.value
     },
     getNickName(): string {
-      return user.value?.nickname || user.value?.username || ''
+      return user.value?.nickname || user.value?.account || ''
     },
     getAvatar(): string {
       return user.value?.avatar
@@ -47,7 +47,7 @@ export default defineStore('user', {
       })
       if (
         import.meta.env.DEV
-  || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true' || import.meta.env.VITE_BUILD_DEMONSTRATE === 'true'
+        || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true' || import.meta.env.VITE_BUILD_DEMONSTRATE === 'true'
       ) {
         exampleMenu.forEach((v) => {
           p = p.concat(memuPath(v))

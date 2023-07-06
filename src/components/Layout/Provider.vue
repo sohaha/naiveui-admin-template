@@ -31,11 +31,8 @@ watch(themeVars, (r) => {
       <NMessageProvider :max="5">
         <NNotificationProvider :max="8" placement="bottom-right">
           <NDialogProvider>
-            <div :bordered="false" embedded>
-              <NSpin :class="state.loadingMsg && 'bg-black'" :show="!!state.loadingMsg">
-                <template #icon>
-                  <NIcon />
-                </template>
+            <div embedded>
+              <NSpin :class="state.loadingMsg && 'bg-black bg-opacity-20'" :show="!!state.loadingMsg">
                 <slot />
                 <LayoutLoadingContent />
                 <template #description>

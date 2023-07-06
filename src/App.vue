@@ -7,7 +7,6 @@ apiSettings().then((e) => {
 
 multiWindowStore()
 
-lock.lockWrite()
 useRequest(apiSite, {
   onBefore(v) {
     const loading = document.querySelector('#loading') as HTMLElement
@@ -18,7 +17,6 @@ useRequest(apiSite, {
     return v
   },
   onAfter(v) {
-    lock.unlockWrite()
     if (import.meta.env.SSR)
       return v
     const loading = document.querySelector('#loading') as HTMLElement

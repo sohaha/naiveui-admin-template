@@ -42,10 +42,10 @@ const backgroundColor = computed(() => {
 // 表单
 const rules = computed(() => {
   return {
-    username: {
+    account: {
       required: true,
       trigger: ['input', 'blur'],
-      message: t('username'),
+      message: t('account'),
     },
     password: {
       required: true,
@@ -58,16 +58,16 @@ const rules = computed(() => {
 const defaultVal
   = (import.meta.env.DEV || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true')
     ? {
-        username: 'manage',
+        account: 'manage',
         password: 'zls666',
       }
     : {
-        username: '',
+        account: '',
         password: '',
       }
-const username = usePrefixStorage('username', '')
-if (username.value)
-  defaultVal.username = username.value as string
+const account = usePrefixStorage('account', '')
+if (account.value)
+  defaultVal.account = account.value as string
 
 const model = ref(defaultVal)
 const formRef = ref()
@@ -109,7 +109,7 @@ const { run: getMe } = apiMe({
     //   userStore.setPermissions(p.data?.permissions || [])
 
     if (user.keepLogin)
-      username.value = model.value.username
+      account.value = model.value.account
 
     router.replace((route?.query?.redirect as string) || '/')
   },
@@ -119,7 +119,7 @@ function onLogin() {
   formRef.value.validate(async (errors: string) => {
     if (errors)
       return
-    const res = await run(model.value.username, model.value.password)
+    const res = await run(model.value.account, model.value.password)
 
     if (!res)
       return
@@ -189,9 +189,9 @@ function onTab() {
                   :rules="rules"
                   label-placement="left"
                 >
-                  <NFormItem path="username" class="pt-2">
+                  <NFormItem path="account" class="pt-2">
                     <NInput
-                      v-model:value="model.username"
+                      v-model:value="model.account"
                       :placeholder="t('username')"
                       @keyup.enter="onTab"
                     >

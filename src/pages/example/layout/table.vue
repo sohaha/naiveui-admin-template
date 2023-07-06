@@ -32,7 +32,7 @@ setColumns([
   },
   {
     title: '用户名',
-    key: 'username',
+    key: 'account',
   },
   {
     title: '邮箱',

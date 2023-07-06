@@ -3,11 +3,11 @@ import type { InstApi } from '@/types/global'
 
 /**
  * 登录
- * @param username 用户名
+ * @param account 用户名
  * @param password 密码
  */
-export function apiLogin(username: string, password: string): Promise<InstApi> {
-  return apis.post('/manage/base/login', { username, password })
+export function apiLogin(account: string, password: string): Promise<InstApi> {
+  return apis.post('/manage/base/login', { account, password })
 }
 
 /**
@@ -32,7 +32,13 @@ export function apiLogout(): Promise<InstApi> {
  * 当前用户信息
  */
 export function apiMe(options = {}) {
-  return useRequest(() => apiNoILock.get('/manage/base/me'), {
+  return useRequest(() => {
+    lock.lockWrite()
+    return apiNoILock.get('/manage/base/me').then((e) => {
+      lock.unlockWrite()
+      return e
+    })
+  }, {
     cacheKey: 'me',
     staleTime: 3000,
     manual: true,

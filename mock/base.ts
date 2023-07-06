@@ -1,6 +1,6 @@
 import { info } from './user'
 
-let username = ''
+let account = ''
 export default [
   {
     url: '/manage/base/login',
@@ -8,7 +8,7 @@ export default [
     method: 'post',
     response: ({ body }: { body: any }) => {
       let result = {}
-      username = body.username || ''
+      account = body.account || ''
       switch (body?.password) {
         case '123456':
           result = {
@@ -52,7 +52,7 @@ export default [
         ],
       }
 
-      if (username === 'manage')
+      if (account === 'manage')
         data.permission = ['admin']
       else
         data.permission = ['user']

@@ -112,13 +112,8 @@ function handleUpdatePassword(e: Event) {
   })
 }
 
-lock.lockWrite()
 const { loading, data } = apiMe({
   manual: false,
-  onAfter: (v: any) => {
-    lock.unlockWrite()
-    return v
-  },
 })
 watch(data, (data) => {
   if (data) {
