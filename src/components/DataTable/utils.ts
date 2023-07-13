@@ -1,15 +1,14 @@
 import {
   NButton,
-
   NIcon,
-
   NPopconfirm, NTooltip,
 } from 'naive-ui'
-import type { TableColumn } from 'naive-ui/lib/data-table/src/interface'
 import type { PaginationInfo } from 'naive-ui/lib/pagination/src/interface'
 import type { ComponentPublicInstance, VNode, VNodeChild } from 'vue'
 import { usePagination } from 'vue-use-api'
 import type { PaginationBaseOptions } from 'vue-use-api/dist/types/usePagination'
+import type { Type } from 'naive-ui/lib/button/src/interface'
+import { TableColumn } from 'naive-ui/lib/data-table/src/interface'
 export * from './info'
 
 export function renderActionCol(
@@ -62,10 +61,29 @@ export function renderActionDelete(
   click: Function,
   size: 'tiny' | 'small' | 'medium' | 'large' = 'small',
 ) {
+  return renderActionPopconfirm(() => click('delete'), h(
+    NButton,
+    {
+      text: true,
+      type: 'error',
+      size,
+    },
+    { default: () => '[ 删除 ]' },
+  ), '请确定是否删除？', { okBtnText: '确定删除', okBtnType: 'error' }, size)
+}
+
+export function renderActionPopconfirm(
+  click: Function,
+  trigger: VNode,
+  tip: string,
+  args: { okBtnType?: Type; okBtnText?: string; cancelBtnText?: string },
+  size: 'tiny' | 'small' | 'medium' | 'large' = 'small',
+) {
   const popconfirmRef: any = ref(null)
   const hide = () => {
     popconfirmRef.value.$refs.popoverInstRef.setShow(false)
   }
+
   return h(
     NPopconfirm,
     {
@@ -74,18 +92,8 @@ export function renderActionDelete(
       ref: popconfirmRef,
     },
     {
-      default: () => '请确定是否删除？',
-      trigger: () =>
-        h(
-          NButton,
-          {
-            text: true,
-            type: 'error',
-            // ghost: true,
-            size,
-          },
-          { default: () => '[ 删除 ]' },
-        ),
+      default: () => tip,
+      trigger: () => trigger,
       action: () => [
         h(
           NButton,
@@ -93,19 +101,19 @@ export function renderActionDelete(
             size,
             onClick: hide,
           },
-          { default: () => '取消' },
+          { default: () => args.cancelBtnText || '取消' },
         ),
         h(
           NButton,
           {
-            type: 'error',
+            type: args.okBtnType || 'success',
             size,
-            onClick() {
-              click('delete')
+            onClick(e) {
+              click(e)
               hide()
             },
           },
-          { default: () => '确定删除' },
+          { default: () => args.okBtnText || '确定' },
         ),
       ],
     },
