@@ -137,6 +137,9 @@ export default () => {
           {
             'vue-use-api': ['useRequest'],
           },
+          {
+            "@sohaha/zlog": ['log', 'field']
+          }
         ],
       }) as any,
       resolvers: AutoImportResolvers,

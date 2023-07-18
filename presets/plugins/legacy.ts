@@ -17,7 +17,7 @@ export function LegacyPlugin() {
       ignoreBrowserslistConfig: true,
       targets: LegacBrowserslist,
       polyfills: false,
-      modernPolyfills: true,
+      // modernPolyfills: true,
       renderLegacyChunks: false,
     })
 }

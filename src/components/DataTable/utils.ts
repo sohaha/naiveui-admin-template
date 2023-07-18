@@ -8,7 +8,7 @@ import type { ComponentPublicInstance, VNode, VNodeChild } from 'vue'
 import { usePagination } from 'vue-use-api'
 import type { PaginationBaseOptions } from 'vue-use-api/dist/types/usePagination'
 import type { Type } from 'naive-ui/lib/button/src/interface'
-import { TableColumn } from 'naive-ui/lib/data-table/src/interface'
+import type { TableColumn } from 'naive-ui/lib/data-table/src/interface'
 export * from './info'
 
 export function renderActionCol(
