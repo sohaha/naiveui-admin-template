@@ -11,6 +11,7 @@ import Compression from 'vite-plugin-compression'
 import Pages from 'vite-plugin-pages'
 import ViteRestart from 'vite-plugin-restart'
 import Layouts from 'vite-plugin-vue-meta-layouts'
+import { visualizer } from 'rollup-plugin-visualizer'
 // import Markdown, { markdownWrapperClasses } from './markdown'
 
 import {
@@ -49,6 +50,7 @@ export default () => {
       include: [/\.vue$/, /\.md$/],
     }),
     ...DevPlugins(),
+    visualizer({ open: false }),
     Pages({
       extensions: ['vue', 'tsx'],
       importMode(filepath) {
