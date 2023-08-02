@@ -2,12 +2,15 @@ import type { FormInst } from 'naive-ui'
 import type { Ref } from 'vue'
 import type { Router } from 'vue-router'
 
+import type { Components } from 'src/components/DataForm/render.ts'
+import type { TableColumn as column } from 'naive-ui/lib/data-table/src/interface'
 import type { DialogApiInjection } from 'naive-ui/lib/dialog/src/DialogProvider'
 import type { MessageApiInjection } from 'naive-ui/lib/message/src/MessageProvider'
 import type { NotificationApiInjection } from 'naive-ui/lib/notification/src/NotificationProvider'
 
 declare global {
   interface Window {
+    Vue: any
     $state: any
     $loading: any
     $router: Router
@@ -39,3 +42,9 @@ export interface StMenu {
 }
 
 export type RefFormInst = Ref<(HTMLElement & FormInst) | null>
+
+
+export type TableColumn = column & {
+  editable?: boolean;
+  editableUpdate?: function(any, any, number): void;
+}

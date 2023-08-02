@@ -1,15 +1,70 @@
 import {
   NButton,
   NIcon,
+  NInput,
   NPopconfirm, NTooltip,
 } from 'naive-ui'
 import type { PaginationInfo } from 'naive-ui/lib/pagination/src/interface'
-import type { ComponentPublicInstance, VNode, VNodeChild } from 'vue'
+import type { ComponentPublicInstance, VNode, VNodeChild, VNodeRef } from 'vue'
 import { usePagination } from 'vue-use-api'
 import type { PaginationBaseOptions } from 'vue-use-api/dist/types/usePagination'
 import type { Type } from 'naive-ui/lib/button/src/interface'
-import type { TableColumn } from 'naive-ui/lib/data-table/src/interface'
+import type { TableColumn } from '@/types/global'
 export * from './info'
+
+export const showOrEdit = defineComponent({
+  props: {
+    value: [String, Number],
+    editableComponent: {
+      type: [Object, String],
+      default: NInput,
+    },
+    onUpdateValue: [Function, Array],
+  },
+  setup(props: any) {
+    const isEdit = ref(false)
+    const oldValue = ref(`${props.value}`)
+    const inputRef = ref<null | VNodeRef>(null)
+    const inputValue = ref(oldValue.value)
+    function handleOnClick() {
+      isEdit.value = true
+      oldValue.value = inputValue.value
+      nextTick(() => {
+        inputRef.value!.focus()
+      })
+    }
+    function handleChange() {
+      props.onUpdateValue(inputValue.value)
+      isEdit.value = false
+    }
+    return () =>
+      h(
+        'div',
+        {
+          onClick: handleOnClick,
+        },
+        isEdit.value
+          ? h(NInput, {
+            ref: inputRef,
+            value: inputValue.value,
+            onUpdateValue: (v) => {
+              inputValue.value = v
+            },
+            onKeyup(event) {
+              if (event.key === 'Enter' || event.keyCode === 13)
+                handleChange()
+            },
+            // onChange: handleChange,
+            onBlur() {
+              if (oldValue.value === inputValue.value)
+                isEdit.value = false
+              // inputValue.value = oldValue.value
+            },
+          })
+          : props.value,
+      )
+  },
+})
 
 export function renderActionCol(
   click: Function,

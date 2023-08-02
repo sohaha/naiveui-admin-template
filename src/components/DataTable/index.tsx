@@ -4,7 +4,7 @@ import type { TableColumns } from 'naive-ui/lib/data-table/src/interface'
 import type { PropType, SlotsType, VNodeChild } from 'vue'
 import { resolveDirective, withDirectives } from 'vue'
 import ColumnSetting from './components'
-import { btnDefaultOption, createNewIcon, createReloadIcon, renderActionCol } from './utils'
+import { btnDefaultOption, createNewIcon, createReloadIcon, renderActionCol, showOrEdit } from './utils'
 
 export default defineComponent({
   name: 'ZDataTable',
@@ -176,6 +176,25 @@ export default defineComponent({
       else
         actionColWidth = 118 + toolbarWidth
 
+        values.columns.map((c: any) => {
+          if (!c.render && c.editable){
+            c.render = (row: any,index:any) => {
+              const o:{[key:string]:any} = {
+                value: row[c.key],
+                onUpdateValue (v:any) {
+                  c.editableUpdate && c.editableUpdate(row,v,index)
+                }
+              }
+              log.warn(c.editableComponent)
+              if(c.editableComponent){
+                o.component = c.editableComponent
+              }
+              return h(showOrEdit, o)
+            }
+
+          }
+          return c
+        })
       if (p.action === true) {
         values.columns.push({
           ...defAction,
