@@ -15,10 +15,6 @@ export * from './info'
 export const showOrEdit = defineComponent({
   props: {
     value: [String, Number],
-    editableComponent: {
-      type: [Object, String],
-      default: NInput,
-    },
     onUpdateValue: [Function, Array],
   },
   setup(props: any) {
@@ -34,7 +30,8 @@ export const showOrEdit = defineComponent({
       })
     }
     function handleChange() {
-      props.onUpdateValue(inputValue.value)
+      if (inputValue.value !== oldValue.value)
+        props.onUpdateValue(inputValue.value)
       isEdit.value = false
     }
     return () =>
@@ -55,11 +52,7 @@ export const showOrEdit = defineComponent({
                 handleChange()
             },
             // onChange: handleChange,
-            onBlur() {
-              if (oldValue.value === inputValue.value)
-                isEdit.value = false
-              // inputValue.value = oldValue.value
-            },
+            onBlur: handleChange,
           })
           : props.value,
       )

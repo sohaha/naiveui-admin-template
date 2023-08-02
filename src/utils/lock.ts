@@ -1,5 +1,3 @@
-import { field } from '@sohaha/zlog'
-
 export class ReadWriteLock {
   private readers: number
   private writer: boolean
@@ -31,8 +29,6 @@ export class ReadWriteLock {
   }
 
   async lockWrite(): Promise<void> {
-    log.debug('lockWrite', field('writer', this.writer), field('readers', this.readers))
-
     if (this.writer || this.readers > 0)
       await new Promise(resolve => this.waitingWriters.push(resolve))
 
@@ -40,8 +36,6 @@ export class ReadWriteLock {
   }
 
   async unlockWrite(): Promise<void> {
-    log.debug('unlockWrite', field('waitingWriters', this.waitingWriters.length))
-
     this.writer = false
 
     if (this.waitingWriters.length > 0) {

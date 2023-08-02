@@ -177,17 +177,13 @@ export default defineComponent({
         actionColWidth = 118 + toolbarWidth
 
         values.columns.map((c: any) => {
-          if (!c.render && c.editable){
+          if (!c.render && c.editableUpdate){
             c.render = (row: any,index:any) => {
               const o:{[key:string]:any} = {
                 value: row[c.key],
                 onUpdateValue (v:any) {
-                  c.editableUpdate && c.editableUpdate(row,v,index)
+                  c.editableUpdate(row,v,index)
                 }
-              }
-              log.warn(c.editableComponent)
-              if(c.editableComponent){
-                o.component = c.editableComponent
               }
               return h(showOrEdit, o)
             }

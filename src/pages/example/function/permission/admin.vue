@@ -3,7 +3,7 @@
 
 <template>
   <Card height>
-    当前页面是 user 权限的用户才可见
+    当前页面是 admin 权限的用户才可见
   </Card>
 </template>
 
@@ -14,8 +14,8 @@
 <route lang="json">
 {
   "meta": {
-    "permission": ["user"],
-    "title": "user权限"
+    "permission": ["admin"],
+    "title": "admin权限"
   }
 }
 </route>

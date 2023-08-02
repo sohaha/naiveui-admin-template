@@ -33,12 +33,20 @@ setColumns([
   {
     title: '用户名',
     key: 'account',
+    editableUpdate(row, value) {
+      row.account = value
+      window.$message.success(`修改：${value}`)
+    },
   },
   {
     title: '邮箱',
     key: 'email',
     ellipsis: {
       tooltip: true,
+    },
+    editableUpdate(row, value) {
+      row.account = value
+      window.$message.success(`修改：${value}`)
     },
   },
   {

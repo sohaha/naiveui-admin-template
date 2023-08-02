@@ -27,7 +27,10 @@ function go(path: string) {
       </NButton>
 
       <NButton v-throttled @click="go('/example/function/permission/user')">
-        进入用户权限页面
+        进入 user 权限页面
+      </NButton>
+      <NButton v-throttled @click="go('/example/function/permission/admin')">
+        进入 admin 权限页面
       </NButton>
     </div>
     <h1 v-permission="['user']" class="text-lg">

@@ -77,7 +77,6 @@ export function useTable() {
     {
       title: '用户名',
       key: 'account',
-      editable: true,
       editableUpdate: (row, value, index) => {
         log.debug(row, `修改后的值：${value}, 索引：${index}`)
         row.account = value

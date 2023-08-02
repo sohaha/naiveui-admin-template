@@ -45,6 +45,5 @@ export type RefFormInst = Ref<(HTMLElement & FormInst) | null>
 
 
 export type TableColumn = column & {
-  editable?: boolean;
   editableUpdate?: function(any, any, number): void;
 }
