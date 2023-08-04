@@ -32,12 +32,19 @@ export function apiLogout(): Promise<InstApi> {
  * 当前用户信息
  */
 export function apiMe(options = {}) {
-  return useRequest(() => {
+  return useRequest(async () => {
     lock.lockWrite()
-    return apiNoILock.get('/manage/base/me').then((e) => {
+    let resp
+    try {
+      resp = await apiNoILock.get('/manage/base/me')
       lock.unlockWrite()
-      return e
-    })
+      return resp
+    }
+    catch (error: any) {
+      lock.unlockWrite()
+      if (error)
+        throw new Error(error?.message)
+    }
   }, {
     cacheKey: 'me',
     staleTime: 3000,
