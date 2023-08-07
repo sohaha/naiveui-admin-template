@@ -18,45 +18,31 @@ const active = ref('')
 watch(active, (v) => {
   requestData({ status: v, page: 1 })
 })
+
+const header = ref<null | HTMLElement>(null)
+const { height: headerHeight } = useElementSize(header)
+const tableHeight = computed(() => -(headerHeight.value + 6))
 </script>
 
 <template>
   <CardRows>
-    <Card padding="10px">
+    <Card ref="header" padding="10px">
       <NRadioGroup v-model:value="active" size="small">
         <NRadioButton
           v-for="v in [{ label: '全部', value: '' }, { label: '正常', value: '1' }, { label: '禁用', value: '2' }]"
-          :key="v.value"
-          :value="v.value"
-          :label="v.label"
+          :key="v.value" :value="v.value" :label="v.label"
         />
       </NRadioGroup>
     </Card>
-    <DataTable
-      id="data-table"
-      :max-height="-(48 + 12 / 6 + 4)"
-      :scroll-x="600"
-      v-bind="config"
-      @actions="actions"
-    />
+    <DataTable id="data-table" :max-height="tableHeight" :scroll-x="600" v-bind="config" @actions="actions" />
   </CardRows>
   <DrawerForm
-    v-model:show="showDrawer"
-    height="100vh"
-    placement="right"
-    closable
-    v-bind="formConfig"
-    :title="drawerAction"
-    @submit="submitForm"
+    v-model:show="showDrawer" height="100vh" placement="right" closable v-bind="formConfig"
+    :title="drawerAction" @submit="submitForm"
   />
   <DrawerForm
-    v-model:show="showFilterDrawer"
-    placement="top"
-    :trap-focus="false"
-    to="#data-table"
-    v-bind="formConfig"
-    title="过滤条件"
-    @submit="submitForm"
+    v-model:show="showFilterDrawer" placement="top" :trap-focus="false" to="#data-table" v-bind="formConfig"
+    title="过滤条件" @submit="submitForm"
   />
 </template>
 
@@ -65,7 +51,7 @@ watch(active, (v) => {
 <route lang="json">
 {
   "meta": {
-    "maxWidth":900,
+    "maxWidth": 900,
     "icon": "i-bx:table",
     "i18n": {
       "en": "Table3",
