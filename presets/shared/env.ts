@@ -23,6 +23,7 @@ const useEnv = () => {
     VITE_APP_COMPRESSINON_ALGORITHM,
     VITE_APP_API_BASEURL,
     VITE_BUILD_BASE,
+    VITE_BUILD_OUT_DIR,
   } = env
 
   return {
@@ -32,6 +33,7 @@ const useEnv = () => {
     VITE_APP_TYPE,
     VITE_APP_COMPRESSINON_ALGORITHM,
     VITE_APP_API_BASEURL,
+    VITE_BUILD_OUT_DIR,
     VITE_BUILD_BASE: (() => (!!VITE_BUILD_BASE && VITE_BUILD_BASE.substring(VITE_BUILD_BASE.length - 1) !== '/') ? `${VITE_BUILD_BASE}/` : VITE_BUILD_BASE)(),
     VITE_DEV_INSPECT: stringToBoolean(env.VITE_DEV_INSPECT),
     VITE_APP_API_BASEURL_DYNAMIC: stringToBoolean(env.VITE_APP_API_BASEURL_DYNAMIC),
