@@ -2,7 +2,7 @@ import type { CreateAxiosDefaults } from 'axios'
 import axios from 'axios'
 
 export const lock = new ReadWriteLock()
-export const baseURL = import.meta.env.VITE_DEV_PROXY === 'true'
+export const baseURL = (import.meta.env.DEV && import.meta.env.VITE_DEV_PROXY === 'true')
   ? '/proxy'
   : (import.meta.env.VITE_APP_API_BASEURL as string)
 
