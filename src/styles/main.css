@@ -17,8 +17,8 @@
 
 html:root {
   --a-bg: 0, 0%, 18%;
-  /* --a-bg-color: #eff2f5; */
-  --a-bg-color: #e9f1f6;
+  --a-bg-color: #eff2f5;
+  /* --a-bg-color: #f6f6f6; */
 }
 
 html:root.dark {
