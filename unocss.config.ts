@@ -1,7 +1,9 @@
-import { defineConfig, presetAttributify, presetUno, } from 'unocss'
-import { presetCore, presetThemeDefault } from 'ayyui'
+import {
+  defineConfig, presetAttributify, presetUno,
+} from 'unocss'
 import presetIcons from '@unocss/preset-icons'
 import presetWind from '@unocss/preset-wind'
+import { presetCore, presetThemeDefault } from 'ayyui'
 
 export default defineConfig({
   presets: [

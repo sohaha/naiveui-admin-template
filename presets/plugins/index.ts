@@ -1,19 +1,17 @@
 import { resolve } from 'path'
 import I18n from '@intlify/unplugin-vue-i18n/vite'
 import htmlMinimize from '@sergeymakinen/vite-plugin-html-minimize'
-
 import Vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import { AyyComponentResolver, presetCore, presetThemeDefault } from 'ayyui'
-import { presetAttributify, presetUno } from 'unocss'
+import { AyyComponentResolver } from 'ayyui'
 import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import Compression from 'vite-plugin-compression'
-import Inspect from 'vite-plugin-inspect'
 import Pages from 'vite-plugin-pages'
 import ViteRestart from 'vite-plugin-restart'
 import Layouts from 'vite-plugin-vue-meta-layouts'
+import { visualizer } from 'rollup-plugin-visualizer'
 // import Markdown, { markdownWrapperClasses } from './markdown'
 
 import {
@@ -41,7 +39,9 @@ import H5Plugins from './h5'
 import { GenerateTitle } from './html'
 import { LegacyPlugin } from './legacy'
 import { MockPlugin } from './mock'
+import { DevPlugins } from './dev'
 import { RemovelogPlugin } from './removelog'
+import { PWAPlugin } from './pwa'
 
 export default () => {
   return [
@@ -49,6 +49,8 @@ export default () => {
     Vue({
       include: [/\.vue$/, /\.md$/],
     }),
+    ...DevPlugins(),
+    visualizer({ open: false }),
     Pages({
       extensions: ['vue', 'tsx'],
       importMode(filepath) {
@@ -60,8 +62,8 @@ export default () => {
       exclude: (() => {
         const exclude = ['**/components/**', '**/layouts/**']
 
-        if (!env.IS_PROD || env.VITE_APP_MOCK_IN_PRODUCTION)
-          exclude.push('src/pages/example/**')
+        if (env.IS_PROD && !env.VITE_APP_MOCK_IN_PRODUCTION)
+          exclude.push('**/example/**')
 
         return exclude
       })(),
@@ -69,10 +71,7 @@ export default () => {
     Layouts({
       defaultLayout: 'Home',
     }),
-    Inspect({
-      dev: env.VITE_DEV_INSPECT,
-      enabled: env.VITE_DEV_INSPECT,
-    }),
+    PWAPlugin(),
     Unocss(),
     MockPlugin(),
     Components({
@@ -87,6 +86,9 @@ export default () => {
           names: ['RouterLink', 'RouterView'],
         },
       ],
+      importPathTransform(path) {
+        return path.replace(/.tsx$/, '')
+      },
       resolvers: normalizeResolvers({
         onlyExist: [
           [VantResolver(), 'vant'],
@@ -111,41 +113,44 @@ export default () => {
       }) as ComponentResolver[],
     }),
     !env.VITE_APP_DISABLED_API_AUTO_IMPORT
-      && AutoImport({
-        dirs: [
-          !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/stores',
-          !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/composables',
-          !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/apis',
-          !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/utils',
-        ],
-        dts: resolve(__dirname, '../../src/types/auto-imports.d.ts'),
-        imports: normalizeResolvers({
-          onlyExist: [
-            [
-              {
-                'naive-ui': ['useMessage'],
-              } as any,
-              'naive-ui',
-            ],
-          ],
-          include: [
-            'vue',
-            'pinia',
-            'vue-i18n',
-            'vue-router',
-            '@vueuse/core',
+    && AutoImport({
+      dirs: [
+        !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/stores',
+        !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/composables',
+        !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/apis',
+        !env.VITE_APP_DISABLED_API_AUTO_IMPORT && 'src/utils',
+      ],
+      dts: resolve(__dirname, '../../src/types/auto-imports.d.ts'),
+      imports: normalizeResolvers({
+        onlyExist: [
+          [
             {
-              'vue-use-api': ['useRequest'],
-            },
+              'naive-ui': ['useMessage'],
+            } as any,
+            'naive-ui',
           ],
-        }) as any,
-        resolvers: AutoImportResolvers,
-        eslintrc: {
-          enabled: true,
-          globalsPropValue: true,
-          filepath: 'presets/eslint/.eslintrc-auto-import.json',
-        },
-      }),
+        ],
+        include: [
+          'vue',
+          'pinia',
+          'vue-i18n',
+          'vue-router',
+          '@vueuse/core',
+          {
+            'vue-use-api': ['useRequest'],
+          },
+          {
+            "@sohaha/zlog": ['log', 'field']
+          }
+        ],
+      }) as any,
+      resolvers: AutoImportResolvers,
+      eslintrc: {
+        enabled: true,
+        globalsPropValue: true,
+        filepath: 'presets/eslint/.eslintrc-auto-import.json',
+      },
+    }),
     I18n({
       runtimeOnly: true,
       compositionOnly: true,

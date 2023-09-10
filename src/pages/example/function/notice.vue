@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import push from 'push.js'
+
 // 啰嗦的写法，方便参考
 function run(a: string) {
   switch (a) {
@@ -75,6 +77,19 @@ function run(a: string) {
 function open(u: string) {
   openURL(u)
 }
+
+function pushjs() {
+  push.create('通知', {
+    body: '这是一个示例通知',
+    icon: 'https://avatars.githubusercontent.com/u/18098083?s=200&v=4',
+    timeout: 4000,
+    onClick() {
+      window.focus()
+      // @ts-expect-error close
+      this.close()
+    },
+  })
+}
 </script>
 
 <template>
@@ -110,6 +125,15 @@ function open(u: string) {
         </NButton>
       </div>
     </Card>
+    <Card
+      title="Push.js"
+    >
+      <div class="space-x-2 space-y-2">
+        <NButton @click="pushjs">
+          Push
+        </NButton>
+      </div>
+    </Card>
   </CardRows>
 </template>
 
@@ -118,7 +142,7 @@ function open(u: string) {
 <route lang="json">
 {
   "meta": {
-    "i18n": { "en": "Notice", "zh": "通知" }
+    "i18n": { "en": "Notice", "zh": "信息通知" }
   }
 }
 </route>

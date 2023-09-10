@@ -39,13 +39,12 @@ const backgroundColor = computed(() => {
   }
 }
 
-// 表单
 const rules = computed(() => {
   return {
-    username: {
+    account: {
       required: true,
       trigger: ['input', 'blur'],
-      message: t('username'),
+      message: t('account'),
     },
     password: {
       required: true,
@@ -58,16 +57,16 @@ const rules = computed(() => {
 const defaultVal
   = (import.meta.env.DEV || import.meta.env.VITE_APP_MOCK_IN_PRODUCTION === 'true')
     ? {
-        username: 'manage',
+        account: 'manage',
         password: '123456',
       }
     : {
-        username: '',
+        account: '',
         password: '',
       }
-const username = usePrefixStorage('username', '')
-if (username.value)
-  defaultVal.username = username.value as string
+const account = usePrefixStorage('account', '')
+if (account.value)
+  defaultVal.account = account.value as string
 
 const model = ref(defaultVal)
 const formRef = ref()
@@ -90,28 +89,23 @@ const { run } = useRequest(apiLogin, {
 const route = useRoute()
 const router = useRouter()
 
-// const { run: getPermissions } = useRequest(apiPermissions, { manual: true })
-
-const { run: getMe } = useRequest(apiMe, {
-  cacheKey: 'me',
-  manual: true,
-  onAfter() {
-    loading.value = false
+const disabled = ref(false)
+const { run: getMe } = apiMe({
+  onBefore(params: any) {
+    disabled.value = true
+    window.$loading?.start()
+    return params
   },
-  onError(err) {
+  onAfter() {
+    disabled.value = false
+  },
+  onError(err: Error) {
     if (err)
       window.$message.error(err.message)
   },
   onSuccess() {
-    // if (!data?.is_super)
-    //   console.log('不是超级管理员')
-
-    // const p = await getPermissions()
-    // if (p?.code === 0)
-    //   userStore.setPermissions(p.data?.permissions || [])
-
     if (user.keepLogin)
-      username.value = model.value.username
+      account.value = model.value.account
 
     router.replace((route?.query?.redirect as string) || '/')
   },
@@ -121,7 +115,7 @@ function onLogin() {
   formRef.value.validate(async (errors: string) => {
     if (errors)
       return
-    const res = await run(model.value.username, model.value.password)
+    const res = await run(model.value.account, model.value.password)
 
     if (!res)
       return
@@ -133,9 +127,9 @@ function onLogin() {
       return
     }
 
-    message.success(t('success'))
     user.setToken(token)
     nextTick(getMe)
+    message.success(t('success'))
   })
 }
 
@@ -148,55 +142,37 @@ function onTab() {
 <template>
   <NLayout :inverted="true">
     <section id="login" ref="login" class="min-h-screen flex items-stretch">
-      <div
-        class="lg:flex w-3/5 hidden bg-black bg-no-repeat bg-cover relative items-center bg-image"
-      >
+      <div class="lg:flex w-3/5 hidden bg-black bg-no-repeat bg-cover relative items-center bg-image">
         <div class="absolute bg-black opacity-50 inset-0 z-0" />
         <div class="w-full text-white mt-50 px-24 z-10 tracking-wide">
           <p class="text-xl" style="mix-blend-mode: multiply">
-            {{ t('poetry1') }}
+            {{ t("poetry1") }}
           </p>
           <p class="text-2xl mt-10 leading-loose">
-            {{ t('poetry2') }}
+            {{ t("poetry2") }}
           </p>
         </div>
       </div>
       <NElement
         class="w-full lg:min-w-[470px] flex items-center justify-center px-0 z-0 bg-[var(--a-bg-color)] md:px-16 lg:w-2/5"
       >
-        <div
-          class="lg:hidden fixed z-10 inset-0 bg-no-repeat bg-cover items-center bg-black bg-image"
-        >
-          <div class="absolute bg-black opacity-60 inset-0 z-0" />
+        <div class="lg:hidden fixed z-10 inset-0 bg-no-repeat bg-cover items-center bg-black bg-image">
+          <div class="absolute bg-black opacity-60 inset-0 z-0 m-0" />
         </div>
         <NElement
           class="w-full py-6 z-20 mb-10 min-h-[300px] min-w-[200px] max-w-[400px] p-14 shadow-lg bg-[var(--a-bg-color)] text-[var(--primary-color)] mx-4 sm:mx-auto lg:opacity-100 lg:shadow-none opacity-90 rounded-[var(--n-border-radius)]"
         >
           <div class="text-center text-2xl font-bold relative">
             <div class="pb-1">
-              {{ t('title') }}
+              {{ t("title") }}
             </div>
           </div>
-          <NTabs
-            type="line"
-            default-value="signin"
-            justify-content="space-evenly"
-            tab-style="letter-spacing: 0.02em"
-          >
+          <NTabs type="line" default-value="signin" justify-content="space-evenly" tab-style="letter-spacing: 0.02em">
             <NTabPane name="signin" :tab="t('account')">
               <div class="h-[246px]">
-                <NForm
-                  ref="formRef"
-                  :model="model"
-                  :rules="rules"
-                  label-placement="left"
-                >
-                  <NFormItem path="username" class="pt-2">
-                    <NInput
-                      v-model:value="model.username"
-                      :placeholder="t('username')"
-                      @keyup.enter="onTab"
-                    >
+                <NForm ref="formRef" :model="model" :rules="rules" label-placement="left">
+                  <NFormItem path="account" class="pt-2">
+                    <NInput v-model:value="model.account" :placeholder="t('username')" @keyup.enter="onTab">
                       <template #prefix>
                         <NIcon class="i-bx-bxs-user" />
                       </template>
@@ -204,12 +180,8 @@ function onTab() {
                   </NFormItem>
                   <NFormItem path="password" class="pt-2">
                     <NInput
-                      ref="passwordRef"
-                      v-model:value="model.password"
-                      type="password"
-                      show-password-on="mousedown"
-                      :placeholder="t('password')"
-                      @keyup.enter="onLogin"
+                      ref="passwordRef" v-model:value="model.password" type="password" show-password-on="mousedown"
+                      :placeholder="t('password')" @keyup.enter="onLogin"
                     >
                       <template #prefix>
                         <NIcon class="i-bx-bxs-lock-alt" />
@@ -218,40 +190,33 @@ function onTab() {
                   </NFormItem>
                   <div class="space-y-4">
                     <NCheckbox v-model:checked="user.keepLogin">
-                      {{ t('keep') }}
+                      {{ t("keep") }}
                     </NCheckbox>
-                    <NButton
-                      v-throttled
-                      type="primary"
-                      block
-                      :disabled="loading"
-                      :loading="loading"
-                      @click="onLogin"
-                    >
-                      {{ t('submit') }}
+                    <NButton v-throttled type="primary" block :disabled="disabled" :loading="loading" @click="onLogin">
+                      {{ t("submit") }}
                     </NButton>
                   </div>
                 </NForm>
                 <div class="flex view-account-other mt-4">
                   <div class="flex-initial">
-                    <span>{{ t('other') }}</span>
+                    <span>{{ t("other") }}</span>
                   </div>
                   <div class="flex-initial mx-2">
                     <NPopover trigger="click">
                       <template #trigger>
                         <NIcon size="18" class="mi-wechat" />
                       </template>
-                      <span>{{ t('not-open') }}</span>
+                      <span>{{ t("not-open") }}</span>
                     </NPopover>
                   </div>
                   <div class="flex-initial" style="margin-left: auto">
                     <NPopover trigger="click">
                       <template #trigger>
                         <NButton text>
-                          {{ t('register') }}
+                          {{ t("register") }}
                         </NButton>
                       </template>
-                      <span>{{ t('not-open') }}</span>
+                      <span>{{ t("not-open") }}</span>
                     </NPopover>
                   </div>
                 </div>
@@ -272,8 +237,7 @@ function onTab() {
     </section>
     <NElement>
       <NIcon
-        size="18"
-        class="fixed right-5 bottom-3 cursor-pointer animate-pulse i-bx-world"
+        size="18" class="fixed right-5 bottom-3 cursor-pointer animate-pulse i-bx-world"
         @click="() => toggleLocale()"
       />
     </NElement>
@@ -283,8 +247,7 @@ function onTab() {
 <style scoped>
 #login {
   --background-color: v-bind(backgroundColor);
-  --backgroundImage: linear-gradient(
-      50deg,
+  --backgroundImage: linear-gradient(50deg,
       rgba(146, 146, 146, 0.02) 0%,
       rgba(146, 146, 146, 0.02) 25%,
       rgba(82, 82, 82, 0.02) 25%,
@@ -292,10 +255,8 @@ function onTab() {
       rgba(217, 217, 217, 0.02) 50%,
       rgba(217, 217, 217, 0.02) 75%,
       rgba(41, 41, 41, 0.02) 75%,
-      rgba(41, 41, 41, 0.02) 100%
-    ),
-    linear-gradient(
-      252deg,
+      rgba(41, 41, 41, 0.02) 100%),
+    linear-gradient(252deg,
       rgba(126, 126, 126, 0.01) 0%,
       rgba(126, 126, 126, 0.01) 25%,
       rgba(117, 117, 117, 0.01) 25%,
@@ -303,10 +264,8 @@ function onTab() {
       rgba(219, 219, 219, 0.01) 50%,
       rgba(219, 219, 219, 0.01) 75%,
       rgba(41, 41, 41, 0.01) 75%,
-      rgba(41, 41, 41, 0.01) 100%
-    ),
-    linear-gradient(
-      272deg,
+      rgba(41, 41, 41, 0.01) 100%),
+    linear-gradient(272deg,
       rgba(166, 166, 166, 0.01) 0%,
       rgba(166, 166, 166, 0.01) 20%,
       rgba(187, 187, 187, 0.01) 20%,
@@ -316,10 +275,8 @@ function onTab() {
       rgba(204, 204, 204, 0.01) 60%,
       rgba(204, 204, 204, 0.01) 80%,
       rgba(5, 5, 5, 0.01) 80%,
-      rgba(5, 5, 5, 0.01) 100%
-    ),
-    linear-gradient(
-      86deg,
+      rgba(5, 5, 5, 0.01) 100%),
+    linear-gradient(86deg,
       rgba(143, 143, 143, 0.02) 0%,
       rgba(143, 143, 143, 0.02) 12.5%,
       rgba(36, 36, 36, 0.02) 12.5%,
@@ -335,10 +292,8 @@ function onTab() {
       rgba(148, 148, 148, 0.02) 75%,
       rgba(148, 148, 148, 0.02) 87.5%,
       rgba(107, 107, 107, 0.02) 87.5%,
-      rgba(107, 107, 107, 0.02) 100%
-    ),
-    linear-gradient(
-      25deg,
+      rgba(107, 107, 107, 0.02) 100%),
+    linear-gradient(25deg,
       rgba(2, 2, 2, 0.02) 0%,
       rgba(2, 2, 2, 0.02) 16.667%,
       rgba(51, 51, 51, 0.02) 16.667%,
@@ -350,10 +305,8 @@ function onTab() {
       rgba(128, 128, 128, 0.02) 66.668%,
       rgba(128, 128, 128, 0.02) 83.335%,
       rgba(21, 21, 21, 0.02) 83.335%,
-      rgba(21, 21, 21, 0.02) 100.002%
-    ),
-    linear-gradient(
-      325deg,
+      rgba(21, 21, 21, 0.02) 100.002%),
+    linear-gradient(325deg,
       rgba(95, 95, 95, 0.03) 0%,
       rgba(95, 95, 95, 0.03) 14.286%,
       rgba(68, 68, 68, 0.03) 14.286%,
@@ -367,15 +320,14 @@ function onTab() {
       rgba(64, 64, 64, 0.03) 71.43%,
       rgba(64, 64, 64, 0.03) 85.716%,
       rgba(31, 31, 31, 0.03) 85.716%,
-      rgba(31, 31, 31, 0.03) 100.002%
-    ),
+      rgba(31, 31, 31, 0.03) 100.002%),
     linear-gradient(90deg, #575a71, var(--background-color));
 }
 
 .bg-image {
   background-repeat: no-repeat;
   background-image: var(--backgroundImage);
-  /*background-image: url(https://source.unsplash.com/675x800/?Work&auto=format,enhance,compress&crop=entropy&fit=crop&q=80);*/
+  /*background-image: url(https://source.unsplash.com/675x800/?Eikon&auto=format,enhance,compress&crop=entropy&fit=crop&q=80);*/
   /*background-image: url(https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw=&ixlib=rb-1.2.1&auto=format,enhance,compress&crop=entropy&fit=crop&w=675&h=800&q=80);*/
 }
 

@@ -4,8 +4,6 @@ import { type RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-rou
 import { baseComponentKey } from '.'
 import { locale } from '~/modules/i18n'
 
-const appName = (import.meta.env.VITE_APP_TITLE || 'ZlsAPP') as string
-
 export interface Window {
   key: string
   path: string
@@ -29,6 +27,8 @@ export default function useStore() {
   const router = useRouter()
   const route = useRoute()
 
+  const appName = ref<string>(import.meta.env.VITE_APP_TITLE || 'ZlsAPP')
+
   const lastWindow = ref<Window>()
   const windows = reactive<Window[]>([])
 
@@ -43,7 +43,7 @@ export default function useStore() {
         name: item.name,
       }
     })
-    if (!currentWindow.value && route.fullPath !== '/load') {
+    if (!currentWindow.value && route.fullPath !== '/inlay/loading') {
       tabs.push({
         meta: route.meta,
         name: '',
@@ -75,11 +75,11 @@ export default function useStore() {
   let localI18n: boolean | object = false
   let localTitle = ''
   const title = ref(
-    viewTitle(route?.meta?.title as string, route?.meta?.i18n as boolean),
+    // viewTitle(route?.meta?.title as string, route?.meta?.i18n as boolean),
   )
 
   watch(
-    () => route.fullPath,
+    () => [route.fullPath, appName.value],
     () => {
       nextTick(updateTitle)
     },
@@ -115,7 +115,7 @@ export default function useStore() {
         title = t(title)
     }
 
-    return title ? `${title} - ${appName}` : appName
+    return title ? `${title} - ${appName.value}` : appName.value
   }
 
   watch(locale, () => {
@@ -128,8 +128,8 @@ export default function useStore() {
 
   // const title = computed(() => {
   //  return currentWindow.value
-  //   ? `${currentWindow.value.name} - ${appName}`
-  //   : appName
+  //   ? `${currentWindow.value.name} - ${appName.value}`
+  //   : appName.value
   // })
 
   useTitle(title)
@@ -349,6 +349,9 @@ export default function useStore() {
     }
   }
 
+  function resetAppName(name: string) {
+    appName.value = name
+  }
   return {
     currentWindow,
     windows,
@@ -369,6 +372,7 @@ export default function useStore() {
     windowRename,
     lastWindow,
     updateTitle,
+    resetAppName,
   }
 }
 

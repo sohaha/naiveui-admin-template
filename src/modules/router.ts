@@ -19,37 +19,22 @@ export const router = createRouter({
     import.meta.env.VITE_ROUTER_HISTORY === 'hash'
       ? createWebHashHistory(import.meta.env.VITE_PUBLIC_PATH)
       : createWebHistory(import.meta.env.VITE_PUBLIC_PATH),
+  scrollBehavior: () => ({ left: 0, top: 0 }),
 })
 
 export default (app: App) => {
   app.use(router)
 }
 
-let firstDone = false
-const first = () => {
-  firstDone = true
-  if (import.meta.env.SSR)
-    return
-  const loading = document.querySelector('#loading') as HTMLElement
-  loading
-    && setTimeout(() => {
-      loading.style.opacity = '0.02'
-      setTimeout(() => document.body.removeChild(loading), 600)
-    })
-}
-
 router.afterEach((v) => {
-  if (import.meta.env.SSR || v.fullPath === '/load')
+  if (import.meta.env.SSR || v.fullPath === '/inlay/loading')
     return
 
   nextTick(() => {
     window.$loading?.finish()
   })
   const meta = v?.meta || {}
-  if (!firstDone) {
-    first()
-  }
-  else if (meta?.fullscreen) {
+  if (meta?.fullscreen) {
     (() => {
       const { toggle, isFullscreen, isSupported } = useWindowFullscreen(meta.layout === 'Home' || meta.layout === undefined)
       if (!isSupported.value)

@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+const props = withDefaults(defineProps<{
+  size?: number
+}>(), { size: 20 })
+
 const { t } = useLanguage()
 const { isDark, toggleDark } = useDarks()
 
@@ -26,7 +30,7 @@ function toggle() {
   <NTooltip>
     <template #trigger>
       <NButton class="px-2" text @click="toggle">
-        <NIcon size="20" :class="isDark ? 'i-bx:bxs-moon' : 'i-bx:bxs-sun'" />
+        <NIcon :size="props.size" :class="isDark ? 'i-bx:bxs-moon' : 'i-bx:bxs-sun'" />
       </NButton>
     </template>
     {{ isDark ? t('toggle_light') : t('toggle_dark') }}

@@ -23,12 +23,12 @@ export default <StMenu[]>[
         path: '/example/readme',
       },
       {
+        type: 'group',
         icon: 'i-bx:layout',
         i18n: {
           en: 'Layout',
           zh: '布局页面',
         },
-        path: '/example/layout',
         children: [
           {
             icon: 'i-bx:dock-top',
@@ -71,6 +71,7 @@ export default <StMenu[]>[
         ],
       },
       {
+        type: 'group',
         icon: 'i-bx:bxs-customize',
         path: '/example/function',
         i18n: {

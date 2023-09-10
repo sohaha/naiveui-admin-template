@@ -12,8 +12,9 @@ const { isFullscreen } = useFullscreen()
 
 const collapsed = usePrefixStorage('collapsed', state.isSmallScreen)
 const collapsedWidth = computed(() => (state.isSmallScreen ? 0 : 70))
-
+const siderHeight = computed(() => state.getPageContentHeight + state.pageHeaderHeight)
 const contentRef = ref()
+
 // TODO 监听内容区宽度
 // const w = ref(0)
 // const contentWidth = refDebounced (w, 200)
@@ -58,30 +59,38 @@ const contentStyle = computed(() => {
       :inverted="setting.isMenuInverted"
       collapse-mode="width"
       :dev-position="state.isSmallScreen ? 'absolute' : 'static'"
-      :native-scrollbar="false"
+      native-scrollbar
       :collapsed-width="collapsedWidth"
       :width="width"
       :collapsed="collapsed"
+      dev-show-trigger="bar"
       class="z-3"
       @collapse="collapsed = true"
       @expand="collapsed = false"
     >
       <ACard
-        v-motion-roll-left class="m-3 mr-1"
+        class="m-3 mr-1"
+        :style="`height: ${siderHeight}px`"
       >
+        <div :style="`height: ${siderHeight - 52}px`">
+          <NScrollbar>
+            <LayoutMenu
+              :inverted="setting.isMenuInverted"
+              :collapsed="collapsed"
+              @update:collapsed="collapsed = $event"
+            />
+          </NScrollbar>
+        </div>
         <div>
-          <LayoutMenu
-            :inverted="setting.isMenuInverted"
-            :collapsed="collapsed"
-            @update:collapsed="collapsed = $event"
-          />
+          <NDivider class="!m-0" />
+          <LayoutUser :collapsed="collapsed" />
         </div>
       </ACard>
     </NLayoutSider>
-    <NLayoutContent ref="contentRef" :class="state.isSmallScreen ? 'pl-2' : ''" content-style="">
+    <NLayoutContent ref="contentRef" :class="state.isSmallScreen ? 'w-screen' : ''" content-style="">
       <div class="h-full overflow-auto">
-        <NScrollbar style="max-height: 100vh">
-          <div class="p-3 pl-2 pb-0 sticky -top-4 z-10">
+        <NScrollbar :style="`max-height:${state.windowHeight}px`">
+          <div class="p-3 pb-0 sticky -top-4 z-10" :class="{ 'pl-2': !state.isSmallScreen }">
             <LayoutHeader
               v-motion-roll-top
               :collapsed="collapsed"
@@ -90,12 +99,13 @@ const contentStyle = computed(() => {
           </div>
           <div
             id="main-window"
+
             :style="contentStyle"
-            class="p-3 pl-2 relative transition-width-1000"
-            :class="{ 'overflow-auto': isFullscreen, 'bg-[var(--a-bg-color)]': isFullscreen }"
+            class="p-3 relative transition-width-1000"
+            :class="{ 'overflow-auto': isFullscreen, 'bg-[var(--a-bg-color)]': isFullscreen, 'pl-2': !state.isSmallScreen }"
           >
             <Component :is="Loading" v-if="!user.isLogged" />
-            <LayoutMultiWindow v-else :disabled-animation="route.fullPath === '/load'" />
+            <LayoutMultiWindow v-else :disabled-animation="route.fullPath === '/inlay/loading'" />
           </div>
           <NBackTop :right="20" :bottom="20" class="z-20" />
         </NScrollbar>
@@ -115,19 +125,7 @@ const contentStyle = computed(() => {
 .n-layout-sider__border {
   display: none;
 }
-
-/* .layout-sider {
-  box-shadow: 2px 0 8px 0 rgba(0, 0, 0, 0.068);
-  position: relative;
-  z-index: 13;
-  height: 100vh;
-  transition: width 0.2s ease-in-out, max-width 0.2s ease-in-out;
-  will-change: auto;
-} */
-
-.n-layout-sider .n-layout-toggle-button {
-  top: 26px;
-  /* border-radius: 0 50% 50% 0; */
-  /* transform: translateX(60%) translateY(-50%) translateZ(0); */
+.n-layout-sider .n-layout-toggle-bar{
+  right: -1rem;
 }
 </style>

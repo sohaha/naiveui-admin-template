@@ -1,3 +1,4 @@
+import { isObject } from '@vueuse/core'
 import { defineStore } from 'pinia'
 
 type themeOptions = 'dark' | 'light'
@@ -10,25 +11,33 @@ export default defineStore('settingStore', {
       },
       layout: {
         maxWidth: '',
+        drawerPlacement: 'right',
       },
       menu: {
         collapsed: true,
         indent: 4,
-        rootIndent: 26,
+        rootIndent: 16,
         theme: 'light' as themeOptions,
       },
+      toolbar: [
+        'fullscreen',
+        'translate',
+        'dark',
+      ],
     }
   },
   actions: {
     mergeSettings(e: { [key: string]: any }) {
       Object.keys(e).forEach((key: any) => {
         // @ts-expect-error
-        if (typeof this[key] === 'object')
+        if (isObject(this[key])) {
         // @ts-expect-error
           Object.assign(this[key], e[key])
-        else
-        // @ts-expect-error
+        }
+        else {
+          // @ts-expect-error
           this[key] = e[key]
+        }
       })
     },
     toggleCollapsed(s?: boolean) {

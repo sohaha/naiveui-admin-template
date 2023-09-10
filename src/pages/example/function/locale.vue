@@ -6,7 +6,7 @@ const { t, locale, toggleLocale } = useLanguage()
   <Card>
     <div class="space-y-3">
       <div>
-        内容 : {{ t('hello') }} | {{ t('not-found') }} |
+        内容 : {{ t('hello') }} | {{ t('not_found') }} |
         {{ t('login.title') }}
       </div>
       <div>当前语言 : {{ locale }}</div>
@@ -29,7 +29,7 @@ const { t, locale, toggleLocale } = useLanguage()
 meta:
   i18n:
     en: Localization
-    zh: 本土化
+    zh: 多语言包
 </route>
 
 <i18n lang="yml">
@@ -37,12 +37,12 @@ en:
   hello: Hello
   toggle: Toggle
   login.title: Login (overwrite global language pack)
-  not-found: Not Found (New)
+  not_found: Not Found (New)
   header: This is a simple page.
 zh:
   hello: 你好
   toggle: 切换
   login.title: 登录 (覆盖全局语言包)
-  not-found: 没有找到 (新)
+  not_found: 没有找到 (新)
   header: 这是一个简单的页面。
 </i18n>

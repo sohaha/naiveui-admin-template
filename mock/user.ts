@@ -2,7 +2,7 @@ import mock from 'mockjs'
 
 const infoFake = (status?: number) => {
   return {
-    'username|+1': '@name',
+    'account|+1': '@name',
     'nickname': '@last',
     'status': status || '@pick([1, 2])',
     avatar(): any {

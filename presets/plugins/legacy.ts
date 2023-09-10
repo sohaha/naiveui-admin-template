@@ -6,7 +6,7 @@ export function LegacyPlugin() {
   if (!env.IS_PROD)
     return null
 
-  return env.IS_PROD && env.VITE_BUILD_LEGACY
+  return (env.IS_PROD && env.VITE_BUILD_LEGACY)
     ? legacy({
       polyfills: true,
       targets: browserslist,
@@ -17,7 +17,7 @@ export function LegacyPlugin() {
       ignoreBrowserslistConfig: true,
       targets: LegacBrowserslist,
       polyfills: false,
-      modernPolyfills: true,
+      // modernPolyfills: true,
       renderLegacyChunks: false,
     })
 }

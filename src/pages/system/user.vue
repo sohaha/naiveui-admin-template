@@ -1,20 +1,25 @@
 <script lang="ts" setup>
+import { renderActionCol } from '@/components/DataTable/utils'
+
 const { run: deleteUser } = useRequest(apiUserDelete, {
   manual: true,
   onBefore: (): any => {
     config.value.request.loading = true
+  },
+  onAfter: () => {
+    config.value.request.loading = false
   },
   onSuccess: (_, params) => {
     window.$message.success('删除成功')
     // 重新加载数据 或者直接移除列表数据
     const { data: d } = config.value.request
     if (d) {
-      d.data.items = d.data.items.filter((v: any) => v.id !== params[0])
+      d.data.items = d.data.items.filter((v: any) => v._id !== params[0])
       if (d.data.items.length === 0)
-        reload()
+        refresh()
     }
     else {
-      reload()
+      refresh()
     }
   },
   onError: (error) => {
@@ -32,7 +37,7 @@ const { run: updateUser } = useRequest(apiUserUpdate, {
   },
   onSuccess: () => {
     window.$message.success('编辑成功')
-    reload()
+    refresh()
   },
   onError: (error) => {
     window.$message.error(error.message)
@@ -49,90 +54,132 @@ const { run: createUser } = useRequest(apiUserCreare, {
   },
   onSuccess: () => {
     window.$message.success('添加成功')
-    reload()
+    refresh()
   },
   onError: (error) => {
     window.$message.error(error.message)
   },
 })
 
-const { config: formConfig, setItems, setValues, setOptions, setLoading } = useDataForm()
+const { config: formConfig, setItems, setItem, setValues, setOptions, setLoading } = useDataForm()
 
 setOptions({ labelPlacement: 'top' })
 setItems({
-  id: {
+  _id: {
     label: 'ID',
     component: 'NInput',
     hidden: true,
   },
-  username: {
+  account: {
     label: '用户名',
     component: 'NInput',
     required: true,
-    disabled: true,
   },
-  email: {
-    label: '邮箱',
+  password: {
+    label: '密码',
     component: 'NInput',
     required: true,
+    props: {
+      type: 'password',
+      showPasswordOn: 'click',
+    },
+    hidden: false,
   },
   nickname: {
     label: '昵称',
     component: 'NInput',
     required: true,
   },
+  status: {
+    label: '状态',
+    component: 'NSelect',
+    defaultValue: 1,
+    options: [
+      { label: '待激活', value: 0 },
+      { label: '正常中', value: 1 },
+      { label: '已禁用', value: 2 },
+    ],
+    required: true,
+  },
+  remark: {
+    label: '备注',
+    component: 'NInput',
+    props: {
+      type: 'textarea',
+    },
+  },
 })
 
 async function submitForm(data: any) {
-  if (drawerAction.value === '编辑')
-    await updateUser(data.id, data)
+  console.log('submitForm', data, drawerAction.value)
+
+  let res: any
+  if (drawerAction.value === '修改用户')
+    res = await updateUser(data._id, data)
   else
-    await createUser(data)
+    res = await createUser(data)
+
+  if (!res)
+    return
 
   showDrawer.value = false
 }
 
 const showDrawer = ref(false)
 const drawerAction = ref('')
-function actions(data: any) {
-  console.log('action', data)
-
+async function actions(data: any) {
   if (data.action === 'delete') {
-    deleteUser(data.row.id)
+    deleteUser(data.row._id)
     return
   }
-
   showDrawer.value = true
-  drawerAction.value = data.action === 'edit' ? '编辑' : '新增'
+  if (data.action === 'edit') {
+    setItem('password', { hidden: true })
+    setItem('account', { disabled: true })
+    drawerAction.value = '修改用户'
+  }
+  else {
+    drawerAction.value = '添加用户'
+    setItem('account', { disabled: false })
+    setItem('password', { hidden: false })
+  }
 
   nextTick(() => {
     setValues(data.row ?? {})
   })
 }
 
-const { config, setRowKey, setColumns, setRequest, setToolbar, setAction, reload } = useDataTable()
+const { config, setColumns, setRequest, setAction, refresh } = useDataTable()
+
+setAction((row) => {
+  if (row.inlay)
+    return h('div', { class: 'opacity-60' }, '[ 禁止操作 ]')
+
+  return h('div', {}, [
+    renderActionCol((action: string) => { actions({ action, row }) }),
+  ])
+})
 
 setRequest(apiUserList, { defaultParams: [{ pagesize: 50 }] })
-
-setToolbar(['new', 'reload', 'columns'])
-
-setAction([])
 
 setColumns([
   {
     title: 'ID',
-    key: 'id',
-    width: 70,
+    key: '_id',
+    width: 120,
     align: 'left',
     fixed: 'left',
+    render(row: any) {
+      return h('span', { class: 'font-mono' }, row._id)
+    },
   },
   {
-    title: '用户名',
-    key: 'username',
+    title: '账号',
+    key: 'account',
   },
   {
-    title: '邮箱',
-    key: 'email',
+    title: '昵称',
+    key: 'nickname',
     ellipsis: {
       tooltip: true,
     },
@@ -140,6 +187,13 @@ setColumns([
   {
     title: '创建时间',
     key: 'created_at',
+    ellipsis: {
+      tooltip: true,
+    },
+  },
+  {
+    title: '最后登录时间',
+    key: 'login_at',
     ellipsis: {
       tooltip: true,
     },
@@ -172,7 +226,8 @@ setColumns([
     "icon": "i-bx:bxs-user-detail",
     "title": "用户管理",
     "i18n": {
-      "en": "User"
+      "en": "User",
+      "zh": "用户管理"
     }
   }
 }

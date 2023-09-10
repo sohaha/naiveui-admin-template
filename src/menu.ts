@@ -1,6 +1,5 @@
 import type { StMenu } from './types/global'
 // import system from '@/pages/system/menu'
-// import model from '@/pages/model/menu'
 
 export default <StMenu[]>[
   {
@@ -8,5 +7,4 @@ export default <StMenu[]>[
     path: '/',
   },
   // ...system,
-  // ...model,
 ]

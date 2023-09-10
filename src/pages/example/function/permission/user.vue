@@ -15,7 +15,7 @@
 {
   "meta": {
     "permission": ["user"],
-    "title": "用户权限"
+    "title": "user权限"
   }
 }
 </route>

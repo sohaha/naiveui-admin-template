@@ -3,11 +3,22 @@ import type { InstApi } from '@/types/global'
 
 /**
  * 登录
- * @param username 用户名
+ * @param account 用户名
  * @param password 密码
  */
-export function apiLogin(username: string, password: string): Promise<InstApi> {
-  return apis.post('/manage/base/login', { username, password })
+export function apiLogin(account: string, password: string): Promise<InstApi> {
+  return apis.post('/manage/base/login', { account, password })
+}
+
+/**
+ * 站点配置
+ */
+export function apiSite(): Promise<InstApi> {
+  return apiNoILock.get('/manage/base/site').then((v: any) => {
+    if (v.data?.sitename)
+      multiWindowStore().resetAppName(v.data.sitename)
+    return v
+  })
 }
 
 /**
@@ -20,8 +31,37 @@ export function apiLogout(): Promise<InstApi> {
 /**
  * 当前用户信息
  */
-export function apiMe(): Promise<InstApi> {
-  return apis.get('/manage/base/me')
+export function apiMe(options = {}) {
+  return useRequest(async () => {
+    lock.lockWrite()
+    let resp
+    try {
+      resp = await apiNoILock.get('/manage/base/me')
+      lock.unlockWrite()
+      return resp
+    }
+    catch (error: any) {
+      lock.unlockWrite()
+      if (error)
+        throw new Error(error?.message)
+    }
+  }, {
+    cacheKey: 'me',
+    staleTime: 3000,
+    manual: true,
+    onBefore(params) {
+      return params
+    },
+    onAfter() {
+    },
+    onSuccess(_data) {
+    },
+    onError(err) {
+      if (err)
+        window.$message.error(err.message)
+    },
+    ...options,
+  })
 }
 
 /**
@@ -54,6 +94,26 @@ export function apiEditPassword(
   return apis.patch('/manage/base/password', {
     old_password,
     password,
+  })
+}
+
+/**
+ * 更新用户信息
+ */
+export function apiMeUpdate(data: Record<string, any>): Promise<InstApi> {
+  return apis.patch('/manage/base/me', data)
+}
+
+/**
+ * 上传用户头像
+ */
+export function apiUploadAvatar(file: File): Promise<InstApi> {
+  const formData = new FormData()
+  formData.append('file', file)
+  return apis.post('/manage/base/avatar', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   })
 }
 

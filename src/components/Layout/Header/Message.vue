@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import type { InstApi } from '@/types/global'
 
+const props = withDefaults(defineProps<{
+  size?: number
+}>(), { size: 20 })
+
 const state = stateStore()
 
 useRequest(apiHeartbeat, {
@@ -20,14 +24,14 @@ useRequest(apiHeartbeat, {
 
 const router = useRouter()
 function goMessagePage() {
-  router.push(`/message?_v=${Date.now()}`)
+  router.push(`/inlay/message?_v=${Date.now()}`)
 }
 </script>
 
 <template>
   <NButton v-if="state.unreadMessage" class="px-2" text @click="goMessagePage">
     <NBadge dot :value="state.unreadMessage" :max="10">
-      <NIcon size="20" class="i-bx:mail-send" />
+      <NIcon :size="props.size" class="i-bx:mail-send" />
     </NBadge>
   </NButton>
 </template>

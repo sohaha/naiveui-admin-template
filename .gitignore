@@ -4,3 +4,6 @@ node_modules
 .history/
 .idea/
 .env.*.local
+.DS_Store
+.pnpm-store/
+stats.html

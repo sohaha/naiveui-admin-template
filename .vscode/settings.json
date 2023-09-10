@@ -1,4 +1,7 @@
 {
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "vue-router"
+  ],
   "i18n-ally.localesPaths": [
     "locales"
   ],
@@ -21,7 +24,7 @@
     "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[vue]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+    "editor.defaultFormatter": "Vue.volar"
   },
   "[css]": {
     "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
@@ -76,5 +79,8 @@
   "peacock.color": "#59444b",
   "[json]": {
     "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   }
 }

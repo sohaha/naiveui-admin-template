@@ -9,8 +9,8 @@ export const props = {
     default: '',
   },
   placement: {
-    type: String as PropType<'right' | 'left' | 'top' | 'bottom' | 'center'>,
-    default: 'right',
+    type: String as PropType<'right' | 'left' | 'top' | 'bottom' | 'center' | ''>,
+    default: '',
   },
   width: {
     type: String,

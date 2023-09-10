@@ -11,7 +11,9 @@ export default defineComponent({
   setup(props, { slots }) {
     const attrs = useAttrs()
     const state = stateStore()
-    const isCenter = computed(() => props.placement === 'center')
+    const setting = settingStore()
+    const placement = computed<string>(() => props.placement || setting.layout.drawerPlacement)
+    const isCenter = computed(() => placement.value === 'center')
 
     const drawerProps = computed<{ [key: string]: any }>(() => {
       let centerProps = {
@@ -33,7 +35,7 @@ export default defineComponent({
 
       return {
         // to: '#global-drawer-target',
-        placement: props.placement,
+        placement: placement.value,
         defaultHeight: props.height,
         defaultWidth: props.width,
         nativeScrollbar: true,
@@ -91,6 +93,7 @@ export default defineComponent({
 
     return () => {
       return h(
+        // @ts-expect-error
         isCenter.value ? NModal : NDrawer,
         {
           show: showDrawer.value,

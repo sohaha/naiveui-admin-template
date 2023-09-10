@@ -27,47 +27,37 @@ const active = ref('')
 watch(active, (v) => {
   requestData({ status: v, page: 1 })
 })
+
+const header = ref<null | HTMLElement>(null)
+const { height: headerHeight } = useElementSize(header)
+
+const tableHeight = computed(() => {
+  return -(headerHeight.value + 17)
+})
 </script>
 
 <template>
   <Card id="data-table" padding="0" class="relative overflow-hidden">
-    <div class="text-center p-2">
-      <NRadioGroup v-model:value="active" size="small">
-        <NRadioButton
-          v-for="v in [{ label: '全部', value: '' }, { label: '正常', value: '1' }, { label: '禁用', value: '2' }]"
-          :key="v.value"
-          :value="v.value"
-          :label="v.label"
-        />
-      </NRadioGroup>
-    </div>
-    <NDivider class="!m-0" />
-    <DataTable
-      :max-height="-(28 + 12)"
-      :scroll-x="600"
-      v-bind="config"
-      @actions="actions"
-    />
+    <DataTable :max-height="tableHeight" :scroll-x="600" v-bind="config" @actions="actions">
+      <div ref="header">
+        <NRadioGroup v-model:value="active" size="small">
+          <NRadioButton
+            v-for="v in [{ label: '全部', value: '' }, { label: '正常', value: '1' }, { label: '禁用', value: '2' }]"
+            :key="v.value" :value="v.value" :label="v.label"
+          />
+        </NRadioGroup>
+      </div>
+    </DataTable>
   </Card>
 
   <DrawerForm
-    v-model:show="showDrawer"
-    height="100vh"
-    placement="right"
-    closable
-    v-bind="formConfig"
-    :title="drawerAction"
-    @submit="submitForm"
+    v-model:show="showDrawer" height="100vh" placement="right" closable v-bind="formConfig"
+    :title="drawerAction" @submit="submitForm"
   />
 
   <DrawerForm
-    v-model:show="showFilterDrawer"
-    placement="top"
-    :trap-focus="false"
-    to="#data-table"
-    v-bind="formConfig"
-    title="过滤条件"
-    @submit="submitForm"
+    v-model:show="showFilterDrawer" placement="top" :trap-focus="false" to="#data-table" v-bind="formConfig"
+    title="过滤条件" @submit="submitForm"
   />
 </template>
 

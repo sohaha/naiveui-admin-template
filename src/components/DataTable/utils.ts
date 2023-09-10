@@ -1,28 +1,70 @@
 import {
   NButton,
-
   NIcon,
-
+  NInput,
   NPopconfirm, NTooltip,
 } from 'naive-ui'
-import type { TableColumn } from 'naive-ui/lib/data-table/src/interface'
 import type { PaginationInfo } from 'naive-ui/lib/pagination/src/interface'
-import type { ComponentPublicInstance, VNode, VNodeChild } from 'vue'
+import type { ComponentPublicInstance, VNode, VNodeChild, VNodeRef } from 'vue'
 import { usePagination } from 'vue-use-api'
 import type { PaginationBaseOptions } from 'vue-use-api/dist/types/usePagination'
+import type { Type } from 'naive-ui/lib/button/src/interface'
+import type { TableColumn } from '@/types/global'
 export * from './info'
+
+export const showOrEdit = defineComponent({
+  props: {
+    value: [String, Number],
+    onUpdateValue: [Function, Array],
+  },
+  setup(props: any) {
+    const isEdit = ref(false)
+    const oldValue = ref(`${props.value}`)
+    const inputRef = ref<null | VNodeRef>(null)
+    const inputValue = ref(oldValue.value)
+    function handleOnClick() {
+      isEdit.value = true
+      oldValue.value = inputValue.value
+      nextTick(() => {
+        inputRef.value!.focus()
+      })
+    }
+    function handleChange() {
+      if (inputValue.value !== oldValue.value)
+        props.onUpdateValue(inputValue.value)
+      isEdit.value = false
+    }
+    return () =>
+      h(
+        'div',
+        {
+          onClick: handleOnClick,
+        },
+        isEdit.value
+          ? h(NInput, {
+            ref: inputRef,
+            value: inputValue.value,
+            onUpdateValue: (v) => {
+              inputValue.value = v
+            },
+            onKeyup(event) {
+              if (event.key === 'Enter' || event.keyCode === 13)
+                handleChange()
+            },
+            // onChange: handleChange,
+            onBlur: handleChange,
+          })
+          : props.value,
+      )
+  },
+})
 
 export function renderActionCol(
   click: Function,
-  size: 'tiny' | 'small' | 'medium' | 'large',
-  more: any[],
+  size: 'tiny' | 'small' | 'medium' | 'large' = 'small',
+  more?: any[],
 ) {
-  const popconfirmRef: any = ref(null)
-  const hide = () => {
-    popconfirmRef.value.$refs.popoverInstRef.setShow(false)
-  }
-
-  const children = more.map((v) => {
+  const children = (more || []).map((v) => {
     return h(
       NButton,
       {
@@ -57,49 +99,69 @@ export function renderActionCol(
           },
           { default: () => '[ 修改 ]' },
         ),
+        renderActionDelete(click, size),
+      ],
+    },
+  )
+}
+
+export function renderActionDelete(
+  click: Function,
+  size: 'tiny' | 'small' | 'medium' | 'large' = 'small',
+) {
+  return renderActionPopconfirm(() => click('delete'), h(
+    NButton,
+    {
+      text: true,
+      type: 'error',
+      size,
+    },
+    { default: () => '[ 删除 ]' },
+  ), '请确定是否删除？', { okBtnText: '确定删除', okBtnType: 'error' }, size)
+}
+
+export function renderActionPopconfirm(
+  click: Function,
+  trigger: VNode,
+  tip: string,
+  args: { okBtnType?: Type; okBtnText?: string; cancelBtnText?: string },
+  size: 'tiny' | 'small' | 'medium' | 'large' = 'small',
+) {
+  const popconfirmRef: any = ref(null)
+  const hide = () => {
+    popconfirmRef.value.$refs.popoverInstRef.setShow(false)
+  }
+
+  return h(
+    NPopconfirm,
+    {
+      showIcon: false,
+      placement: 'left',
+      ref: popconfirmRef,
+    },
+    {
+      default: () => tip,
+      trigger: () => trigger,
+      action: () => [
         h(
-          NPopconfirm,
+          NButton,
           {
-            showIcon: false,
-            placement: 'left',
-            ref: popconfirmRef,
+            size,
+            onClick: hide,
           },
+          { default: () => args.cancelBtnText || '取消' },
+        ),
+        h(
+          NButton,
           {
-            default: () => '请确定是否删除？',
-            trigger: () =>
-              h(
-                NButton,
-                {
-                  text: true,
-                  type: 'error',
-                  // ghost: true,
-                  size,
-                },
-                { default: () => '[ 删除 ]' },
-              ),
-            action: () => [
-              h(
-                NButton,
-                {
-                  size,
-                  onClick: hide,
-                },
-                { default: () => '取消' },
-              ),
-              h(
-                NButton,
-                {
-                  type: 'error',
-                  size,
-                  onClick() {
-                    click('delete')
-                    hide()
-                  },
-                },
-                { default: () => '确定删除' },
-              ),
-            ],
+            type: args.okBtnType || 'success',
+            size,
+            onClick(e) {
+              click(e)
+              hide()
+            },
           },
+          { default: () => args.okBtnText || '确定' },
         ),
       ],
     },
@@ -118,9 +180,9 @@ export function useDataTable() {
   const action = ref<boolean | TableColumn>(true)
   const columns = ref<TableColumn[]>([])
   const pagination = ref<PaginationInfo>()
-  const toolbar = ref(['reload', 'columns']) // new, reload, columns
-  const rowKey = ref<any>((row: any) => row.id || row.key)
-  const config = computed(() => ({
+  const toolbar = ref<any[]>([]) // new, refresh, columns
+  const rowKey = ref<any>((row: any) => row.id || row._id || row.key)
+  const config = computed<any>(() => ({
     request: request.value,
     action: action.value,
     columns: columns.value,
@@ -148,8 +210,12 @@ export function useDataTable() {
     setProps(p: { [key: string]: any }) {
       props.value = p
     },
-    setRowKey(key: string) {
-      rowKey.value = (row: any) => row[key]
+    setRowKey(key: string | Function) {
+      if (typeof key === 'string') {
+        rowKey.value = (row: any) => row[key]
+        return
+      }
+      rowKey.value = key
     },
     setToolbar(t: any[]) {
       toolbar.value = t
@@ -171,7 +237,7 @@ export function useDataTable() {
 
       return request.value?.run({ ...arrg, ...params })
     },
-    reload() {
+    refresh() {
       nextTick(request.value?.refresh)
     },
   }
@@ -206,7 +272,7 @@ export function createReloadIcon(btn: { [key: string]: any }): VNode {
 export function createNewIcon(btn: { [key: string]: any }): VNode {
   return h(
     NTooltip,
-    { },
+    {},
     {
       default: () => h('span', '添加数据'),
       trigger: () =>

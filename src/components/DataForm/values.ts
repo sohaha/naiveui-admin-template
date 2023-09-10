@@ -4,14 +4,15 @@ export function useValues(model: any) {
   function getValues() {
     return { ...model.value }
   }
+
   function setValues(v: Record<string, any>) {
     if (!v || !Object.keys(v).length)
       isNew.value = true
-
     else
       isNew.value = false
 
-    rawValues.value = model.value = v
+    rawValues.value = { ...v }
+    model.value = { ...v }
   }
 
   onMounted(() => {
