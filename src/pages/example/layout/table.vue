@@ -33,7 +33,7 @@ setColumns([
   {
     title: '用户名',
     key: 'account',
-    editableUpdate(row, value) {
+    editableUpdate(row: mapAny, value: any) {
       row.account = value
       window.$message.success(`修改：${value}`)
     },

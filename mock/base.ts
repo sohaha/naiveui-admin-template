@@ -41,7 +41,7 @@ export default [
     url: '/manage/base/me',
     method: 'get',
     statusCode: 200,
-    timeout: 0,
+    timeout: 10,
     response: () => {
       const data: any = {
         info: info(),

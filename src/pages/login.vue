@@ -39,7 +39,6 @@ const backgroundColor = computed(() => {
   }
 }
 
-// 表单
 const rules = computed(() => {
   return {
     account: {
@@ -90,24 +89,21 @@ const { run } = useRequest(apiLogin, {
 const route = useRoute()
 const router = useRouter()
 
-// const { run: getPermissions } = useRequest(apiPermissions, { manual: true })
-
+const disabled = ref(false)
 const { run: getMe } = apiMe({
+  onBefore(params: any) {
+    disabled.value = true
+    window.$loading?.start()
+    return params
+  },
   onAfter() {
-    loading.value = false
+    disabled.value = false
   },
   onError(err: Error) {
     if (err)
       window.$message.error(err.message)
   },
   onSuccess() {
-    // if (!data?.is_super)
-    //   console.log('不是超级管理员')
-
-    // const p = await getPermissions()
-    // if (p?.code === 0)
-    //   userStore.setPermissions(p.data?.permissions || [])
-
     if (user.keepLogin)
       account.value = model.value.account
 
@@ -196,7 +192,7 @@ function onTab() {
                     <NCheckbox v-model:checked="user.keepLogin">
                       {{ t("keep") }}
                     </NCheckbox>
-                    <NButton v-throttled type="primary" block :disabled="loading" :loading="loading" @click="onLogin">
+                    <NButton v-throttled type="primary" block :disabled="disabled" :loading="loading" @click="onLogin">
                       {{ t("submit") }}
                     </NButton>
                   </div>

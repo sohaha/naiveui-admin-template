@@ -19,6 +19,7 @@ declare global {
     $message: MessageApiInjection
     $notification: NotificationApiInjection
   }
+  type mapAny = { [key: string]: any }
 }
 
 export { }
