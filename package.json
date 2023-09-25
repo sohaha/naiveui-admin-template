@@ -4,7 +4,8 @@
   "description": "vite + vue3 + ts 开箱即用现代开发模板",
   "scripts": {
     "dev": "vite --host",
-    "build": "vite build",
+    "dev:bun": "bun vite --host",
+    "build": "bun vite build",
     "dev:host": "vite --host",
     "dev:open": "vite --open",
     "preview": "vite preview --host --open",
@@ -28,7 +29,7 @@
     "pinia": "^2.1.6",
     "push.js": "^1.0.12",
     "vue": "^3.3.4",
-    "vue-router": "^4.2.4",
+    "vue-router": "^4.2.5",
     "vue-use-api": "^0.0.8"
   },
   "engines": {
@@ -45,11 +46,11 @@
     "@vitejs/plugin-legacy": "^3.0.2",
     "@vitejs/plugin-vue": "^4.3.4",
     "@vitejs/plugin-vue-jsx": "^3.0.2",
-    "autoprefixer": "^10.4.15",
+    "autoprefixer": "^10.4.16",
     "axios": "^1.5.0",
     "date-fns": "^2.30.0",
     "echarts": "^5.4.3",
-    "eslint": "^8.49.0",
+    "eslint": "^8.50.0",
     "eslint-plugin-vue": "^9.17.0",
     "fast-glob": "^3.3.1",
     "fs-extra": "^11.1.1",
@@ -64,7 +65,7 @@
     "postcss-pxtorem": "^6.0.0",
     "prettier": "^2.8.8",
     "rollup-plugin-visualizer": "^5.9.2",
-    "terser": "^5.19.4",
+    "terser": "^5.20.0",
     "typescript": "4.9.4",
     "unocss": "^0.47.6",
     "unplugin-auto-import": "^0.12.2",
@@ -82,7 +83,7 @@
     "vite-plugin-vue-meta-layouts": "^0.1.2",
     "vue-echarts": "^6.6.1",
     "vue-eslint-parser": "^9.3.1",
-    "vue-i18n": "^9.3.0"
+    "vue-i18n": "^9.4.1"
   },
   "pnpm": {
     "peerDependencyRules": {

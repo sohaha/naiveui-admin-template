@@ -8,7 +8,6 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ACard: typeof import('ayyui')['ACard']
-    AdaptiveScreen: typeof import('./../components/AdaptiveScreen/index.vue')['default']
     Card: typeof import('./../components/Card')['default']
     CardCols: typeof import('./../components/CardCols.vue')['default']
     CardRows: typeof import('./../components/CardRows.vue')['default']
