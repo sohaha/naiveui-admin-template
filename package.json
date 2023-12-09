@@ -25,10 +25,10 @@
     "@vueuse/core": "^9.13.0",
     "@vueuse/motion": "2.0.0-beta.26",
     "ayyui": "^0.1.14",
-    "naive-ui": "^2.34.4",
-    "pinia": "^2.1.6",
+    "naive-ui": "^2.35.0",
+    "pinia": "^2.1.7",
     "push.js": "^1.0.12",
-    "vue": "^3.3.4",
+    "vue": "^3.3.10",
     "vue-router": "^4.2.5",
     "vue-use-api": "^0.0.8"
   },
@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.34.2",
-    "@iconify-json/bx": "^1.1.7",
+    "@iconify-json/bx": "^1.1.9",
     "@intlify/unplugin-vue-i18n": "^0.8.2",
     "@sergeymakinen/vite-plugin-html-minimize": "^1.0.6",
     "@types/node": "18.11.13",
