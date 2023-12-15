@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite --host",
     "dev:bun": "bun vite --host",
-    "build": "bun vite build",
+    "build": "vite build",
     "dev:host": "vite --host",
     "dev:open": "vite --open",
     "preview": "vite preview --host --open",
