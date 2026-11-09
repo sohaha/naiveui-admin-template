@@ -47,9 +47,9 @@
     "@vitejs/plugin-vue": "^4.3.4",
     "@vitejs/plugin-vue-jsx": "^3.0.2",
     "autoprefixer": "^10.4.16",
-    "axios": "^1.5.0",
+    "axios": "^1.20.0",
     "date-fns": "^2.30.0",
-    "echarts": "^5.4.3",
+    "echarts": "^6.1.0",
     "eslint": "^8.50.0",
     "eslint-plugin-vue": "^9.17.0",
     "fast-glob": "^3.3.1",
@@ -57,7 +57,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.3.0",
     "local-pkg": "^0.4.3",
-    "md-editor-v3": "^2.11.3",
+    "md-editor-v3": "^6.5.4",
     "mockjs": "^1.1.0",
     "pinia-plugin-persistedstate": "^3.2.0",
     "plop": "^3.1.2",
@@ -70,7 +70,7 @@
     "unocss": "^0.47.6",
     "unplugin-auto-import": "^0.12.2",
     "unplugin-vue-components": "^0.22.12",
-    "vite": "^4.4.9",
+    "vite": "^6.4.5",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-inspect": "^0.7.38",
@@ -83,7 +83,7 @@
     "vite-plugin-vue-meta-layouts": "^0.1.2",
     "vue-echarts": "^6.6.1",
     "vue-eslint-parser": "^9.3.1",
-    "vue-i18n": "^9.4.1"
+    "vue-i18n": "^11.4.14"
   },
   "pnpm": {
     "peerDependencyRules": {
